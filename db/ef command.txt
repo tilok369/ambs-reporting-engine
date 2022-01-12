@@ -1,0 +1,1 @@
+Scaffold-DbContext -Connection Name=ReportDb Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project "Ambs.Reporting.DAL" -force
