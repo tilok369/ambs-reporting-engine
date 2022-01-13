@@ -14,4 +14,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Ambs.Reporting.Utility\Ambs.Reporting.Utility.csproj" />
+  </ItemGroup>
+
 </Project>

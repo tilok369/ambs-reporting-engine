@@ -5,5 +5,7 @@ namespace Ambs.Reporting.Engine.Manager
     {
         AmbsExportData GetExportData(AmbsReportData data);
         List<AmbsExportData> GetExportData(List<AmbsReportData> datas);
+        byte[] GetExcelData(List<AmbsExportData> datas,string fileName);
+        byte[] GetPdflData(List<AmbsExportData> datas,string fileName);
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using Ambs.Reporting.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,10 @@ builder.Services.AddCors(c =>
     .WithHeaders(HeaderNames.ContentType));
 });
 
+builder.Services.AddDatabase(builder.Configuration)
+    .AddRepositories()
+    .AddServices()
+    .AddLogics();
 builder.Services.AddApiVersioning(config =>
 {
     config.DefaultApiVersion = new ApiVersion(int.Parse(builder.Configuration["Api:Version:Major"]), int.Parse(builder.Configuration["Api:Version:Minor"]));
