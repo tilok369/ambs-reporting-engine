@@ -11,5 +11,6 @@ namespace Ambs.Reporting.Engine.Model
         public List<string> Columns { get; set; }
         public List<List<string>> Rows { get; set; }
         public List<AmbsDataLayer> Layers { get; set; }
+        public string SheetName { get; set; }
     }
 }

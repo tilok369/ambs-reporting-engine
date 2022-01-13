@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambs.Reporting.Service", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambs.Reporting.Logic", "Ambs.Reporting.Logic\Ambs.Reporting.Logic.csproj", "{BEF7B52F-ADDB-4B19-A8E5-239682EE18F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambs.Reporting.Engine", "Ambs.Reporting.Engine\Ambs.Reporting.Engine.csproj", "{28D47EA7-E95F-40EF-A505-6C676CAF4104}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambs.Reporting.Engine", "Ambs.Reporting.Engine\Ambs.Reporting.Engine.csproj", "{28D47EA7-E95F-40EF-A505-6C676CAF4104}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambs.Reporting.Utility", "Ambs.Reporting.Utility\Ambs.Reporting.Utility.csproj", "{EF50BC3A-FDCB-4688-9F87-36900A942323}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{28D47EA7-E95F-40EF-A505-6C676CAF4104}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28D47EA7-E95F-40EF-A505-6C676CAF4104}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28D47EA7-E95F-40EF-A505-6C676CAF4104}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF50BC3A-FDCB-4688-9F87-36900A942323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF50BC3A-FDCB-4688-9F87-36900A942323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF50BC3A-FDCB-4688-9F87-36900A942323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF50BC3A-FDCB-4688-9F87-36900A942323}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

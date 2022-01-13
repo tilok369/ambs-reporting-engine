@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Ambs.Reporting.DAL\Ambs.Reporting.DAL.csproj" />
+    <ProjectReference Include="..\Ambs.Reporting.Engine\Ambs.Reporting.Engine.csproj" />
+  </ItemGroup>
+
 </Project>

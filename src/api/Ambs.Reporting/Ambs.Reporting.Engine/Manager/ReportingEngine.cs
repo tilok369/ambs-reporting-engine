@@ -1,19 +1,24 @@
 ﻿using Ambs.Reporting.Engine.Model;
+using Ambs.Reporting.Utility.Report;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Ambs.Reporting.Engine.Manager
 {
-    internal class ReportingEngine : IReportingEngine
+    public class ReportingEngine : IReportingEngine
     {
         public AmbsExportData GetExportData(AmbsReportData data)
         {
             var exportData = new AmbsExportData { Rows = data.Rows, Columns = data.Columns };
-            var maxLayer = GetMaxLayer(exportData.Columns);
+            var maxLayer = GetMaxLayers(exportData.Columns);
             exportData.Layers = GetLayers(exportData.Columns, maxLayer);
+            exportData.SheetName = "Sheet";
             return exportData;
         }
 
@@ -24,29 +29,36 @@ namespace Ambs.Reporting.Engine.Manager
                 exportDataList.Add(GetExportData(data));
             return exportDataList;
         }
-        private static int GetMaxLayer(List<string> columns)
+        //private static int GetMaxLayer(List<string> columns)
+        //{
+        //    return columns.Select(column => column.Split('_').Length - 1).Concat(new[] { 1 }).Max();
+        //}
+        private int GetMaxLayers(List<string> columns)
         {
-            return columns.Select(column => column.Split('_').Length - 1).Concat(new[] { 1 }).Max();
+            return columns.Select(column => column.Split('_').Count() - 1).Concat(new[] { 1 }).Max();
         }
-        private List<AmbsDataLayer> GetLayers(List<string> columns, int maxLayer)
+        private List<AmbsDataLayer> GetLayers(List<string> columns, int maxLayerCount)
         {
             var dataLayers = new List<AmbsDataLayer>();
-            for (var i = 0; i < maxLayer; i++)
+
+            for (var i = 0; i < maxLayerCount; i++)
             {
                 var calculatedColumns = new List<AmbsColumn>();
-                var layerColumns =GetLayeredColumns(columns, i);
+                var layerColumns = GetLayeredColumns(columns, i);
                 foreach (var layerColumn in layerColumns)
                 {
                     calculatedColumns.Add(new AmbsColumn
                     {
                         ColumnName = layerColumn.Text,
                         ColumnSpan = CalculateColumnSpan(columns, layerColumn.ColumnName),
-                        RowSpan = CalculateRowSpan(columns, layerColumn.ColumnName, maxLayer, i)
+                        RowSpan = CalculateRowSpan(columns, layerColumn.ColumnName, maxLayerCount, i)
                     });
                 }
                 dataLayers.Add(new AmbsDataLayer { Columns = calculatedColumns });
             }
-            var layersWithIndex= GetDataLayersWithIndex(dataLayers);
+
+            var layersWithIndex = GetDataLayersWithIndex(dataLayers);
+
             return layersWithIndex;
         }
         private List<LayeredColumn> GetLayeredColumns(List<string> columns, int layerNumber)
@@ -56,26 +68,24 @@ namespace Ambs.Reporting.Engine.Manager
             {
                 var layerColumnStr = column.Split('_').ToList();
                 layerColumnStr = layerColumnStr.Take(layerColumnStr.Count - 1).ToList();
-                if (layerColumnStr.Count < layerNumber + 1) continue;
-                var columnName = string.Join("_", layerColumnStr.Take(layerColumnStr.Count + 1).ToList());
-                if (!layeredColumns.Any(c => c.ColumnName.Contains(columnName)))
-                    layeredColumns.Add(new LayeredColumn
-                    {
-                        ColumnName = columnName,
-                        Text = layerColumnStr[layerNumber]
-                    });
+                if (layerColumnStr.Count >= layerNumber + 1)
+                {
+                    var columnName = string.Join("_", layerColumnStr.Take(layerNumber + 1).ToList());
+                    if (!layeredColumns.Any(c => c.ColumnName.Contains(columnName)))
+                        layeredColumns.Add(new LayeredColumn
+                        {
+                            ColumnName = columnName,
+                            Text = layerColumnStr[layerNumber]
+                        });
+                }
             }
             return layeredColumns;
         }
-        private static int CalculateColumnSpan(List<string> columns, string columnName)
-        {
-            return columns.Count(c => c.Contains(columnName));
-        }
-        private static int MaxLayerSize(List<string> columns, string columnName)
+        private int MaxLayerSize(List<string> columns, string columnName)
         {
             return columns.Where(c => c.Contains(columnName)).Max(c => c.Split('_').Length - 1);
         }
-        private static int CalculateRowSpan(List<string> columns, string columnName, int numOfLayers, int i)
+        private int CalculateRowSpan(List<string> columns, string columnName, int numOfLayers, int i)
         {
             return i == 0 && MaxLayerSize(columns, columnName) > 1 ? 1 : 1 + numOfLayers - MaxLayerSize(columns, columnName);
         }
@@ -130,6 +140,78 @@ namespace Ambs.Reporting.Engine.Manager
                 previousLayerSelectedColumn = layers[i - 1].Columns[idx + 1];
             }
             return previousLayerSelectedColumn;
+        }
+        private int CalculateColumnSpan(List<string> columns, string columnName)
+        {
+            return columns.Count(c => c.Contains(columnName));
+        }
+
+        public byte[] GetExcelData(List<AmbsExportData> datas,string fileName)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using var package = new ExcelPackage(new FileInfo(fileName));
+            var sheets = datas
+                //.OrderBy(d => d.Order)
+                .Select(d => d.SheetName).Distinct().ToList();
+            foreach (var sheetData in sheets.Select(sheet => datas.FirstOrDefault(d => d.SheetName == sheet)).Where(sheetData => sheetData != null))
+            {
+                package.Workbook.Worksheets.Add("Sheet 1");
+                var worksheet = package.Workbook.Worksheets[0];
+
+                worksheet.Cells[1, 1].Value = sheetData.SheetName;
+                worksheet.Cells[1, 1, 1, sheetData.Columns.Count].Merge = true;
+                worksheet.Cells[1, 1].Style.Font.Bold = true;
+                worksheet.Cells[1, 1].Style.Font.Size = 20;
+                worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[2, 1].Value = "Branch Name: Branch" ;
+                worksheet.Cells[2, 1, 2, 6].Merge = true;
+                worksheet.Cells[2, 1, 2, 6].Style.Font.Bold = true;
+                worksheet.Cells[2, 1, 2, 6].Style.Font.Size = 14;
+                worksheet.Cells[2, 1, 2, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[2, 7].Value = "Date: Date";
+                worksheet.Cells[2, 7, 2, 12].Merge = true;
+                worksheet.Cells[2, 7, 2, 12].Style.Font.Bold = true;
+                worksheet.Cells[2, 7, 2, 12].Style.Font.Size = 14;
+                worksheet.Cells[2, 7, 2, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                var asaiLogo = worksheet.Drawings.AddPicture("Test", Image.FromFile(@"D:\ASAI Logo.png"));
+                asaiLogo.SetPosition(3, 5, 3, 5);
+                asaiLogo.SetSize(300, 300);
+                var layers = sheetData.Layers;
+                var rowIndex = 4;
+                rowIndex -= 1;
+                foreach (var column in layers.SelectMany(layer => layer.Columns))
+                {
+                    ExcelReportUtility.FormatHeaderCell(worksheet.Cells, rowIndex + column.RowIndex,
+                        column.ColumnIndex,
+                        column.RowSpan, column.ColumnSpan);
+                    worksheet.Cells[rowIndex + column.RowIndex, column.ColumnIndex].Value =
+                        column.ColumnName;
+                }
+
+                var lastLayer = layers.LastOrDefault();
+                var lastLayerLastColumn = lastLayer?.Columns.LastOrDefault();
+                if (lastLayerLastColumn == null) continue;
+                rowIndex = lastLayerLastColumn.RowIndex + rowIndex + 1;
+                foreach (var row in sheetData.Rows)
+                {
+                    var colIndex = 1;
+                    var isTotalRow = row.Any(r => r.ToString().Contains("Total"));
+                    foreach (var column in row)
+                    {
+                        ExcelReportUtility.FormatDataCell(worksheet.Cells, rowIndex, colIndex, 1, 1,
+                            isTotalRow);
+                        worksheet.Cells[rowIndex, colIndex++].Value = column;
+                    }
+
+                    rowIndex++;
+                }
+            }
+            return package.GetAsByteArray();
+        }
+
+        public byte[] GetPdflData(List<AmbsExportData> datas, string fileName)
+        {
+            throw new NotImplementedException();
         }
     }
 }
