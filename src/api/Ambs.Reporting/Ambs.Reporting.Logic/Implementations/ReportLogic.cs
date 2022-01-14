@@ -1,11 +1,5 @@
 ﻿using Ambs.Reporting.Engine.Model;
-using Ambs.Reporting.Logic.Interfaces;
-using Ambs.Reporting.Service.Interfaces;
 using System.Data;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Ambs.Reporting.Engine.Manager;
 

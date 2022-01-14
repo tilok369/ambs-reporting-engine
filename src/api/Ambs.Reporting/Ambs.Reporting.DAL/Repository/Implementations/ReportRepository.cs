@@ -1,11 +1,5 @@
-﻿using Ambs.Reporting.DAL.Repository.Interfaces;
-using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ambs.Reporting.Utility.Extensions;
 
 namespace Ambs.Reporting.DAL.Repository.Implementations

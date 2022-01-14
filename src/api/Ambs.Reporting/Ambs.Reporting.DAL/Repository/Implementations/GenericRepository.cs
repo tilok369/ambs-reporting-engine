@@ -1,15 +1,7 @@
-﻿using Ambs.Reporting.DAL.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Ambs.Reporting.DAL.Repository.Implementations;
 
-public class GenericRepository
+public class GenericRepository : IGenericRepository
 {
     private readonly DbContextOptionsBuilder<ReportEngineContext> _dbContextOptionBuilder;
 
