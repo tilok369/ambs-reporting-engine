@@ -4,6 +4,7 @@ Create table [config].[Dashboard]
 (
 	Id bigint not null primary key identity(1, 1),
 	[Name] nvarchar(50) not null,
+	[IframeUrl] nvarchar(200) null,
 	[Status] bit not null,
 	CreatedOn datetime not null,
 	CreatedBy nvarchar(20) not null,
@@ -31,7 +32,7 @@ GO
 Create table [config].[Report]
 (
 	Id bigint not null primary key identity(1, 1),
-	DashboardId bigint not null,
+	WidgetId bigint not null,
 	[Name] nvarchar(50) not null,
 	[Status] bit not null default(1),
 	[Type] int not null,
@@ -39,7 +40,7 @@ Create table [config].[Report]
 	CreatedBy nvarchar(20) not null,
 	UpdatedOn datetime null,
 	UpdatedBy nvarchar(20) null,
-	FOREIGN KEY (DashboardId) REFERENCES [config].[Dashboard](Id)
+	FOREIGN KEY (WidgetId) REFERENCES [config].[Widget](Id)
 )
 GO
 
@@ -127,3 +128,13 @@ insert into [config].[GraphType] values ('Column', 1, 2)
 insert into [config].[GraphType] values ('Bar', 1, 3)
 insert into [config].[GraphType] values ('Stacked Column', 1, 4)
 insert into [config].[GraphType] values ('Stacked Bar', 1, 5)
+
+Go
+
+Create table [config].[MetaData]
+(
+	Id bigint not null primary key identity(1, 1),
+	DashboardId bigint not null,
+	DataSource nvarchar(200) not null,
+	FOREIGN KEY (DashboardId) REFERENCES [config].[Dashboard](Id)
+)

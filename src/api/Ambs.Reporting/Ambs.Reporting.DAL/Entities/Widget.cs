@@ -5,6 +5,11 @@ namespace Ambs.Reporting.DAL.Entities
 {
     public partial class Widget
     {
+        public Widget()
+        {
+            Reports = new HashSet<Report>();
+        }
+
         public long Id { get; set; }
         public long DashboardId { get; set; }
         public string Name { get; set; } = null!;
@@ -16,5 +21,6 @@ namespace Ambs.Reporting.DAL.Entities
         public string? UpdatedBy { get; set; }
 
         public virtual Dashboard Dashboard { get; set; } = null!;
+        public virtual ICollection<Report> Reports { get; set; }
     }
 }

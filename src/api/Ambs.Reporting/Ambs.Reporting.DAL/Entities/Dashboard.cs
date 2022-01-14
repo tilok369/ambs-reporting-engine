@@ -7,19 +7,20 @@ namespace Ambs.Reporting.DAL.Entities
     {
         public Dashboard()
         {
-            Reports = new HashSet<Report>();
+            MetaData = new HashSet<MetaDatum>();
             Widgets = new HashSet<Widget>();
         }
 
         public long Id { get; set; }
         public string Name { get; set; } = null!;
+        public string? IframeUrl { get; set; }
         public bool Status { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; } = null!;
         public DateTime? UpdatedOn { get; set; }
         public string? UpdatedBy { get; set; }
 
-        public virtual ICollection<Report> Reports { get; set; }
+        public virtual ICollection<MetaDatum> MetaData { get; set; }
         public virtual ICollection<Widget> Widgets { get; set; }
     }
 }

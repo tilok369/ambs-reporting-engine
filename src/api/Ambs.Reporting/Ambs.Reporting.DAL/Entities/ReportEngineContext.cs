@@ -20,6 +20,7 @@ namespace Ambs.Reporting.DAL.Entities
         public virtual DbSet<Filter> Filters { get; set; } = null!;
         public virtual DbSet<GraphType> GraphTypes { get; set; } = null!;
         public virtual DbSet<GraphicalFeature> GraphicalFeatures { get; set; } = null!;
+        public virtual DbSet<MetaDatum> MetaData { get; set; } = null!;
         public virtual DbSet<Report> Reports { get; set; } = null!;
         public virtual DbSet<ReportFilter> ReportFilters { get; set; } = null!;
         public virtual DbSet<TabularFeature> TabularFeatures { get; set; } = null!;
@@ -42,6 +43,8 @@ namespace Ambs.Reporting.DAL.Entities
                 entity.Property(e => e.CreatedBy).HasMaxLength(20);
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.IframeUrl).HasMaxLength(200);
 
                 entity.Property(e => e.Name).HasMaxLength(50);
 
@@ -120,7 +123,20 @@ namespace Ambs.Reporting.DAL.Entities
                     .WithMany(p => p.GraphicalFeatures)
                     .HasForeignKey(d => d.ReportId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Graphical__Repor__36B12243");
+                    .HasConstraintName("FK__Graphical__Repor__5535A963");
+            });
+
+            modelBuilder.Entity<MetaDatum>(entity =>
+            {
+                entity.ToTable("MetaData", "config");
+
+                entity.Property(e => e.DataSource).HasMaxLength(200);
+
+                entity.HasOne(d => d.Dashboard)
+                    .WithMany(p => p.MetaData)
+                    .HasForeignKey(d => d.DashboardId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__MetaData__Dashbo__619B8048");
             });
 
             modelBuilder.Entity<Report>(entity =>
@@ -141,11 +157,11 @@ namespace Ambs.Reporting.DAL.Entities
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Dashboard)
+                entity.HasOne(d => d.Widget)
                     .WithMany(p => p.Reports)
-                    .HasForeignKey(d => d.DashboardId)
+                    .HasForeignKey(d => d.WidgetId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Report__Dashboar__2A4B4B5E");
+                    .HasConstraintName("FK__Report__WidgetId__48CFD27E");
             });
 
             modelBuilder.Entity<ReportFilter>(entity =>
@@ -156,13 +172,13 @@ namespace Ambs.Reporting.DAL.Entities
                     .WithMany(p => p.ReportFilters)
                     .HasForeignKey(d => d.FilterId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ReportFil__Filte__3D5E1FD2");
+                    .HasConstraintName("FK__ReportFil__Filte__5BE2A6F2");
 
                 entity.HasOne(d => d.Report)
                     .WithMany(p => p.ReportFilters)
                     .HasForeignKey(d => d.ReportId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ReportFil__Repor__3C69FB99");
+                    .HasConstraintName("FK__ReportFil__Repor__5AEE82B9");
             });
 
             modelBuilder.Entity<TabularFeature>(entity =>
@@ -195,7 +211,7 @@ namespace Ambs.Reporting.DAL.Entities
                     .WithMany(p => p.TabularFeatures)
                     .HasForeignKey(d => d.ReportId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TabularFe__Repor__31EC6D26");
+                    .HasConstraintName("FK__TabularFe__Repor__5070F446");
             });
 
             modelBuilder.Entity<Widget>(entity =>
@@ -216,7 +232,7 @@ namespace Ambs.Reporting.DAL.Entities
                     .WithMany(p => p.Widgets)
                     .HasForeignKey(d => d.DashboardId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Widget__Dashboar__267ABA7A");
+                    .HasConstraintName("FK__Widget__Dashboar__44FF419A");
             });
 
             OnModelCreatingPartial(modelBuilder);
