@@ -1,7 +1,7 @@
 ﻿
 namespace Ambs.Reporting.ViewModel.Reponse;
 
-public record BasePostReponseDTO
+public abstract record BasePostReponseDTO
 {
     public long Id { get; init; } = 0;
     public bool Success { get; init; } = true;

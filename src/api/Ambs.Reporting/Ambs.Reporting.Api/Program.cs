@@ -17,6 +17,7 @@ builder.Services.AddDatabase(builder.Configuration)
     .AddRepositories()
     .AddServices()
     .AddLogics();
+
 builder.Services.AddApiVersioning(config =>
 {
     config.DefaultApiVersion = new ApiVersion(int.Parse(builder.Configuration["Api:Version:Major"]), int.Parse(builder.Configuration["Api:Version:Minor"]));

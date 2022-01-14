@@ -5,11 +5,10 @@ public class GenericRepository : IGenericRepository
 {
     private readonly DbContextOptionsBuilder<ReportEngineContext> _dbContextOptionBuilder;
 
-
-    public GenericRepository(string connectionString)
+    public GenericRepository(IApplicationConfigurationManager applicationConfigurationManager)
     {
         _dbContextOptionBuilder = new DbContextOptionsBuilder<ReportEngineContext>();
-        _dbContextOptionBuilder.UseSqlServer(connectionString);
+        _dbContextOptionBuilder.UseSqlServer(applicationConfigurationManager.GetConnectionString());
     }
 
     public T Add<T>(T entity) where T : class
@@ -44,7 +43,7 @@ public class GenericRepository : IGenericRepository
         }
     }
 
-    public T Delete<T>(int id) where T : class
+    public T Delete<T>(long id) where T : class
     {
         using (var context = new ReportEngineContext(_dbContextOptionBuilder.Options))
         {
@@ -119,7 +118,7 @@ public class GenericRepository : IGenericRepository
         }
     }
 
-    public T Get<T>(int id) where T : class
+    public T Get<T>(long id) where T : class
     {
         using (var context = new ReportEngineContext(_dbContextOptionBuilder.Options))
         {
@@ -129,7 +128,7 @@ public class GenericRepository : IGenericRepository
         }
     }
 
-    public List<T> GetAll<T>() where T : class
+    public IEnumerable<T> GetAll<T>() where T : class
     {
         using (var context = new ReportEngineContext(_dbContextOptionBuilder.Options))
         {
@@ -139,7 +138,7 @@ public class GenericRepository : IGenericRepository
         }
     }
 
-    public List<T> Find<T>(Expression<Func<T, bool>> predicate) where T : class
+    public IEnumerable<T> Find<T>(Expression<Func<T, bool>> predicate) where T : class
     {
         using (var context = new ReportEngineContext(_dbContextOptionBuilder.Options))
         {

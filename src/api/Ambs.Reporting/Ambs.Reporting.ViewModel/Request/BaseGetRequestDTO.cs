@@ -1,4 +1,4 @@
 ﻿
 namespace Ambs.Reporting.ViewModel.Request;
 
-public record BaseGetRequestDTO(long Id);
+public abstract record BaseGetRequestDTO(long Id);

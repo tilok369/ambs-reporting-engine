@@ -1,0 +1,9 @@
+﻿global using Microsoft.EntityFrameworkCore;
+global using Ambs.Reporting.DAL.Entities;
+global using Ambs.Reporting.DAL.Repository.Implementations;
+global using Ambs.Reporting.DAL.Repository.Interfaces;
+global using Ambs.Reporting.Service.Implementations;
+global using Ambs.Reporting.Service.Interfaces;
+global using Ambs.Reporting.Logic.Interfaces;
+global using Ambs.Reporting.Logic.Implementations;
+global using Ambs.Reporting.Engine.Manager;
