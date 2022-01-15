@@ -2,29 +2,24 @@
 using Ambs.Reporting.Utility.Report;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ambs.Reporting.Engine.Manager
 {
     public class ReportingEngine : IReportingEngine
     {
-        public AmbsExportData GetExportData(AmbsReportData data)
+        public ExportData GetExportData(ReportData data)
         {
-            var exportData = new AmbsExportData { Rows = data.Rows, Columns = data.Columns };
+            var exportData = new ExportData { Rows = data.Rows, Columns = data.Columns };
             var maxLayer = GetMaxLayers(exportData.Columns);
             exportData.Layers = GetLayers(exportData.Columns, maxLayer);
             exportData.SheetName = "Sheet";
             return exportData;
         }
 
-        public List<AmbsExportData> GetExportData(List<AmbsReportData> datas)
+        public List<ExportData> GetExportData(List<ReportData> datas)
         {
-            var exportDataList=new List<AmbsExportData>();
+            var exportDataList=new List<ExportData>();
             foreach (var data in datas)
                 exportDataList.Add(GetExportData(data));
             return exportDataList;
@@ -33,35 +28,46 @@ namespace Ambs.Reporting.Engine.Manager
         //{
         //    return columns.Select(column => column.Split('_').Length - 1).Concat(new[] { 1 }).Max();
         //}
-        private int GetMaxLayers(List<string> columns)
+        private static int GetMaxLayers(List<string> columns)
         {
             return columns.Select(column => column.Split('_').Count() - 1).Concat(new[] { 1 }).Max();
         }
-        private List<AmbsDataLayer> GetLayers(List<string> columns, int maxLayerCount)
+        private static List<DataLayer> GetLayers(List<string> columns, int maxLayerCount)
         {
-            var dataLayers = new List<AmbsDataLayer>();
-
+            var dataLayers = new List<DataLayer>();
+            var colOrder = 0;
             for (var i = 0; i < maxLayerCount; i++)
             {
-                var calculatedColumns = new List<AmbsColumn>();
+                colOrder = 0;
+                var calculatedColumns = new List<Column>();
                 var layerColumns = GetLayeredColumns(columns, i);
                 foreach (var layerColumn in layerColumns)
                 {
-                    calculatedColumns.Add(new AmbsColumn
+                    colOrder++;
+                    var parentColumnName = string.Empty;
+                    if (i > 0)
                     {
+                        var layerColumnArr = layerColumn.ColumnName.Split("_").ToList();
+                        var thisColumnIndex = layerColumnArr.IndexOf(layerColumn.Text);
+                        parentColumnName = layerColumnArr[thisColumnIndex-1];
+                    }
+                    calculatedColumns.Add(new Column
+                    {
+                        Order = colOrder,
                         ColumnName = layerColumn.Text,
                         ColumnSpan = CalculateColumnSpan(columns, layerColumn.ColumnName),
-                        RowSpan = CalculateRowSpan(columns, layerColumn.ColumnName, maxLayerCount, i)
+                        RowSpan = CalculateRowSpan(columns, layerColumn.ColumnName, maxLayerCount, i),
+                        ParentColumn= parentColumnName
                     });
                 }
-                dataLayers.Add(new AmbsDataLayer { Columns = calculatedColumns });
+                dataLayers.Add(new DataLayer { Columns = calculatedColumns,Order=i+1 });
             }
 
             var layersWithIndex = GetDataLayersWithIndex(dataLayers);
 
             return layersWithIndex;
         }
-        private List<LayeredColumn> GetLayeredColumns(List<string> columns, int layerNumber)
+        private static List<LayeredColumn> GetLayeredColumns(List<string> columns, int layerNumber)
         {
             var layeredColumns = new List<LayeredColumn>();
             foreach (var column in columns)
@@ -81,47 +87,126 @@ namespace Ambs.Reporting.Engine.Manager
             }
             return layeredColumns;
         }
-        private int MaxLayerSize(List<string> columns, string columnName)
+        private static int MaxLayerSize(List<string> columns, string columnName)
         {
             return columns.Where(c => c.Contains(columnName)).Max(c => c.Split('_').Length - 1);
         }
-        private int CalculateRowSpan(List<string> columns, string columnName, int numOfLayers, int i)
+        private static int CalculateRowSpan(List<string> columns, string columnName, int numOfLayers, int i)
         {
-            return i == 0 && MaxLayerSize(columns, columnName) > 1 ? 1 : 1 + numOfLayers - MaxLayerSize(columns, columnName);
+            var maxLayerSize = MaxLayerSize(columns, columnName);
+            var rowSpan= i == 0 && maxLayerSize > 1 ? 1 : 1 + numOfLayers - maxLayerSize;
+            return rowSpan;
         }
-        private List<AmbsDataLayer> GetDataLayersWithIndex(List<AmbsDataLayer> dataLayers)
+        private static Column GetParentColumn(List<DataLayer> dataLayers, Column column)
         {
-            var initialColumnIndex = 1;
-            for (var i = 0; i < dataLayers.Count(); i++)
+            if (string.IsNullOrEmpty(column.ParentColumn)) return column;
+            foreach (var layer in dataLayers)
             {
-                var initialRowIndex = i + 1;
-                for (var j = 0; j < dataLayers[i].Columns.Count(); j++)
+                var parentColumn = layer.Columns.FirstOrDefault(pc => pc.ColumnName == column.ParentColumn);
+                if (parentColumn != null)
                 {
-                    dataLayers[i].Columns[j].RowIndex = initialRowIndex;
-                    if (i == 0)
-                    {
-                        initialColumnIndex = j == 0
-                            ? initialColumnIndex
-                            : initialColumnIndex + dataLayers[i].Columns[j - 1].ColumnSpan;
-                        dataLayers[i].Columns[j].ColumnIndex = initialColumnIndex;
-
-
-                    }
-
-                    if (i <= 0) continue;
-                    // ReSharper disable once PossibleInvalidOperationException
-                    initialColumnIndex = (int)(j == 0
-                        ? dataLayers[i - 1].Columns
-                            .FirstOrDefault(cl => (cl.RowSpan + cl.RowIndex) <= initialRowIndex)?.ColumnIndex
-                        : initialColumnIndex + dataLayers[i].Columns[j - 1].ColumnSpan);
-                    initialColumnIndex = j == 0 ? initialColumnIndex : GetValidColumnIndex(dataLayers, initialColumnIndex, i, j);
-                    dataLayers[i].Columns[j].ColumnIndex = initialColumnIndex;
-
+                    return parentColumn;
                 }
+
             }
+            return column;
+        }
+        private static int GetRowNumber(List<DataLayer> dataLayers, Column column,ref int rowNumber)
+        {
+            if (string.IsNullOrEmpty(column.ParentColumn)) return rowNumber;
+            var parentColumn=GetParentColumn(dataLayers, column);
+            rowNumber += parentColumn.RowSpan;
+            if (string.IsNullOrEmpty(parentColumn.ParentColumn)) return rowNumber;
+            GetRowNumber(dataLayers, parentColumn,ref rowNumber);
+            return rowNumber;
+        }
+        private static List<DataLayer> GetDataLayersWithIndex(List<DataLayer> dataLayers)
+        {
+            
+            foreach (var layer in dataLayers)
+            {
+                foreach(var layerColumn in layer.Columns)
+                {
+                    var rowNumber = 1;
+                    layerColumn.RowIndex = GetRowNumber(dataLayers,layerColumn,ref rowNumber);
+                    var previousColumns = layer.Columns.Where(d => d.Order < layerColumn.Order).ToList();
+                    if (layer.Order == 1)
+                    {
+                        layerColumn.ColumnIndex = previousColumns.Sum(c => c.ColumnSpan) + 1;
+                    }
+                    else
+                    {
+                        var parentLayer = dataLayers.OrderByDescending(d => d.Order).FirstOrDefault(d=>d.Order<layer.Order);
+                        if(parentLayer != null)
+                        {
+                            var parentColumn = parentLayer.Columns.FirstOrDefault(c=>c.ColumnName==layerColumn.ParentColumn);                            
+                            if (parentColumn != null)
+                            {
+                                var childColumns = layer.Columns.Where(c => c.ParentColumn == parentColumn.ColumnName).ToList();
+                                layerColumn.ColumnIndex=parentColumn.ColumnIndex+childColumns.IndexOf(layerColumn);
+                            }
+                        }
+                        
+                    }
+                }
+                //initialRowIndex++;
+            }
+            //dataLayers.ForEach(layer =>
+            //{
+            //    layer.Columns.Where(c => !IsParent(dataLayers, c)).ToList().ForEach(layerColumn => layerColumn.RowSpan = 1);
+            //});
             return dataLayers;
         }
-        private int GetValidColumnIndex(List<AmbsDataLayer> layers, int initialColumnIndex, int i, int j)
+        //private bool IsParent(List<DataLayer> dataLayers, Column parentColumn)
+        //{
+        //    if (string.IsNullOrEmpty(parentColumn.ParentColumn)) return true;
+        //    var isParent = false;
+        //    var layers= dataLayers.Where(d => d.Columns.IndexOf(parentColumn) != -1).ToList();
+        //    foreach (DataLayer layer in layers)
+        //    {
+        //        foreach(var column in layer.Columns)
+        //        {
+        //            if (column.ParentColumn == parentColumn.ColumnName)
+        //            {
+        //                isParent = true;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    return isParent;
+        //}
+        //private List<DataLayer> GetDataLayersWithIndex(List<DataLayer> dataLayers)
+        //{
+        //    var initialColumnIndex = 1;
+        //    for (var i = 0; i < dataLayers.Count(); i++)
+        //    {
+        //        var initialRowIndex = i + 1;
+        //        for (var j = 0; j < dataLayers[i].Columns.Count(); j++)
+        //        {
+        //            dataLayers[i].Columns[j].RowIndex = initialRowIndex;
+        //            if (i == 0)
+        //            {
+        //                initialColumnIndex = j == 0
+        //                    ? initialColumnIndex
+        //                    : initialColumnIndex + dataLayers[i].Columns[j - 1].ColumnSpan;
+        //                dataLayers[i].Columns[j].ColumnIndex = initialColumnIndex;
+
+
+        //            }
+
+        //            if (i <= 0) continue;
+        //            initialColumnIndex = (int)(j == 0
+        //                ? dataLayers[i - 1].Columns
+        //                    .FirstOrDefault(cl => (cl.RowSpan + cl.RowIndex) <= initialRowIndex)?.ColumnIndex
+        //                : initialColumnIndex + dataLayers[i].Columns[j - 1].ColumnSpan);
+        //            initialColumnIndex = j == 0 ? initialColumnIndex : GetValidColumnIndex(dataLayers, initialColumnIndex, i, j);
+        //            dataLayers[i].Columns[j].ColumnIndex = initialColumnIndex;
+
+        //        }
+        //    }
+        //    return dataLayers;
+        //}
+        private static int GetValidColumnIndex(List<DataLayer> layers, int initialColumnIndex, int i, int j)
         {
 
             var previousLayerSelectedColumn =
@@ -130,7 +215,7 @@ namespace Ambs.Reporting.Engine.Manager
             return previousLayerSelectedColumn != null && previousLayerSelectedColumn.ColumnIndex == validColumn.ColumnIndex ? initialColumnIndex : validColumn.ColumnIndex;
 
         }
-        private AmbsColumn CheckValidity(List<AmbsDataLayer> layers, AmbsColumn previousLayerSelectedColumn, int i, int j)
+        private static Column CheckValidity(List<DataLayer> layers, Column previousLayerSelectedColumn, int i, int j)
         {
 
             while (previousLayerSelectedColumn.RowSpan + previousLayerSelectedColumn.RowIndex >
@@ -141,12 +226,12 @@ namespace Ambs.Reporting.Engine.Manager
             }
             return previousLayerSelectedColumn;
         }
-        private int CalculateColumnSpan(List<string> columns, string columnName)
+        private static int CalculateColumnSpan(List<string> columns, string columnName)
         {
             return columns.Count(c => c.Contains(columnName));
         }
 
-        public byte[] GetExcelData(List<AmbsExportData> datas,string fileName)
+        public byte[] GetExcelData(List<ExportData> datas,string fileName)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using var package = new ExcelPackage(new FileInfo(fileName));
@@ -179,19 +264,28 @@ namespace Ambs.Reporting.Engine.Manager
                 var layers = sheetData.Layers;
                 var rowIndex = 4;
                 rowIndex -= 1;
-                foreach (var column in layers.SelectMany(layer => layer.Columns))
+                foreach (var layer in layers)
                 {
-                    ExcelReportUtility.FormatHeaderCell(worksheet.Cells, rowIndex + column.RowIndex,
-                        column.ColumnIndex,
-                        column.RowSpan, column.ColumnSpan);
-                    worksheet.Cells[rowIndex + column.RowIndex, column.ColumnIndex].Value =
-                        column.ColumnName;
+                    foreach (var column in layer.Columns)
+                    {
+                        ExcelReportUtility.FormatHeaderCell(worksheet.Cells, rowIndex + column.RowIndex, column.ColumnIndex,
+                            column.RowSpan, column.ColumnSpan);
+                        worksheet.Cells[rowIndex + column.RowIndex, column.ColumnIndex].Value =
+                            column.ColumnName;
+                    }
                 }
 
                 var lastLayer = layers.LastOrDefault();
                 var lastLayerLastColumn = lastLayer?.Columns.LastOrDefault();
                 if (lastLayerLastColumn == null) continue;
-                rowIndex = lastLayerLastColumn.RowIndex + rowIndex + 1;
+                var maxRowIndex=0;
+                layers.ForEach(layer =>
+                {
+                    var max = layer.Columns.Max(c => c.RowIndex);
+                    if (max > maxRowIndex)
+                        maxRowIndex = max;
+                });
+                rowIndex = maxRowIndex + rowIndex + 2;
                 foreach (var row in sheetData.Rows)
                 {
                     var colIndex = 1;
@@ -209,7 +303,7 @@ namespace Ambs.Reporting.Engine.Manager
             return package.GetAsByteArray();
         }
 
-        public byte[] GetPdflData(List<AmbsExportData> datas, string fileName)
+        public byte[] GetPdflData(List<ExportData> datas, string fileName)
         {
             throw new NotImplementedException();
         }

@@ -3,9 +3,9 @@ namespace Ambs.Reporting.Engine.Manager
 {
     public interface IReportingEngine
     {
-        AmbsExportData GetExportData(AmbsReportData data);
-        List<AmbsExportData> GetExportData(List<AmbsReportData> datas);
-        byte[] GetExcelData(List<AmbsExportData> datas,string fileName);
-        byte[] GetPdflData(List<AmbsExportData> datas,string fileName);
+        ExportData GetExportData(ReportData data);
+        List<ExportData> GetExportData(List<ReportData> datas);
+        byte[] GetExcelData(List<ExportData> datas,string fileName);
+        byte[] GetPdflData(List<ExportData> datas,string fileName);
     }
 }
