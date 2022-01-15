@@ -27,9 +27,9 @@ namespace Ambs.Reporting.Logic.Implementations
             var paramBranchId = new SqlParameter("@BranchId", 2);
             var paramDate = new SqlParameter("@Date", new DateTime(2021,09,10));
             var (columns,rows)=await _reportService.GetReportData(commandText, CommandType.StoredProcedure, new[] {paramBranchId, paramDate });
-            var ambsReportData= new AmbsReportData { Columns = columns, Rows = rows };
+            var ambsReportData= new ReportData { Columns = columns, Rows = rows };
             var exportData=_reportingEngine.GetExportData(ambsReportData);
-            return _reportingEngine.GetExcelData(new List<AmbsExportData> { exportData }, "Test");
+            return _reportingEngine.GetExcelData(new List<ExportData> { exportData }, "Test");
         }
     }
 }

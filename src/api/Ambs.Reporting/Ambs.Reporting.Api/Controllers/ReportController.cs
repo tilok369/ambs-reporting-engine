@@ -14,19 +14,23 @@ namespace Ambs.Reporting.Api.Controllers
         {
             _reportLogic = reportLogic;
         }
-        [HttpPost]
-        public async Task<HttpResponseMessage> ExportExcel()
+        [HttpGet]
+        public async Task<IActionResult> ExportExcel()
         {
             var data=await _reportLogic.GetReportData();
-            var stream = new MemoryStream(data);
-            var response = new HttpResponseMessage { Content = new StreamContent(stream) };
-            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            var stream = new MemoryStream(data)
             {
-                FileName = "Test.xlsx"
+                //var response = new HttpResponseMessage { Content = new StreamContent(stream) };
+                //response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                //{
+                //    FileName = "Test.xlsx"
+                //};
+                //response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/ms-excel");
+                //response.Content.Headers.ContentLength = stream.Length;
+                //return response;
+                Position = 0
             };
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/ms-excel");
-            response.Content.Headers.ContentLength = stream.Length;
-            return response;
+            return File(stream, "application/ms-excel", "Test.xlsx");
 
         }
     }

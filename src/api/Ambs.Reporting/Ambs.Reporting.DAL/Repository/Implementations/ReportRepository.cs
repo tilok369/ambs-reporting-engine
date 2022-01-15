@@ -30,11 +30,12 @@ namespace Ambs.Reporting.DAL.Repository.Implementations
             if(sqlConnection.State==ConnectionState.Closed)
                 sqlConnection.Open();
             using var sqlReader =await sqlCommand.ExecuteReaderAsync();
-            columns = Enumerable.Range(0, sqlReader.FieldCount).Select(sqlReader.GetName).ToList();
+            columns = Enumerable.Range(0, sqlReader.FieldCount).Select(sqlReader.GetName).ToList();            
             while (sqlReader.Read())
             {
                 rows.Add(columns.Select(columnName => sqlReader.GetStringValue(columnName)).ToList());
             }
+            //columns = columns.Select(c => c.ToSentenceCase()).ToList();
             sqlCommand.Parameters.Clear();
             return (columns, rows);
         }
