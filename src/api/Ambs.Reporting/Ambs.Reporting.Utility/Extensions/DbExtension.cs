@@ -1,12 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace Ambs.Reporting.Utility.Extensions
+namespace Ambs.Reporting.Utility.Extensions;
+
+public static class DbExtension
 {
-    public static class DbExtension
-    {
-        public static string GetStringValue(this SqlDataReader reader, string name)
-        {
-            return reader[name] == null ? string.Empty : reader[name].ToString();
-        }
-    }
+    public static string GetStringValue(this SqlDataReader reader, string name) => 
+        reader[name]?.ToString() ?? string.Empty;
 }
