@@ -30,6 +30,7 @@ public static class DIServiceExtension
         return services
             .AddScoped<IReportLogic, ReportLogic>()
             .AddScoped<IDashboardLogic, DashboardLogic>()
+            .AddScoped<IMetaDataLogic, MetaDataLogic>()
             .AddScoped<IReportingEngine, ReportingEngine>();
     }
 }

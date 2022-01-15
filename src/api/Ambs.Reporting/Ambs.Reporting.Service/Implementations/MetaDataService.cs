@@ -10,7 +10,7 @@ public class MetaDataService : IMetaDataService
         this._genericRepository = genericRepository;
     }
 
-    public MetaDatum Get(int id)
+    public MetaDatum Get(long id)
     {
         return _genericRepository.Get<MetaDatum>(id);
     }

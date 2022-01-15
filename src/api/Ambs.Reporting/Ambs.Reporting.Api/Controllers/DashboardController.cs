@@ -29,7 +29,7 @@ namespace Ambs.Reporting.Api.Controllers
         }
 
         [HttpPost()]
-        public DashboardPostResponseDTO Get(DashboardPostRequestDTO dashboard)
+        public DashboardPostResponseDTO Save(DashboardPostRequestDTO dashboard)
         {
             return _dashboardLogic.Save(dashboard);
         }
