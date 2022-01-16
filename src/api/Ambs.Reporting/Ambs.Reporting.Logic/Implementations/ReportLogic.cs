@@ -31,5 +31,13 @@ public class ReportLogic : IReportLogic
         var exportData = _reportingEngine.GetExportData(new List<ReportData> { ambsReportDataReceiveAndPayment, ambsReportDataLoanDisburseAndFullPaid });
         return exportType == ExportType.Excel ? _exporter.GetExcelData(exportData, "Test") : _exporter.GetPdfData(exportData, "Test");
     }
+
+
+    public async Task<byte[]> GetReportExport(string fileName)
+    {
+        return _exporter.ReportExport(fileName);
+    }
+
+
 }
 
