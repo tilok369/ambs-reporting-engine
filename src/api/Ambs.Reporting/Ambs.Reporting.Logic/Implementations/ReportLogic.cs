@@ -21,9 +21,13 @@ namespace Ambs.Reporting.Logic.Implementations
             var paramBranchId = new SqlParameter("@BranchId", 2);
             var paramDate = new SqlParameter("@Date", new DateTime(2021,09,10));
             var (columns,rows)=await _reportService.GetReportData(commandText, CommandType.StoredProcedure, new[] {paramBranchId, paramDate });
-            var ambsReportData= new ReportData { Columns = columns, Rows = rows };
-            var exportData=_reportingEngine.GetExportData(ambsReportData);
-            return _reportingEngine.GetExcelData(new List<ExportData> { exportData }, "Test");
+            var ambsReportDataReceiveAndPayment= new ReportData { Columns = columns, Rows = rows };
+            commandText = "dbo.P_TransactionSummaryLoanDisbursedAndFullPaid";
+            (columns, rows) = await _reportService.GetReportData(commandText, CommandType.StoredProcedure, new[] { paramBranchId, paramDate });
+            var ambsReportDataLoanDisburseAndFullPaid = new ReportData { Columns = columns, Rows = rows };
+            var exportData=_reportingEngine.GetExportData(new List<ReportData> { ambsReportDataReceiveAndPayment, ambsReportDataLoanDisburseAndFullPaid });
+            return _reportingEngine.GetPdflData(exportData , "Test");
         }
     }
 }
+

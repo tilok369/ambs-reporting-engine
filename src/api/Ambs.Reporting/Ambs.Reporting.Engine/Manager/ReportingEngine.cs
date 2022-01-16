@@ -2,7 +2,19 @@
 using Ambs.Reporting.Utility.Report;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using SautinSoft;
 using System.Drawing;
+//using Aspose.Cells;
+//using Spire.Xls;
+//using ClosedXML.Excel;
+using System.Data;
+//using System.IO;
+//using System.Data;
+//using ClosedXML.Excel;
+//using iTextSharp.text;
+//using iTextSharp.text.html.simpleparser;
+//using iTextSharp.text.pdf;
+//using Font = iTextSharp.text.Font;
 
 namespace Ambs.Reporting.Engine.Manager
 {
@@ -22,6 +34,10 @@ namespace Ambs.Reporting.Engine.Manager
             var exportDataList=new List<ExportData>();
             foreach (var data in datas)
                 exportDataList.Add(GetExportData(data));
+            exportDataList.ForEach(data =>
+            {
+                data.SheetName += (exportDataList.IndexOf(data) + 1);
+            });
             return exportDataList;
         }
         //private static int GetMaxLayer(List<string> columns)
@@ -39,7 +55,7 @@ namespace Ambs.Reporting.Engine.Manager
             for (var i = 0; i < maxLayerCount; i++)
             {
                 colOrder = 0;
-                var calculatedColumns = new List<Column>();
+                var calculatedColumns = new List<Model.Column>();
                 var layerColumns = GetLayeredColumns(columns, i);
                 foreach (var layerColumn in layerColumns)
                 {
@@ -51,7 +67,7 @@ namespace Ambs.Reporting.Engine.Manager
                         var thisColumnIndex = layerColumnArr.IndexOf(layerColumn.Text);
                         parentColumnName = layerColumnArr[thisColumnIndex-1];
                     }
-                    calculatedColumns.Add(new Column
+                    calculatedColumns.Add(new Model.Column
                     {
                         Order = colOrder,
                         ColumnName = layerColumn.Text,
@@ -97,7 +113,7 @@ namespace Ambs.Reporting.Engine.Manager
             var rowSpan= i == 0 && maxLayerSize > 1 ? 1 : 1 + numOfLayers - maxLayerSize;
             return rowSpan;
         }
-        private static Column GetParentColumn(List<DataLayer> dataLayers, Column column)
+        private static Model.Column GetParentColumn(List<DataLayer> dataLayers, Model.Column column)
         {
             if (string.IsNullOrEmpty(column.ParentColumn)) return column;
             foreach (var layer in dataLayers)
@@ -111,7 +127,7 @@ namespace Ambs.Reporting.Engine.Manager
             }
             return column;
         }
-        private static int GetRowNumber(List<DataLayer> dataLayers, Column column,ref int rowNumber)
+        private static int GetRowNumber(List<DataLayer> dataLayers, Model.Column column,ref int rowNumber)
         {
             if (string.IsNullOrEmpty(column.ParentColumn)) return rowNumber;
             var parentColumn=GetParentColumn(dataLayers, column);
@@ -120,43 +136,43 @@ namespace Ambs.Reporting.Engine.Manager
             GetRowNumber(dataLayers, parentColumn,ref rowNumber);
             return rowNumber;
         }
-        private static List<DataLayer> GetDataLayersWithIndex(List<DataLayer> dataLayers)
-        {
+        //private static List<DataLayer> GetDataLayersWithIndex(List<DataLayer> dataLayers)
+        //{
             
-            foreach (var layer in dataLayers)
-            {
-                foreach(var layerColumn in layer.Columns)
-                {
-                    var rowNumber = 1;
-                    layerColumn.RowIndex = GetRowNumber(dataLayers,layerColumn,ref rowNumber);
-                    var previousColumns = layer.Columns.Where(d => d.Order < layerColumn.Order).ToList();
-                    if (layer.Order == 1)
-                    {
-                        layerColumn.ColumnIndex = previousColumns.Sum(c => c.ColumnSpan) + 1;
-                    }
-                    else
-                    {
-                        var parentLayer = dataLayers.OrderByDescending(d => d.Order).FirstOrDefault(d=>d.Order<layer.Order);
-                        if(parentLayer != null)
-                        {
-                            var parentColumn = parentLayer.Columns.FirstOrDefault(c=>c.ColumnName==layerColumn.ParentColumn);                            
-                            if (parentColumn != null)
-                            {
-                                var childColumns = layer.Columns.Where(c => c.ParentColumn == parentColumn.ColumnName).ToList();
-                                layerColumn.ColumnIndex=parentColumn.ColumnIndex+childColumns.IndexOf(layerColumn);
-                            }
-                        }
+        //    foreach (var layer in dataLayers)
+        //    {
+        //        foreach(var layerColumn in layer.Columns)
+        //        {
+        //            var rowNumber = 1;
+        //            layerColumn.RowIndex = GetRowNumber(dataLayers,layerColumn,ref rowNumber);
+        //            var previousColumns = layer.Columns.Where(d => d.Order < layerColumn.Order).ToList();
+        //            if (layer.Order == 1)
+        //            {
+        //                layerColumn.ColumnIndex = previousColumns.Sum(c => c.ColumnSpan) + 1;
+        //            }
+        //            else
+        //            {
+        //                var parentLayer = dataLayers.OrderByDescending(d => d.Order).FirstOrDefault(d=>d.Order<layer.Order);
+        //                if(parentLayer != null)
+        //                {
+        //                    var parentColumn = parentLayer.Columns.FirstOrDefault(c=>c.ColumnName==layerColumn.ParentColumn);                            
+        //                    if (parentColumn != null)
+        //                    {
+        //                        var childColumns = layer.Columns.Where(c => c.ParentColumn == parentColumn.ColumnName).ToList();
+        //                        layerColumn.ColumnIndex=parentColumn.ColumnIndex+childColumns.IndexOf(layerColumn);
+        //                    }
+        //                }
                         
-                    }
-                }
-                //initialRowIndex++;
-            }
-            //dataLayers.ForEach(layer =>
-            //{
-            //    layer.Columns.Where(c => !IsParent(dataLayers, c)).ToList().ForEach(layerColumn => layerColumn.RowSpan = 1);
-            //});
-            return dataLayers;
-        }
+        //            }
+        //        }
+        //        //initialRowIndex++;
+        //    }
+        //    //dataLayers.ForEach(layer =>
+        //    //{
+        //    //    layer.Columns.Where(c => !IsParent(dataLayers, c)).ToList().ForEach(layerColumn => layerColumn.RowSpan = 1);
+        //    //});
+        //    return dataLayers;
+        //}
         //private bool IsParent(List<DataLayer> dataLayers, Column parentColumn)
         //{
         //    if (string.IsNullOrEmpty(parentColumn.ParentColumn)) return true;
@@ -175,37 +191,37 @@ namespace Ambs.Reporting.Engine.Manager
         //    }
         //    return isParent;
         //}
-        //private List<DataLayer> GetDataLayersWithIndex(List<DataLayer> dataLayers)
-        //{
-        //    var initialColumnIndex = 1;
-        //    for (var i = 0; i < dataLayers.Count(); i++)
-        //    {
-        //        var initialRowIndex = i + 1;
-        //        for (var j = 0; j < dataLayers[i].Columns.Count(); j++)
-        //        {
-        //            dataLayers[i].Columns[j].RowIndex = initialRowIndex;
-        //            if (i == 0)
-        //            {
-        //                initialColumnIndex = j == 0
-        //                    ? initialColumnIndex
-        //                    : initialColumnIndex + dataLayers[i].Columns[j - 1].ColumnSpan;
-        //                dataLayers[i].Columns[j].ColumnIndex = initialColumnIndex;
+        private static List<DataLayer> GetDataLayersWithIndex(List<DataLayer> dataLayers)
+        {
+            var initialColumnIndex = 1;
+            for (var i = 0; i < dataLayers.Count(); i++)
+            {
+                var initialRowIndex = i + 1;
+                for (var j = 0; j < dataLayers[i].Columns.Count(); j++)
+                {
+                    dataLayers[i].Columns[j].RowIndex = initialRowIndex;
+                    if (i == 0)
+                    {
+                        initialColumnIndex = j == 0
+                            ? initialColumnIndex
+                            : initialColumnIndex + dataLayers[i].Columns[j - 1].ColumnSpan;
+                        dataLayers[i].Columns[j].ColumnIndex = initialColumnIndex;
 
 
-        //            }
+                    }
 
-        //            if (i <= 0) continue;
-        //            initialColumnIndex = (int)(j == 0
-        //                ? dataLayers[i - 1].Columns
-        //                    .FirstOrDefault(cl => (cl.RowSpan + cl.RowIndex) <= initialRowIndex)?.ColumnIndex
-        //                : initialColumnIndex + dataLayers[i].Columns[j - 1].ColumnSpan);
-        //            initialColumnIndex = j == 0 ? initialColumnIndex : GetValidColumnIndex(dataLayers, initialColumnIndex, i, j);
-        //            dataLayers[i].Columns[j].ColumnIndex = initialColumnIndex;
+                    if (i <= 0) continue;
+                    initialColumnIndex = (int)(j == 0
+                        ? dataLayers[i - 1].Columns
+                            .FirstOrDefault(cl => (cl.RowSpan + cl.RowIndex) <= initialRowIndex)?.ColumnIndex
+                        : initialColumnIndex + dataLayers[i].Columns[j - 1].ColumnSpan);
+                    initialColumnIndex = j == 0 ? initialColumnIndex : GetValidColumnIndex(dataLayers, initialColumnIndex, i, j);
+                    dataLayers[i].Columns[j].ColumnIndex = initialColumnIndex;
 
-        //        }
-        //    }
-        //    return dataLayers;
-        //}
+                }
+            }
+            return dataLayers;
+        }
         private static int GetValidColumnIndex(List<DataLayer> layers, int initialColumnIndex, int i, int j)
         {
 
@@ -215,7 +231,7 @@ namespace Ambs.Reporting.Engine.Manager
             return previousLayerSelectedColumn != null && previousLayerSelectedColumn.ColumnIndex == validColumn.ColumnIndex ? initialColumnIndex : validColumn.ColumnIndex;
 
         }
-        private static Column CheckValidity(List<DataLayer> layers, Column previousLayerSelectedColumn, int i, int j)
+        private static Model.Column CheckValidity(List<DataLayer> layers, Model.Column previousLayerSelectedColumn, int i, int j)
         {
 
             while (previousLayerSelectedColumn.RowSpan + previousLayerSelectedColumn.RowIndex >
@@ -238,27 +254,28 @@ namespace Ambs.Reporting.Engine.Manager
             var sheets = datas
                 //.OrderBy(d => d.Order)
                 .Select(d => d.SheetName).Distinct().ToList();
+            var index = 0;
             foreach (var sheetData in sheets.Select(sheet => datas.FirstOrDefault(d => d.SheetName == sheet)).Where(sheetData => sheetData != null))
             {
-                package.Workbook.Worksheets.Add("Sheet 1");
-                var worksheet = package.Workbook.Worksheets[0];
+                package.Workbook.Worksheets.Add(sheetData.SheetName);
+                var worksheet = package.Workbook.Worksheets[index++];
 
                 worksheet.Cells[1, 1].Value = sheetData.SheetName;
                 worksheet.Cells[1, 1, 1, sheetData.Columns.Count].Merge = true;
                 worksheet.Cells[1, 1].Style.Font.Bold = true;
                 worksheet.Cells[1, 1].Style.Font.Size = 20;
-                worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[1, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                 worksheet.Cells[2, 1].Value = "Branch Name: Branch" ;
                 worksheet.Cells[2, 1, 2, 6].Merge = true;
                 worksheet.Cells[2, 1, 2, 6].Style.Font.Bold = true;
                 worksheet.Cells[2, 1, 2, 6].Style.Font.Size = 14;
-                worksheet.Cells[2, 1, 2, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                worksheet.Cells[2, 1, 2, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                 worksheet.Cells[2, 7].Value = "Date: Date";
                 worksheet.Cells[2, 7, 2, 12].Merge = true;
                 worksheet.Cells[2, 7, 2, 12].Style.Font.Bold = true;
                 worksheet.Cells[2, 7, 2, 12].Style.Font.Size = 14;
-                worksheet.Cells[2, 7, 2, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                var asaiLogo = worksheet.Drawings.AddPicture("Test", Image.FromFile(@"D:\ASAI Logo.png"));
+                worksheet.Cells[2, 7, 2, 12].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                var asaiLogo = worksheet.Drawings.AddPicture("Test", System.Drawing.Image.FromFile(@"D:\ASAI Logo.png"));
                 asaiLogo.SetPosition(3, 5, 3, 5);
                 asaiLogo.SetSize(300, 300);
                 var layers = sheetData.Layers;
@@ -285,7 +302,7 @@ namespace Ambs.Reporting.Engine.Manager
                     if (max > maxRowIndex)
                         maxRowIndex = max;
                 });
-                rowIndex = maxRowIndex + rowIndex + 2;
+                rowIndex = maxRowIndex + rowIndex + 1;
                 foreach (var row in sheetData.Rows)
                 {
                     var colIndex = 1;
@@ -305,7 +322,29 @@ namespace Ambs.Reporting.Engine.Manager
 
         public byte[] GetPdflData(List<ExportData> datas, string fileName)
         {
-            throw new NotImplementedException();
+            var excelByteArray=GetExcelData(datas, fileName);
+            //sautinsoft.exceltopdf
+            var excelToPdf = new ExcelToPdf();
+            excelToPdf.OutputFormat = ExcelToPdf.eOutputFormat.Pdf;
+            return excelToPdf.ConvertBytes(excelByteArray);
+
+            ////Aspose.Cells
+            //using var ms = new MemoryStream(excelByteArray);
+            //var workBook = new Workbook(ms);
+            //var fn = @"D:\Private\Shihab\Test.pdf";
+            //workBook.Save(fn, SaveFormat.Pdf);
+            //var fileInfo = new FileInfo(fn);
+            //return File.ReadAllBytes(fileInfo.FullName);
+
+            ////Spire.XLS
+            //Workbook workbook = new Workbook();
+            //workbook.LoadFromStream(ms);
+            ////workbook.LoadFromFile("Sample.xlsx", ExcelVersion.Version2010);
+            //workbook.SaveToFile(fn, Spire.Xls.FileFormat.PDF);
+            //return File.ReadAllBytes(fn);
+
+            
+            //return excelByteArray;
         }
     }
 }
