@@ -57,13 +57,13 @@ public class DashboardLogic : IDashboardLogic
             var db = new Dashboard
             {
                 Id = dashboard.Id,
-                CreatedBy = dashboard.CreatedBy,
-                CreatedOn = dashboard.CreatedOn,
+                CreatedBy = dashboard.Id == 0 ? "admin" : dashboard.CreatedBy,
+                CreatedOn = dashboard.Id == 0 ? DateTime.Now : dashboard.CreatedOn,
                 IframeUrl = dashboard.IframeUrl,
                 Name = dashboard.Name,
                 Status = dashboard.Status,
-                UpdatedBy = dashboard.UpdatedBy,
-                UpdatedOn = dashboard.UpdatedOn,
+                UpdatedBy = "admin",
+                UpdatedOn = DateTime.Now,
             };
             var result = _dashboardService.Save(db);
 

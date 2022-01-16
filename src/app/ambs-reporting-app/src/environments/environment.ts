@@ -7,7 +7,18 @@ import { HttpHeaders } from "@angular/common/http";
 export const environment = {
   production: false,
   apiEndPoint: 'https://localhost:7078/api/v1.0/',
-  header: new HttpHeaders().set("Access-Control-Allow-Origin", "*")
+  header: new HttpHeaders({"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}),
+  getHttpHeader(): any {
+    let httpOptions = {
+        headers: new HttpHeaders({
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Allow-Origin': '*',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        })
+    };
+    return httpOptions; 
+}
 };
 
 /*
