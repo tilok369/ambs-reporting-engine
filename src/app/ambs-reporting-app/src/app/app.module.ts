@@ -11,6 +11,10 @@ import { DashboardService } from './services/dashboard.service';
 import { ReportConfigurationAddComponent } from './components/report-configuration/report-configuration-add/report-configuration-add.component';
 import { ReportConfigurationEditComponent } from './components/report-configuration/report-configuration-edit/report-configuration-edit.component';
 import { FormsModule } from '@angular/forms';
+import { ReportListComponent } from './components/report/report-list/report-list.component';
+import { ReportAddComponent } from './components/report/report-add/report-add.component';
+import { ReportEditComponent } from './components/report/report-edit/report-edit.component';
+import { ReportService } from './services/report.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +23,10 @@ import { FormsModule } from '@angular/forms';
     ReportConfigurationComponent,
     ReportMetadataComponent,
     ReportConfigurationAddComponent,
-    ReportConfigurationEditComponent
+    ReportConfigurationEditComponent,
+    ReportListComponent,
+    ReportAddComponent,
+    ReportEditComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +35,8 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule
   ],
   providers: [
-    DashboardService
+    DashboardService,
+    ReportService
   ],
   bootstrap: [AppComponent]
 })
