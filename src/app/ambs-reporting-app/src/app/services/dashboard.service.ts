@@ -13,4 +13,12 @@ export class DashboardService {
     return this.http.get(environment.apiEndPoint + 'dashboard?page=' + page + '&size=' + size);
   }
 
+  getDashboard(id){
+    return this.http.get(environment.apiEndPoint + 'dashboard/' + id);
+  }
+
+  saveDashboard(dashboad: any){
+    return this.http.post(environment.apiEndPoint + 'dashboard', dashboad, environment.getHttpHeader());
+  }
+
 }
