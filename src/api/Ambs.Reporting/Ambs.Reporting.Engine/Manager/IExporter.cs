@@ -6,4 +6,5 @@ public interface IExporter
 {
     Task<byte[]> GetExcelData(List<ExportData> datas, string fileName,string contentRootPath);
     Task<byte[]> GetPdfData(List<ExportData> datas, string fileName, string contentRootPath);
+    Task<byte[]> ReportExport(string fileName);
 }

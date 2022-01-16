@@ -30,5 +30,13 @@ public class ReportLogic : IReportLogic
         var exportData =await _reportingEngine.GetExportData(new List<ReportData> { ambsReportDataReceiveAndPayment, ambsReportDataLoanDisburseAndFullPaid });
         return await(exportType == ExportType.Excel ? _exporter.GetExcelData(exportData, "Test", contentRootPath) : _exporter.GetPdfData(exportData, "Test", contentRootPath));
     }
+
+
+    public async Task<byte[]> GetReportExport(string fileName)
+    {
+        return await _exporter.ReportExport(fileName);
+    }
+
+
 }
 

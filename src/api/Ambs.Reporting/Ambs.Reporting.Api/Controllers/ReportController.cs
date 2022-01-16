@@ -38,4 +38,16 @@ public class ReportController : ControllerBase
         return File(stream, "application/pdf", "Test.pdf");
 
     }
+
+    [HttpGet("reportExport")]
+    public async Task<IActionResult> ReportExport(string fileName)
+    {
+        var data = await _reportLogic.GetReportExport(fileName);
+        var stream = new MemoryStream(data)
+        {
+            Position = 0
+        };
+        return File(stream, "application/ms-excel", fileName+ ".xlsx");
+
+    }
 }
