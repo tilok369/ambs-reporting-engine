@@ -7,7 +7,7 @@ namespace Ambs.Reporting.Engine.Manager;
 
 public class Exporter : IExporter
 {
-    public async Task<byte[]> GetExcelData(List<ExportData> datas, string fileName)
+    public async Task<byte[]> GetExcelData(List<ExportData> datas, string fileName, string contentRootPath)
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         using var package = new ExcelPackage(new FileInfo(fileName));
@@ -35,9 +35,12 @@ public class Exporter : IExporter
             worksheet.Cells[2, 7, 2, 12].Style.Font.Bold = true;
             worksheet.Cells[2, 7, 2, 12].Style.Font.Size = 14;
             worksheet.Cells[2, 7, 2, 12].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            var asaiLogo = worksheet.Drawings.AddPicture("Test", System.Drawing.Image.FromFile(@"D:\ASAI Logo.png"));
-            asaiLogo.SetPosition(3, 5, 3, 5);
-            asaiLogo.SetSize(300, 300);
+            if (File.Exists(contentRootPath + @"\Resources\Images\ASAI Logo.png"))
+            {
+                var asaiLogo = worksheet.Drawings.AddPicture("Test", System.Drawing.Image.FromFile(contentRootPath + @"\Resources\Images\ASAI Logo.png"));
+                asaiLogo.SetPosition(3, 5, 3, 5);
+                asaiLogo.SetSize(300, 300);
+            }
             var layers = sheetData.Layers;
             var rowIndex = 4;
             rowIndex -= 1;
@@ -80,9 +83,9 @@ public class Exporter : IExporter
         return await package.GetAsByteArrayAsync();
     }
 
-    public async Task<byte[]> GetPdfData(List<ExportData> datas, string fileName)
+    public async Task<byte[]> GetPdfData(List<ExportData> datas, string fileName, string contentRootPath)
     {
-        var excelByteArray =await GetExcelData(datas, fileName);
+        var excelByteArray = await GetExcelData(datas, fileName, contentRootPath);
         var excelToPdf = new ExcelToPdf
         {
             OutputFormat = ExcelToPdf.eOutputFormat.Pdf

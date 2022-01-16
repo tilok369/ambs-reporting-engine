@@ -4,6 +4,6 @@ namespace Ambs.Reporting.Engine.Manager;
 
 public interface IExporter
 {
-    Task<byte[]> GetExcelData(List<ExportData> datas, string fileName);
-    Task<byte[]> GetPdfData(List<ExportData> datas, string fileName);
+    Task<byte[]> GetExcelData(List<ExportData> datas, string fileName,string contentRootPath);
+    Task<byte[]> GetPdfData(List<ExportData> datas, string fileName, string contentRootPath);
 }
