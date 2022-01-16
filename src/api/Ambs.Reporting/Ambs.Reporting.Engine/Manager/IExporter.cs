@@ -4,7 +4,7 @@ namespace Ambs.Reporting.Engine.Manager;
 
 public interface IExporter
 {
-    byte[] GetExcelData(List<ExportData> datas, string fileName);
-    byte[] GetPdfData(List<ExportData> datas, string fileName);
-    byte[] ReportExport(string fileName);
+    Task<byte[]> GetExcelData(List<ExportData> datas, string fileName);
+    Task<byte[]> GetPdfData(List<ExportData> datas, string fileName);
+    Task<byte[]> ReportExport(string fileName);
 }

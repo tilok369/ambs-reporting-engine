@@ -91,7 +91,7 @@ public class Exporter : IExporter
         return excelToPdf.ConvertBytes(excelByteArray);
     }
 
-    public byte[] ReportExport(string fileName)
+    public async Task<byte[]> ReportExport(string fileName)
     {
         var filePath = string.Empty;
 

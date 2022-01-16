@@ -34,7 +34,7 @@ public class ReportLogic : IReportLogic
 
     public async Task<byte[]> GetReportExport(string fileName)
     {
-        return _exporter.ReportExport(fileName);
+        return await _exporter.ReportExport(fileName);
     }
 
 
