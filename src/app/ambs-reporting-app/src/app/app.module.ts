@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ReportConfigurationComponent } from './components/report-configuration/report-configuration.component';
 import { ReportMetadataComponent } from './components/report-metadata/report-metadata.component';
+import { DashboardService } from './services/dashboard.service';
 
 @NgModule({
   declarations: [
@@ -16,9 +18,12 @@ import { ReportMetadataComponent } from './components/report-metadata/report-met
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    DashboardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
