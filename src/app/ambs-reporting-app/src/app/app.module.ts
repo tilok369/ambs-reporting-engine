@@ -15,6 +15,9 @@ import { ReportListComponent } from './components/report/report-list/report-list
 import { ReportAddComponent } from './components/report/report-add/report-add.component';
 import { ReportEditComponent } from './components/report/report-edit/report-edit.component';
 import { ReportService } from './services/report.service';
+import { MetaDataService } from './services/meta-data.service';
+import { ReportMetadataAddComponent } from './components/report-metadata/report-metadata-add/report-metadata-add.component';
+import { ReportMetadataEditComponent } from './components/report-metadata/report-metadata-edit/report-metadata-edit.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,9 @@ import { ReportService } from './services/report.service';
     ReportConfigurationEditComponent,
     ReportListComponent,
     ReportAddComponent,
-    ReportEditComponent
+    ReportEditComponent,
+    ReportMetadataAddComponent,
+    ReportMetadataEditComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +41,8 @@ import { ReportService } from './services/report.service';
   ],
   providers: [
     DashboardService,
-    ReportService
+    ReportService,
+    MetaDataService
   ],
   bootstrap: [AppComponent]
 })
