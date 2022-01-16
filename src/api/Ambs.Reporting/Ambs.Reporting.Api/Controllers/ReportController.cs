@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 
 namespace Ambs.Reporting.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/report")]
     [ApiController]
     public class ReportController : ControllerBase
     {
@@ -13,7 +13,7 @@ namespace Ambs.Reporting.Api.Controllers
         {
             _reportLogic = reportLogic;
         }
-        [HttpGet]
+        [HttpGet("excel")]
         public async Task<IActionResult> ExportExcel()
         {
             var data=await _reportLogic.GetReportData();
@@ -30,6 +30,25 @@ namespace Ambs.Reporting.Api.Controllers
                 Position = 0
             };
             return File(stream, "application/ms-excel", "Test.xlsx");
+
+        }
+        [HttpGet("pdf")]
+        public async Task<IActionResult> ExportPdf()
+        {
+            var data = await _reportLogic.GetReportData();
+            var stream = new MemoryStream(data)
+            {
+                //var response = new HttpResponseMessage { Content = new StreamContent(stream) };
+                //response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                //{
+                //    FileName = "Test.xlsx"
+                //};
+                //response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/ms-excel");
+                //response.Content.Headers.ContentLength = stream.Length;
+                //return response;
+                Position = 0
+            };
+            return File(stream, "application/pdf", "Test.pdf");
 
         }
     }
