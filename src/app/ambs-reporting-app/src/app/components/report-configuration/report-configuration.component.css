@@ -1,0 +1,35 @@
+.container-outer-layout {
+  margin-top: 20px;
+}
+
+.icon {
+  margin-left: 3px;
+  margin-right: 3px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.icon-delete {
+  color: rgb(150, 68, 10);
+}
+.icon-delete:hover {
+  color: rgb(240, 116, 27);
+}
+
+.icon-edit {
+  color: rgb(8, 153, 73);
+}
+.icon-edit:hover {
+  color: rgb(6, 177, 148);
+}
+
+.icon-widgets {
+  color: rgb(6, 140, 202);
+}
+.icon-widgets:hover {
+  color: rgb(7, 42, 158);
+}
+
+.plus-btn {
+  margin-top: -6px;
+}

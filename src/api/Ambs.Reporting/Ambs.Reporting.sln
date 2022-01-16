@@ -5,11 +5,17 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambs.Reporting.Api", "Ambs.Reporting.Api\Ambs.Reporting.Api.csproj", "{077A19B8-0B9B-42C9-9F70-DCEB8BEBB0F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambs.Reporting.DAL", "Ambs.Reporting.DAL\Ambs.Reporting.DAL.csproj", "{066683C7-AD5E-48E1-9D01-342CE3F31A95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambs.Reporting.DAL", "Ambs.Reporting.DAL\Ambs.Reporting.DAL.csproj", "{066683C7-AD5E-48E1-9D01-342CE3F31A95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambs.Reporting.Service", "Ambs.Reporting.Service\Ambs.Reporting.Service.csproj", "{B8EC4410-AADB-4259-AC3D-53D8B030A9C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambs.Reporting.Service", "Ambs.Reporting.Service\Ambs.Reporting.Service.csproj", "{B8EC4410-AADB-4259-AC3D-53D8B030A9C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambs.Reporting.Logic", "Ambs.Reporting.Logic\Ambs.Reporting.Logic.csproj", "{BEF7B52F-ADDB-4B19-A8E5-239682EE18F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambs.Reporting.Logic", "Ambs.Reporting.Logic\Ambs.Reporting.Logic.csproj", "{BEF7B52F-ADDB-4B19-A8E5-239682EE18F8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambs.Reporting.Engine", "Ambs.Reporting.Engine\Ambs.Reporting.Engine.csproj", "{28D47EA7-E95F-40EF-A505-6C676CAF4104}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambs.Reporting.Utility", "Ambs.Reporting.Utility\Ambs.Reporting.Utility.csproj", "{EF50BC3A-FDCB-4688-9F87-36900A942323}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambs.Reporting.ViewModel", "Ambs.Reporting.ViewModel\Ambs.Reporting.ViewModel.csproj", "{1D2EC424-7F2F-482E-BA8F-1D77074D8FCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,18 @@ Global
 		{BEF7B52F-ADDB-4B19-A8E5-239682EE18F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEF7B52F-ADDB-4B19-A8E5-239682EE18F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEF7B52F-ADDB-4B19-A8E5-239682EE18F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28D47EA7-E95F-40EF-A505-6C676CAF4104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28D47EA7-E95F-40EF-A505-6C676CAF4104}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28D47EA7-E95F-40EF-A505-6C676CAF4104}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28D47EA7-E95F-40EF-A505-6C676CAF4104}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF50BC3A-FDCB-4688-9F87-36900A942323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF50BC3A-FDCB-4688-9F87-36900A942323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF50BC3A-FDCB-4688-9F87-36900A942323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF50BC3A-FDCB-4688-9F87-36900A942323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D2EC424-7F2F-482E-BA8F-1D77074D8FCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D2EC424-7F2F-482E-BA8F-1D77074D8FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D2EC424-7F2F-482E-BA8F-1D77074D8FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D2EC424-7F2F-482E-BA8F-1D77074D8FCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using Ambs.Reporting.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,11 @@ builder.Services.AddCors(c =>
     c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
     .WithHeaders(HeaderNames.ContentType));
 });
+
+builder.Services.AddDatabase(builder.Configuration)
+    .AddRepositories()
+    .AddServices()
+    .AddLogics();
 
 builder.Services.AddApiVersioning(config =>
 {

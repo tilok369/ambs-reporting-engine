@@ -21,6 +21,7 @@
     <ProjectReference Include="..\Ambs.Reporting.DAL\Ambs.Reporting.DAL.csproj" />
     <ProjectReference Include="..\Ambs.Reporting.Logic\Ambs.Reporting.Logic.csproj" />
     <ProjectReference Include="..\Ambs.Reporting.Service\Ambs.Reporting.Service.csproj" />
+    <ProjectReference Include="..\Ambs.Reporting.ViewModel\Ambs.Reporting.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>
