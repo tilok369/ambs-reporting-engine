@@ -6,8 +6,13 @@
         </div>
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 offset-lg-2 offset-md-2">
-                <select id="dashboard" class="form-select">
-                </select>
+                <div class="form-floating mb-3">
+                    <select id="dashboard" class="form-select" [(ngModel)]="metadata.dashboardId">
+                        <option *ngFor="let db of dashboards" [ngValue]="db.id">{{db.name}}</option>
+                    </select>
+                    <label for="dashboard">Dashboard</label>
+                </div>
+                
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="datasource" placeholder="dashboard data source" required [(ngModel)]="metadata.dataSource">
                     <label for="datasource">Data Source</label>

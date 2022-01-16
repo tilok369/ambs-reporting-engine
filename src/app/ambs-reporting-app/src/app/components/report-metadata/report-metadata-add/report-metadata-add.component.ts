@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DashboardService } from 'src/app/services/dashboard.service';
 import { MetaDataService } from 'src/app/services/meta-data.service';
-import { DashboardComponent } from '../../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-report-metadata-add',
@@ -10,16 +10,26 @@ import { DashboardComponent } from '../../dashboard/dashboard.component';
 export class ReportMetadataAddComponent implements OnInit {
 
   public metadata: any;
+  public dashboards: any[] = [];
   public message: string = '';
 
-  constructor(private metadataService: MetaDataService, private dashboardService: DashboardComponent) { }
+  constructor(private metadataService: MetaDataService, private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
     this.metadata = {
       id: 0,
       dashboardId: 0,
       dataSource: ''
-    }
+    };
+
+    this.getDasgboards(1, 100);
+  }
+
+  getDasgboards(page, size){
+    this.dashboardService.getDashboards(page, size).subscribe((res: any) => {
+      console.log(res);
+      this.dashboards = res;
+    });
   }
 
   validateMetadata(){
