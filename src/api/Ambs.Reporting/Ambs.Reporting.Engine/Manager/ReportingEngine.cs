@@ -4,7 +4,7 @@ using System.Data;
 namespace Ambs.Reporting.Engine.Manager;
 public class ReportingEngine : IReportingEngine
 {
-    public ExportData GetExportData(ReportData data)
+    public async Task<ExportData> GetExportData(ReportData data)
     {
         var exportData = new ExportData { Rows = data.Rows, Columns = data.Columns };
         var maxLayer = GetMaxLayers(exportData.Columns);
@@ -13,11 +13,11 @@ public class ReportingEngine : IReportingEngine
         return exportData;
     }
 
-    public List<ExportData> GetExportData(List<ReportData> datas)
+    public async Task<List<ExportData>> GetExportData(List<ReportData> datas)
     {
         var exportDataList = new List<ExportData>();
         foreach (var data in datas)
-            exportDataList.Add(GetExportData(data));
+            exportDataList.Add(await GetExportData(data));
         exportDataList.ForEach(data =>
         {
             data.SheetName += (exportDataList.IndexOf(data) + 1);

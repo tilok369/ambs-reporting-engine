@@ -1,13 +1,14 @@
 ﻿using Ambs.Reporting.Engine.Model;
 using Ambs.Reporting.Utility.Report;
 using OfficeOpenXml;
+using OfficeOpenXml.Drawing.Chart;
 using SautinSoft;
 
 namespace Ambs.Reporting.Engine.Manager;
 
 public class Exporter : IExporter
 {
-    public byte[] GetExcelData(List<ExportData> datas, string fileName)
+    public async Task<byte[]> GetExcelData(List<ExportData> datas, string fileName, string contentRootPath)
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         using var package = new ExcelPackage(new FileInfo(fileName));
@@ -35,9 +36,12 @@ public class Exporter : IExporter
             worksheet.Cells[2, 7, 2, 12].Style.Font.Bold = true;
             worksheet.Cells[2, 7, 2, 12].Style.Font.Size = 14;
             worksheet.Cells[2, 7, 2, 12].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            var asaiLogo = worksheet.Drawings.AddPicture("Test", System.Drawing.Image.FromFile(@"D:\ASAI Logo.png"));
-            asaiLogo.SetPosition(3, 5, 3, 5);
-            asaiLogo.SetSize(300, 300);
+            if (File.Exists(contentRootPath + @"\Resources\Images\ASAI Logo.png"))
+            {
+                var asaiLogo = worksheet.Drawings.AddPicture("Test", System.Drawing.Image.FromFile(contentRootPath + @"\Resources\Images\ASAI Logo.png"));
+                asaiLogo.SetPosition(3, 5, 3, 5);
+                asaiLogo.SetSize(300, 300);
+            }
             var layers = sheetData.Layers;
             var rowIndex = 4;
             rowIndex -= 1;
@@ -77,15 +81,58 @@ public class Exporter : IExporter
                 rowIndex++;
             }
         }
-        return package.GetAsByteArray();
+        return await package.GetAsByteArrayAsync();
     }
 
-    public byte[] GetPdfData(List<ExportData> datas, string fileName)
+    public async Task<byte[]> GetPdfData(List<ExportData> datas, string fileName, string contentRootPath)
     {
-        var excelByteArray = GetExcelData(datas, fileName);
-        var excelToPdf = new ExcelToPdf();
-        excelToPdf.OutputFormat = ExcelToPdf.eOutputFormat.Pdf;
+        var excelByteArray = await GetExcelData(datas, fileName, contentRootPath);
+        var excelToPdf = new ExcelToPdf
+        {
+            OutputFormat = ExcelToPdf.eOutputFormat.Pdf
+        };
         return excelToPdf.ConvertBytes(excelByteArray);
+    }
+
+    public async Task<byte[]> ReportExport(string fileName)
+    {
+        var filePath = string.Empty;
+
+       
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        FileInfo fileInfo = new FileInfo(fileName);
+
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        using (ExcelPackage package = new ExcelPackage())
+        {
+            ExcelWorksheet myWorksheet = package.Workbook.Worksheets.Add("Test Report");
+
+
+            myWorksheet.Cells[1, 1].Value = "Developer";
+            myWorksheet.Cells[2, 1].Value = 26;
+            myWorksheet.Cells[1, 2].Value = "QA";
+            myWorksheet.Cells[2, 2].Value = 10;
+            myWorksheet.Cells[1, 3].Value = "Implementation";
+            myWorksheet.Cells[2, 3].Value = 5;
+
+
+            var myChart = myWorksheet.Drawings.AddChart("pieChart", eChartType.Pie3D) as ExcelPieChart;
+
+            myChart.Series.Add(ExcelRange.GetAddress(2, 1, 2, 3), ExcelRange.GetAddress(1, 1, 1, 3));
+            //var series = myChart.Series.Add("C2: C4", "B2: B4");
+            myChart.Border.Fill.Color = System.Drawing.Color.Green;
+            myChart.Title.Text = "Employee Ratio";
+
+            myChart.SetSize(400, 400);
+            myChart.SetPosition(6, 0, 6, 0);
+
+            //FileInfo fi = new FileInfo(@"D:\ambs-reporting-engine\src\api\Ambs.Reporting\Ambs.Reporting.Api\ExportData\" + fileName + ".xlsx");
+            
+            return package.GetAsByteArray();
+        }
+
+        
+
     }
 }
 

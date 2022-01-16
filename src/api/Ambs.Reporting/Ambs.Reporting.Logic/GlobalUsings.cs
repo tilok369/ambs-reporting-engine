@@ -5,3 +5,4 @@ global using System.Linq;
 global using System.Text;
 global using System.Threading.Tasks;
 global using Ambs.Reporting.DAL.Entities;
+global using static Ambs.Reporting.Utility.Enum.ExportEnum;
