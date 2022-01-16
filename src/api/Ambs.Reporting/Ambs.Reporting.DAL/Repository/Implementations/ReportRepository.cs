@@ -4,10 +4,10 @@ using Ambs.Reporting.Utility.Extensions;
 
 namespace Ambs.Reporting.DAL.Repository.Implementations
 {
-    public class ReportRepository : IReportRepository
+    public class ReportRepository :GenericRepository, IReportRepository
     {
         private readonly IApplicationConfigurationManager _applicationConfigurationManager;
-        public ReportRepository(IApplicationConfigurationManager applicationConfigurationManager)
+        public ReportRepository(IApplicationConfigurationManager applicationConfigurationManager):base(applicationConfigurationManager)
         {
             _applicationConfigurationManager = applicationConfigurationManager;
         }
@@ -15,7 +15,8 @@ namespace Ambs.Reporting.DAL.Repository.Implementations
         {
             var columns = new List<string>();
             var rows = new List<List<string>>();
-            using var sqlConnection = new SqlConnection(_applicationConfigurationManager.GetConnectionString());
+            var metaData = First<MetaDatum>(d => d.Id == 1);
+            using var sqlConnection = new SqlConnection(metaData.DataSource);
             using var sqlCommand = new SqlCommand(commandText, sqlConnection);
             sqlCommand.CommandType = commandType;
             sqlCommand.CommandTimeout = 5000;
