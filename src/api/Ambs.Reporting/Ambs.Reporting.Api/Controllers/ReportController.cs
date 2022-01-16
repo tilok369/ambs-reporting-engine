@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.Http.Headers;
+﻿using Microsoft.AspNetCore.Mvc;
 using static Ambs.Reporting.Utility.Enum.ExportEnum;
 
 namespace Ambs.Reporting.Api.Controllers;

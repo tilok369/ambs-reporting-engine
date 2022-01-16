@@ -7,7 +7,7 @@ namespace Ambs.Reporting.Engine.Manager;
 
 public class Exporter : IExporter
 {
-    public byte[] GetExcelData(List<ExportData> datas, string fileName)
+    public async Task<byte[]> GetExcelData(List<ExportData> datas, string fileName)
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         using var package = new ExcelPackage(new FileInfo(fileName));
@@ -77,14 +77,16 @@ public class Exporter : IExporter
                 rowIndex++;
             }
         }
-        return package.GetAsByteArray();
+        return await package.GetAsByteArrayAsync();
     }
 
-    public byte[] GetPdfData(List<ExportData> datas, string fileName)
+    public async Task<byte[]> GetPdfData(List<ExportData> datas, string fileName)
     {
-        var excelByteArray = GetExcelData(datas, fileName);
-        var excelToPdf = new ExcelToPdf();
-        excelToPdf.OutputFormat = ExcelToPdf.eOutputFormat.Pdf;
+        var excelByteArray =await GetExcelData(datas, fileName);
+        var excelToPdf = new ExcelToPdf
+        {
+            OutputFormat = ExcelToPdf.eOutputFormat.Pdf
+        };
         return excelToPdf.ConvertBytes(excelByteArray);
     }
 }

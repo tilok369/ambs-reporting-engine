@@ -2,7 +2,6 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Ambs.Reporting.Engine.Manager;
-using static Ambs.Reporting.Utility.Enum.ExportEnum;
 
 namespace Ambs.Reporting.Logic.Implementations;
 public class ReportLogic : IReportLogic
@@ -28,8 +27,8 @@ public class ReportLogic : IReportLogic
         commandText = "dbo.P_TransactionSummaryLoanDisbursedAndFullPaid";
         (columns, rows) = await _reportService.GetReportData(commandText, CommandType.StoredProcedure, new[] { paramBranchId, paramDate });
         var ambsReportDataLoanDisburseAndFullPaid = new ReportData { Columns = columns, Rows = rows };
-        var exportData = _reportingEngine.GetExportData(new List<ReportData> { ambsReportDataReceiveAndPayment, ambsReportDataLoanDisburseAndFullPaid });
-        return exportType == ExportType.Excel ? _exporter.GetExcelData(exportData, "Test") : _exporter.GetPdfData(exportData, "Test");
+        var exportData =await _reportingEngine.GetExportData(new List<ReportData> { ambsReportDataReceiveAndPayment, ambsReportDataLoanDisburseAndFullPaid });
+        return await(exportType == ExportType.Excel ? _exporter.GetExcelData(exportData, "Test") : _exporter.GetPdfData(exportData, "Test"));
     }
 }
 

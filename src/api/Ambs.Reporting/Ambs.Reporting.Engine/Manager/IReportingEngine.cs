@@ -3,7 +3,7 @@ namespace Ambs.Reporting.Engine.Manager;
 
 public interface IReportingEngine
 {
-    ExportData GetExportData(ReportData data);
-    List<ExportData> GetExportData(List<ReportData> datas);
+    Task<ExportData> GetExportData(ReportData data);
+    Task<List<ExportData>> GetExportData(List<ReportData> datas);
 }
 

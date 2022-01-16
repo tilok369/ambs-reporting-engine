@@ -1,8 +1,6 @@
-namespace Ambs.Reporting.Engine.Model
+namespace Ambs.Reporting.Engine.Model;
+public class LayeredColumn
 {
-    public class LayeredColumn
-    {
-        public string Text { get; set; }
-        public string ColumnName { get; set; }
-    }
+    public string Text { get; set; }
+    public string ColumnName { get; set; }
 }
