@@ -7,6 +7,9 @@ import { ReportConfigurationComponent } from './components/report-configuration/
 import { ReportMetadataAddComponent } from './components/report-metadata/report-metadata-add/report-metadata-add.component';
 import { ReportMetadataEditComponent } from './components/report-metadata/report-metadata-edit/report-metadata-edit.component';
 import { ReportMetadataComponent } from './components/report-metadata/report-metadata.component';
+import { ReportAddComponent } from './components/report/report-add/report-add.component';
+import { ReportEditComponent } from './components/report/report-edit/report-edit.component';
+import { ReportListComponent } from './components/report/report-list/report-list.component';
 import { WidgetAddComponent } from './components/widget/widget-add/widget-add.component';
 import { WidgetEditComponent } from './components/widget/widget-edit/widget-edit.component';
 import { WidgetComponent } from './components/widget/widget.component';
@@ -51,6 +54,18 @@ const routes: Routes = [
   {
     path: 'widget-edit',
     component: WidgetEditComponent
+  },
+  {
+    path: 'report',
+    component: ReportListComponent
+  },
+  {
+    path: 'report-add',
+    component: ReportAddComponent
+  },
+  {
+    path: 'report-edit',
+    component: ReportEditComponent
   },
   {
     path: '**',
