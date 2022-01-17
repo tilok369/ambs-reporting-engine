@@ -20,5 +20,6 @@ public interface IGenericRepository
     IEnumerable<T> GetAll<T>() where T : class;
     IEnumerable<T> Find<T>(Expression<Func<T, bool>> predicate) where T : class;
     T First<T>(Expression<Func<T, bool>> predicate) where T : class;
+    bool DeleteByProperty<T>(Expression<Func<T, bool>> predicate) where T : class;
 }
 

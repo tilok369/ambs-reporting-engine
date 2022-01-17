@@ -1,16 +1,33 @@
-﻿using Microsoft.Data.SqlClient;
-using System.Data;
-namespace Ambs.Reporting.Service.Implementations;
+﻿namespace Ambs.Reporting.Service.Implementations;
 public class ReportService : IReportService
 {
-    private readonly IReportRepository _reportRepository;
-    public ReportService(IReportRepository reportRepository)
+    private readonly IGenericRepository _genericRepository;
+    public ReportService(IGenericRepository genericRepository)
     {
-        _reportRepository = reportRepository;
+        _genericRepository= genericRepository;
+    }
+    public Report Get(long id)
+    {
+        return _genericRepository.Get<Report>(id);
     }
 
-    public async Task<(List<string>, List<List<string>>)> GetReportData(string commandText, CommandType commandType, SqlParameter[] parameters)
+    public IEnumerable<Report> GetAll()
     {
-        return await _reportRepository.GetReportData(commandText, commandType, parameters);
+        return _genericRepository.GetAll<Report>();
+    }
+
+    public Report Add(Report report)
+    {
+        return _genericRepository.Add(report);
+    }
+
+    public Report Edit(Report report)
+    {
+        return _genericRepository.Edit(report);
+    }
+
+    public Report Delete(long id)
+    {
+        return _genericRepository.Delete<Report>(id);
     }
 }

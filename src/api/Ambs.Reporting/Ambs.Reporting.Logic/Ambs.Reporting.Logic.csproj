@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Ambs.Reporting.DAL\Ambs.Reporting.DAL.csproj" />
     <ProjectReference Include="..\Ambs.Reporting.Engine\Ambs.Reporting.Engine.csproj" />
     <ProjectReference Include="..\Ambs.Reporting.Service\Ambs.Reporting.Service.csproj" />
