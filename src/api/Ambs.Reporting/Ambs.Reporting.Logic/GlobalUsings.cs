@@ -6,3 +6,5 @@ global using System.Text;
 global using System.Threading.Tasks;
 global using Ambs.Reporting.DAL.Entities;
 global using static Ambs.Reporting.Utility.Enum.ExportEnum;
+global using Ambs.Reporting.ViewModel.Reponse.Filter;
+global using Ambs.Reporting.ViewModel.Request.Filter;
