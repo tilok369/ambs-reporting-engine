@@ -9,7 +9,7 @@ public class WidgetLogic : IWidgetLogic
     private readonly IWidgetService _widgetService;
     private readonly IDashboardService _dashboardService;
 
-    public WidgetLogic(IWidgetService widgetService, IWidgetService, IDashboardService dashboardService)
+    public WidgetLogic(IWidgetService widgetService, IDashboardService dashboardService)
     {
         this._widgetService = widgetService;
         this._dashboardService = dashboardService;
@@ -37,16 +37,20 @@ public class WidgetLogic : IWidgetLogic
         };
     }
 
-    public IList<WidgetResponseDTO> GetAll(int page, int size)
+    public IList<WidgetResponseDTO> GetAll(long dashboardId, int page, int size)
     {
         var widgetList = _widgetService.GetAll();
         var widgets = new List<WidgetResponseDTO>();
-        foreach (var widget in widgetList.Take((page - 1)..size))
+        foreach (var widget in widgetList.Where(w => w.DashboardId == dashboardId).Take((page - 1)..size))
         {
+            var dashboard = _dashboardService.Get(widget.Id);
+            if (dashboard == null) continue;
+
             widgets.Add(new WidgetResponseDTO(widget.Id)
             {
                 Name = widget.Name,
                 DashboardId = widget.DashboardId,
+                DashboardName= dashboard.Name,
                 Status = widget.Status,
                 Type = widget.Type,
                 CreatedBy = widget.CreatedBy,

@@ -23,9 +23,9 @@ namespace Ambs.Reporting.Api.Controllers
         }
 
         [HttpGet()]
-        public IList<WidgetResponseDTO> GetAll(int page, int size)
+        public IList<WidgetResponseDTO> GetAll(long dashboardId, int page, int size)
         {
-            return _widgetLogic.GetAll(page, size);
+            return _widgetLogic.GetAll(dashboardId, page, size);
         }
 
         [HttpPost()]

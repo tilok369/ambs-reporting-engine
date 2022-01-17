@@ -23,7 +23,8 @@ public static class DIServiceExtension
         return services
             .AddScoped<IReportService, ReportService>()
             .AddScoped<IDashboardService, DashboardService>()
-            .AddScoped<IMetaDataService, MetaDataService>();
+            .AddScoped<IMetaDataService, MetaDataService>()
+            .AddScoped<IWidgetService, WidgetService>();
     }
     public static IServiceCollection AddLogics(this IServiceCollection services)
     {
@@ -32,6 +33,7 @@ public static class DIServiceExtension
             .AddScoped<IExporter, Exporter>()
             .AddScoped<IDashboardLogic, DashboardLogic>()
             .AddScoped<IMetaDataLogic, MetaDataLogic>()
+            .AddScoped<IWidgetLogic, WidgetLogic>()
             .AddScoped<IReportingEngine, ReportingEngine>();
     }
 }

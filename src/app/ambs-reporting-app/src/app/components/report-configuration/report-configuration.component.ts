@@ -31,4 +31,8 @@ export class ReportConfigurationComponent implements OnInit {
     this.router.navigateByUrl('/report-configuration-edit', {state: {dashboardId: id}});
   }
 
+  showWidgets(id){
+    this.router.navigateByUrl('/widget', {state: {dashboardId: id}});
+  }
+
 }

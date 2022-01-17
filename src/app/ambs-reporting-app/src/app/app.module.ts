@@ -18,6 +18,10 @@ import { ReportService } from './services/report.service';
 import { MetaDataService } from './services/meta-data.service';
 import { ReportMetadataAddComponent } from './components/report-metadata/report-metadata-add/report-metadata-add.component';
 import { ReportMetadataEditComponent } from './components/report-metadata/report-metadata-edit/report-metadata-edit.component';
+import { WidgetService } from './services/widget.service';
+import { WidgetComponent } from './components/widget/widget.component';
+import { WidgetAddComponent } from './components/widget/widget-add/widget-add.component';
+import { WidgetEditComponent } from './components/widget/widget-edit/widget-edit.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,10 @@ import { ReportMetadataEditComponent } from './components/report-metadata/report
     ReportAddComponent,
     ReportEditComponent,
     ReportMetadataAddComponent,
-    ReportMetadataEditComponent
+    ReportMetadataEditComponent,
+    WidgetComponent,
+    WidgetAddComponent,
+    WidgetEditComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +49,8 @@ import { ReportMetadataEditComponent } from './components/report-metadata/report
   providers: [
     DashboardService,
     ReportService,
-    MetaDataService
+    MetaDataService,
+    WidgetService
   ],
   bootstrap: [AppComponent]
 })
