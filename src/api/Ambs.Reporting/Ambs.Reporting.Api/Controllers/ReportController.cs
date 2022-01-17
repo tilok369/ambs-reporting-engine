@@ -1,53 +1,50 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using static Ambs.Reporting.Utility.Enum.ExportEnum;
+﻿using Ambs.Reporting.ViewModel.Request.Report;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Ambs.Reporting.Api.Controllers;
-
-[Route("api/v{version:apiVersion}/report")]
-[ApiController]
-public class ReportController : ControllerBase
+namespace Ambs.Reporting.Api.Controllers
 {
-    private readonly IReportLogic _reportLogic;
-    private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
-
-    public ReportController(IReportLogic reportLogic
-        , Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
+    [Route("api/v{version:apiVersion}/report")]
+    [ApiController]
+    public class ReportController : ControllerBase
     {
-        _reportLogic = reportLogic;
-        _hostingEnvironment=hostingEnvironment;
-    }
-    [HttpGet("excel")]
-    public async Task<IActionResult> ExportExcel()
-    {
-        var data = await _reportLogic.GetReportData(ExportType.Excel, _hostingEnvironment.ContentRootPath);
-        var stream = new MemoryStream(data)
+        private readonly IReportLogic _reportLogic;
+        public ReportController(IReportLogic reportLogic)
         {
-            Position = 0
-        };
-        return File(stream, "application/ms-excel", "Test.xlsx");
-
-    }
-    [HttpGet("pdf")]
-    public async Task<IActionResult> ExportPdf()
-    {
-        var data = await _reportLogic.GetReportData(ExportType.Pdf, _hostingEnvironment.ContentRootPath);
-        var stream = new MemoryStream(data)
+            _reportLogic = reportLogic;
+        }
+        [HttpGet("id")]
+        public IActionResult Get(long id)
         {
-            Position = 0
-        };
-        return File(stream, "application/pdf", "Test.pdf");
-
-    }
-
-    [HttpGet("reportExport")]
-    public async Task<IActionResult> ReportExport(string fileName)
-    {
-        var data = await _reportLogic.GetReportExport(fileName);
-        var stream = new MemoryStream(data)
+            var data = _reportLogic.Get(id);
+            if(data!=null)
+                return Ok(data);
+            return NotFound();
+        }
+        [HttpGet]
+        public IActionResult GetAll(int page, int size)
         {
-            Position = 0
-        };
-        return File(stream, "application/ms-excel", fileName+ ".xlsx");
-
+            var data = _reportLogic.GetAll(page, size);
+            if (data != null)
+                return Ok(data);
+            return NotFound();
+        }
+        [HttpPost]
+        public IActionResult Add(ReportPostRequestDTO report)
+        {
+            var result= _reportLogic.Add(report);
+            return result.Success ? Ok(result) : BadRequest();
+        }
+        [HttpPut]
+        public IActionResult Edit(ReportPostRequestDTO report)
+        {
+            var result = _reportLogic.Edit(report);
+            return result.Success ? Ok(result) : BadRequest();
+        }
+        [HttpDelete("id")]
+        public IActionResult Delete(long id)
+        {
+            var result = _reportLogic.Delete(id);
+            return result.Success ? Ok(result) : BadRequest();
+        }
     }
 }
