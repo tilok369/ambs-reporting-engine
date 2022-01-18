@@ -43,7 +43,7 @@ namespace Ambs.Reporting.Logic.Implementations
             foreach (var filter in filterList.Take((page - 1)..size))
             {
                 filters.Add(new FilterResponseDTO(filter.Id)
-                {
+                {   
                     Name = filter.Name,
                     Label = filter.Label,
                     Script = filter.Script,

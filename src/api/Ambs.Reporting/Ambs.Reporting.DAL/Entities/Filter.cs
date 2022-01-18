@@ -16,7 +16,7 @@ namespace Ambs.Reporting.DAL.Entities
         public string Script { get; set; } = null!;
         public string Parameter { get; set; } = null!;
         public string DependentParameters { get; set; } = null!;
-        public int Status { get; set; }
+        public bool Status { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; } = null!;
         public DateTime? UpdatedOn { get; set; }

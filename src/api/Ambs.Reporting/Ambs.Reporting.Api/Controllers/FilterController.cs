@@ -28,10 +28,10 @@ namespace Ambs.Reporting.Api.Controllers
 
         }
 
-        [HttpPost()]
-        public FilterPostResponseDTO Save(FilterPostRequestDTO dashboard)
+        [HttpPost]
+        public FilterPostResponseDTO Save(FilterPostRequestDTO filter)
         {
-            return _filterLogic.Save(dashboard);
+            return _filterLogic.Save(filter);
         }
     }
 }

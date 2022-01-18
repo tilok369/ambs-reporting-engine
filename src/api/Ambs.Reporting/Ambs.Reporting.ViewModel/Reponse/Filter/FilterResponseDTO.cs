@@ -12,13 +12,12 @@ namespace Ambs.Reporting.ViewModel.Reponse.Filter
         {
 
         }
-        public long Id { get; set; }
         public string Name { get; set; } = null!;
         public string Label { get; set; } = null!;
         public string Script { get; set; } = null!;
         public string Parameter { get; set; } = null!;
         public string DependentParameters { get; set; } = null!;
-        public int Status { get; set; }
+        public bool Status { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; } = null!;
         public DateTime? UpdatedOn { get; set; }

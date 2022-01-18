@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ambs.Reporting.Service.Implementations
 {
-    public class  FilterService
+    public class  FilterService : IFilterService
     {
         private readonly IGenericRepository _genericRepository;
 
