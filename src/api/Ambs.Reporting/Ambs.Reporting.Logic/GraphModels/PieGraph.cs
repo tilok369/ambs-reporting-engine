@@ -1,23 +1,36 @@
 ﻿
+using Ambs.Reporting.Utility.Extensions;
+using Ambs.Reporting.Utility.Globals;
+
 namespace Ambs.Reporting.Logic.GraphModels;
 
 public class PieGraph : IGraph
 {
-    public string Type { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string Title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string SubTitle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public bool ShowLegend { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string XaxisTitle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string YaxisTitle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string XaxisSuffix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string XaxisPrefix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string YaxisSuffix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string YaxisPrefix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public string Type { get; set; } = "pie";
+    public string Title { get; set; } = string.Empty;
+    public string SubTitle { get; set; } = string.Empty;
+    public bool ShowLegend { get; set; } = false;
+    public string XaxisTitle { get; set; } = string.Empty;
+    public string YaxisTitle { get; set; } = string.Empty;
+    public string XaxisSuffix { get; set; } = string.Empty;
+    public string XaxisPrefix { get; set; } = string.Empty;
+    public string YaxisSuffix { get; set; } = string.Empty;
+    public string YaxisPrefix { get; set; } = string.Empty;
 
-    public IList<IDataPoint> DataPoints => throw new NotImplementedException();
+    public IList<IDataPoint> DataPoints { get; set; }
 
     public void SetDataPoints(List<string> columns, List<List<string>> rows)
     {
-        throw new NotImplementedException();
+        DataPoints = new List<IDataPoint>();
+        var i = 0;
+        foreach (var row in rows)
+        {
+            DataPoints.Add(new PieDataPoint
+            {
+                Label = row.Any() ? row.First() : string.Empty,
+                Y = row.Count > 1 ? row[1].ToDouble() : 0,
+                Color = i < ColorSchema.BrandColors.Count ? ColorSchema.BrandColors[i++] : ""
+            });
+        }
     }
 }

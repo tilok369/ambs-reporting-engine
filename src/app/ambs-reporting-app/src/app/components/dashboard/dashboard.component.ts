@@ -13,32 +13,44 @@ export class DashboardComponent implements OnInit {
   constructor(private graphService: GraphService) { }
 
   ngOnInit(): void {
-    this.renderGraph(5, '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333');
+    this.renderGraph("chart-container-1", 6, '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333');
+    this.renderGraph("chart-container-2", 5, '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333');
   }
 
-  renderGraph(reportId, parameterVals){
+  renderGraph(chartContainerId, reportId, parameterVals){
     this.graphService.getGraph(reportId, parameterVals).subscribe((res: any) => {
       console.log(res);
-      var dataPoints: any = [];
-      for(let d of res.dataPoints)
-      {
-        dataPoints.push({y: d.y, label: d.label});
-      }
+      this.drawGraph(chartContainerId, res);   
+    });
+  }
 
-      let chart = new CanvasJS.Chart("chart-container", {
+  drawGraph(chartContainerId, res){
+    let chart = new CanvasJS.Chart(chartContainerId, {
       animationEnabled: true,
       exportEnabled: true,
       title: {
         text: res.title
       },
+      subtitles: [{
+        text: res.subTitle
+      }],
+      axisX: {
+        title: res.xaxisTitle,
+        suffix: res.xaxisSuffix,
+        prefix: res.xaxisPrefix
+      },
+      axisY: {
+        title: res.yaxisTitle,
+        suffix: res.yaxisSuffix,
+        prefix: res.yaxisPrefix
+      },
       data: [{
         type: res.type,
-        dataPoints: dataPoints
+        dataPoints: res.dataPoints
       }]
     });
       
     chart.render();
-    });
   }
 
 }

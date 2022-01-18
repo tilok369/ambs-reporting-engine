@@ -26,5 +26,10 @@ public class GraphicalFeatureService : IGraphicalFeatureService
     {
         return _genericRepository.Edit(graphicalFeature);
     }
+
+    public List<GraphicalFeature> GetAllByReportId(long reportId)
+    {
+        return _genericRepository.Find<GraphicalFeature>(gf => gf.ReportId == reportId).ToList();
+    }
 }
 
