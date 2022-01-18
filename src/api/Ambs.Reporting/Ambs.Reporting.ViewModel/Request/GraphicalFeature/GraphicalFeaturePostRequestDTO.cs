@@ -17,5 +17,9 @@ public record GraphicalFeaturePostRequestDTO : BasePostRequestDTO
     public string CreatedBy { get; set; } = null!;
     public DateTime? UpdatedOn { get; set; }
     public string? UpdatedBy { get; set; }
+    public string? XaxisSuffix { get; set; }
+    public string? XaxisPrefix { get; set; }
+    public string? YaxisSuffix { get; set; }
+    public string? YaxisPrefix { get; set; }
 }
 

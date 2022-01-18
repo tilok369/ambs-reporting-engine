@@ -41,22 +41,16 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <select id="a-filter" multiple class="form-select" style="height: 100px;">
-                                        <option value="1">Branch</option>
-                                        <option value="2">Region</option>
-                                        <option value="3">Start Date</option>
-                                        <option value="4">End Date</option>
+                                    <select id="a-filter" class="form-select" style="height: 100px;" (change)="selectFilter($event.target);">
+                                        <option *ngFor="let filter of deSelectedFilterList" [value]="filter.id">{{filter.name}}</option>
                                     </select>
                                     <label for="a-filter">Available Filters</label>
                                 </div>
                             </div>  
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <select id="s-filter" multiple class="form-select" style="height: 100px;">
-                                        <option value="1">Branch</option>
-                                        <option value="2">Region</option>
-                                        <option value="3">Start Date</option>
-                                        <option value="4">End Date</option>
+                                    <select id="s-filter" class="form-select" style="height: 100px;" (change)="deSelectFilter($event.target);"> 
+                                        <option *ngFor="let filter of selectedFilterList" [value]="filter.id">{{filter.name}}</option>
                                     </select>
                                     <label for="s-filter">Selected Filters</label>
                                 </div>
@@ -67,7 +61,7 @@
                 </div>
             </div>
 
-            <div class="row gx-2">
+            <div class="row gx-2" *ngIf="report.type==reportType.Tabular">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="p-1 bg-light">
                         <div class="alert alert-dark" role="alert">
@@ -136,7 +130,7 @@
 
 
 
-            <div class="row gx-2">
+            <div class="row gx-2" *ngIf="report.type==reportType.Graphical">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="p-1 bg-light">
                         <div class="alert alert-dark" role="alert">
