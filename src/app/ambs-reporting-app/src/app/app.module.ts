@@ -42,8 +42,7 @@ import { ReportFilterEditComponent } from './components/report-filter/report-fil
     ReportMetadataEditComponent,
     WidgetComponent,
     WidgetAddComponent,
-    WidgetEditComponent
-    ReportMetadataEditComponent,
+    WidgetEditComponent,
     ReportFilterAddComponent,
     ReportFilterComponent,
     ReportFilterEditComponent
@@ -58,8 +57,7 @@ import { ReportFilterEditComponent } from './components/report-filter/report-fil
     DashboardService,
     ReportService,
     MetaDataService,
-    WidgetService
-    MetaDataService,
+    WidgetService,
     FilterService
   ],
   bootstrap: [AppComponent]
