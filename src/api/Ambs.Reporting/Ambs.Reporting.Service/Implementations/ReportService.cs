@@ -1,19 +1,25 @@
-﻿namespace Ambs.Reporting.Service.Implementations;
+﻿using Ambs.Reporting.DAL.CalculativeModels;
+using Ambs.Reporting.ViewModel.Reponse.Report;
+
+namespace Ambs.Reporting.Service.Implementations;
 public class ReportService : IReportService
 {
     private readonly IGenericRepository _genericRepository;
-    public ReportService(IGenericRepository genericRepository)
+    private readonly IReportRepository _reportRepository;
+    public ReportService(IGenericRepository genericRepository
+        , IReportRepository reportRepository)
     {
         _genericRepository= genericRepository;
+        _reportRepository = reportRepository;
     }
     public Report Get(long id)
     {
         return _genericRepository.Get<Report>(id);
     }
 
-    public IEnumerable<Report> GetAll()
+    public IEnumerable<ReportList> GetAll(int page,int size)
     {
-        return _genericRepository.GetAll<Report>();
+        return _reportRepository.GetAll(page,size);
     }
 
     public Report Add(Report report)

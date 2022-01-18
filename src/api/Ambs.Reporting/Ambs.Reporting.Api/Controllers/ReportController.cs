@@ -20,7 +20,7 @@ namespace Ambs.Reporting.Api.Controllers
                 return Ok(data);
             return NotFound();
         }
-        [HttpGet]
+        [HttpGet("")]
         public IActionResult GetAll(int page, int size)
         {
             var data = _reportLogic.GetAll(page, size);
