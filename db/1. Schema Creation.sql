@@ -138,3 +138,9 @@ Create table [config].[MetaData]
 	DataSource nvarchar(200) not null,
 	FOREIGN KEY (DashboardId) REFERENCES [config].[Dashboard](Id)
 )
+Go
+
+alter table [config].[GraphicalFeature] add XAxisSuffix nvarchar(10) null
+alter table [config].[GraphicalFeature] add XAxisPrefix nvarchar(10) null
+alter table [config].[GraphicalFeature] add YAxisSuffix nvarchar(10) null
+alter table [config].[GraphicalFeature] add YAxisPrefix nvarchar(10) null

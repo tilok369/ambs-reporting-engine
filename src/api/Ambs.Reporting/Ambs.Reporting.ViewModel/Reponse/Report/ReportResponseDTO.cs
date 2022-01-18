@@ -12,6 +12,7 @@ public record ReportResponseDTO: BaseGetResponseDTO
     {
     }
     public long WidgetId { get; set; }
+    public string WidgetName { get; set; }
     public string Name { get; set; } = null!;
     public bool? Status { get; set; }
     public int Type { get; set; }

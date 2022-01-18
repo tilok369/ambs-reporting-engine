@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Ambs.Reporting.DAL.Entities
+namespace Ambs.Reporting.ViewModel.Request.Filter
 {
-    public partial class Filter
+    public record FilterPostRequestDTO : BasePostRequestDTO
     {
-        public Filter()
+        public FilterPostRequestDTO(long Id) : base(Id)
         {
-            ReportFilters = new HashSet<ReportFilter>();
         }
 
-        public long Id { get; set; }
         public string Name { get; set; } = null!;
         public string Label { get; set; } = null!;
         public string Script { get; set; } = null!;
@@ -21,7 +22,5 @@ namespace Ambs.Reporting.DAL.Entities
         public string CreatedBy { get; set; } = null!;
         public DateTime? UpdatedOn { get; set; }
         public string? UpdatedBy { get; set; }
-
-        public virtual ICollection<ReportFilter> ReportFilters { get; set; }
     }
 }
