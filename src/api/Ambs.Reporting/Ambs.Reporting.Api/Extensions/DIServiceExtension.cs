@@ -42,6 +42,7 @@ public static class DIServiceExtension
             .AddScoped<IReportingEngine, ReportingEngine>()
             .AddScoped<IFilterLogic, FilterLogic>()
             .AddScoped<IWidgetLogic, WidgetLogic>()
-            .AddScoped<IReportLogic,ReportLogic>();
+            .AddScoped<IReportLogic,ReportLogic>()
+            .AddScoped<IGraphicalFeatureLogic, GraphicalFeatureLogic>();
     }
 }
