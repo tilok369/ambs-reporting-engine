@@ -13,6 +13,10 @@ import { ReportListComponent } from './components/report/report-list/report-list
 import { WidgetAddComponent } from './components/widget/widget-add/widget-add.component';
 import { WidgetEditComponent } from './components/widget/widget-edit/widget-edit.component';
 import { WidgetComponent } from './components/widget/widget.component';
+import { ReportFilterAddComponent } from './components/report-filter/report-filter-add/report-filter-add/report-filter-add.component';
+import { ReportFilterComponent } from './components/report-filter/report-filter/report-filter.component';
+import { ReportFilterEditComponent } from './components/report-filter/report-filter-edit/report-filter-edit/report-filter-edit.component';
+
 
 const routes: Routes = [
   {
@@ -66,6 +70,18 @@ const routes: Routes = [
   {
     path: 'report-edit',
     component: ReportEditComponent
+  },
+  {
+    path: 'report-filter-add',
+    component: ReportFilterAddComponent
+  },
+  {
+    path: 'report-filter-edit',
+    component: ReportFilterEditComponent
+  },
+  {
+    path: 'report-filter',
+    component: ReportFilterComponent
   },
   {
     path: '**',

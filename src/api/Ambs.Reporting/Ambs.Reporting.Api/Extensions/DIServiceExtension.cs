@@ -27,6 +27,7 @@ public static class DIServiceExtension
             .AddScoped<IMetaDataService, MetaDataService>()
             .AddScoped<IWidgetService, WidgetService>()
             .AddScoped<IReportService, ReportService>()
+            .AddScoped<IFilterService, FilterService>()
             .AddScoped<IReportFilterService, ReportFilterService>()
             .AddScoped<ITablularFeatureService, TabularFeatureService>()
             .AddScoped<IGraphicalFeatureService, GraphicalFeatureService>();
@@ -38,9 +39,9 @@ public static class DIServiceExtension
             .AddScoped<IExporter, Exporter>()
             .AddScoped<IDashboardLogic, DashboardLogic>()
             .AddScoped<IMetaDataLogic, MetaDataLogic>()
+            .AddScoped<IReportingEngine, ReportingEngine>()
+            .AddScoped<IFilterLogic, FilterLogic>()
             .AddScoped<IWidgetLogic, WidgetLogic>()
-            .AddScoped<IReportingEngine, ReportingEngine>()
-            .AddScoped<IReportingEngine, ReportingEngine>()
             .AddScoped<IReportLogic,ReportLogic>();
     }
 }

@@ -7,3 +7,5 @@ global using Ambs.Reporting.Service.Interfaces;
 global using Ambs.Reporting.Logic.Interfaces;
 global using Ambs.Reporting.Logic.Implementations;
 global using Ambs.Reporting.Engine.Manager;
+global using Ambs.Reporting.ViewModel.Reponse.Filter; 
+global using Ambs.Reporting.ViewModel.Request.Filter;

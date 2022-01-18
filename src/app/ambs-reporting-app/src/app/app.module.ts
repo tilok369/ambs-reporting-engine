@@ -22,6 +22,10 @@ import { WidgetService } from './services/widget.service';
 import { WidgetComponent } from './components/widget/widget.component';
 import { WidgetAddComponent } from './components/widget/widget-add/widget-add.component';
 import { WidgetEditComponent } from './components/widget/widget-edit/widget-edit.component';
+import { ReportFilterAddComponent } from './components/report-filter/report-filter-add/report-filter-add/report-filter-add.component';
+import { ReportFilterComponent } from './components/report-filter/report-filter/report-filter.component';
+import { FilterService } from './services/filter.service';
+import { ReportFilterEditComponent } from './components/report-filter/report-filter-edit/report-filter-edit/report-filter-edit.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,10 @@ import { WidgetEditComponent } from './components/widget/widget-edit/widget-edit
     ReportMetadataEditComponent,
     WidgetComponent,
     WidgetAddComponent,
-    WidgetEditComponent
+    WidgetEditComponent,
+    ReportFilterAddComponent,
+    ReportFilterComponent,
+    ReportFilterEditComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +57,8 @@ import { WidgetEditComponent } from './components/widget/widget-edit/widget-edit
     DashboardService,
     ReportService,
     MetaDataService,
-    WidgetService
+    WidgetService,
+    FilterService
   ],
   bootstrap: [AppComponent]
 })

@@ -26,6 +26,7 @@ namespace Ambs.Reporting.Api.Controllers
         public IList<DashboardResponseDTO> GetAll(int page, int size)
         {
             return _dashboardLogic.GetAll(page, size);
+
         }
 
         [HttpPost()]

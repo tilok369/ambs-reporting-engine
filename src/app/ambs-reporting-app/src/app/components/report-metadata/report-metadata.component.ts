@@ -31,4 +31,5 @@ export class ReportMetadataComponent implements OnInit {
     this.router.navigateByUrl('/report-metadata-edit', {state: {metadataId: id}});
   }
 
-}
+} 
+
