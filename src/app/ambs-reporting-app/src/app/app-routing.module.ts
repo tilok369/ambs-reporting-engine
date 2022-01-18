@@ -7,6 +7,10 @@ import { ReportConfigurationComponent } from './components/report-configuration/
 import { ReportMetadataAddComponent } from './components/report-metadata/report-metadata-add/report-metadata-add.component';
 import { ReportMetadataEditComponent } from './components/report-metadata/report-metadata-edit/report-metadata-edit.component';
 import { ReportMetadataComponent } from './components/report-metadata/report-metadata.component';
+import { ReportFilterAddComponent } from './components/report-filter/report-filter-add/report-filter-add/report-filter-add.component';
+import { ReportFilterComponent } from './components/report-filter/report-filter/report-filter.component';
+import { ReportFilterEditComponent } from './components/report-filter/report-filter-edit/report-filter-edit/report-filter-edit.component';
+
 
 const routes: Routes = [
   {
@@ -36,6 +40,18 @@ const routes: Routes = [
   {
     path: 'report-metadata-edit',
     component: ReportMetadataEditComponent
+  },
+  {
+    path: 'report-filter-add',
+    component: ReportFilterAddComponent
+  },
+  {
+    path: 'report-filter-edit',
+    component: ReportFilterEditComponent
+  },
+  {
+    path: 'report-filter',
+    component: ReportFilterComponent
   },
   {
     path: '**',
