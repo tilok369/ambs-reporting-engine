@@ -1,6 +1,9 @@
 ﻿
+using Ambs.Reporting.Logic.Factories;
+using Ambs.Reporting.Logic.GraphModels;
 using Ambs.Reporting.Utility.Extensions;
 using Ambs.Reporting.ViewModel.Reponse.GraphicalFeature;
+using Microsoft.Data.SqlClient;
 
 namespace Ambs.Reporting.Logic.Implementations;
 
@@ -15,30 +18,36 @@ public class GraphicalFeatureLogic : IGraphicalFeatureLogic
         this._reportExportService = reportExportService;
     }
 
-    public GraphicalFeatureDTO GetByReport(long reportId, string parameterVals)
+    public IGraph GetByReport(long reportId, string parameterVals)
     {
         var gf = _graphicalFeatureService.GetByReportId(reportId);
         if (gf == null) return null;
 
-        var data = _reportExportService.GetReportData(gf.Script, System.Data.CommandType.Text, parameterVals.ToSqlParameterVals());
+        var (columns, rows) = _reportExportService.GetReportData(ConstructCommand(gf.Script, parameterVals.ToDictionary()), System.Data.CommandType.Text, new SqlParameter[] { }).GetAwaiter().GetResult();
 
-        var gfWithData = new GraphicalFeatureDTO(gf.Id)
+        var graph = new GraphFactory().GetGraph(gf.GraphType);      
+        graph.SetDataPoints(columns, rows);
+
+        graph.Title = gf.Title??"";
+        graph.SubTitle = gf.SubTitle ?? "";
+        graph.ShowLegend = gf.ShowLegend ?? false;
+        graph.XaxisSuffix = gf.XaxisSuffix ?? "";
+        graph.YaxisSuffix = gf.YaxisSuffix ?? "";
+        graph.YaxisPrefix = gf.YaxisPrefix ?? "";
+        graph.XaxisSuffix = gf.XaxisSuffix ?? "";
+        graph.YaxisTitle = gf.YaxisTitle ?? "";
+        graph.XaxisTitle = gf.XaxisTitle ?? "";
+
+        return graph;
+    }
+
+    private string ConstructCommand(string script, Dictionary<string, string> parameters)
+    {
+        foreach (var p in parameters)
         {
-            ReportId = gf.ReportId,
-            Script = gf.Script,
-            GraphType = gf.GraphType,
-            Title = gf.Title,
-            SubTitle  = gf.SubTitle,
-            ShowFilterInfo = gf.ShowFilterInfo,
-            ShowLegend = gf.ShowLegend,
-            XaxisPrefix = gf.XaxisPrefix,
-            XaxisSuffix = gf.XaxisSuffix,
-            XaxisTitle = gf.XaxisTitle,
-            YaxisPrefix = gf.YaxisPrefix,
-            YaxisSuffix = gf.YaxisSuffix,
-            YaxisTitle = gf.YaxisTitle,
-        };
+            script = script.Replace(p.Key, p.Value);
+        }
 
-        return gfWithData;
+        return script;
     }
 }

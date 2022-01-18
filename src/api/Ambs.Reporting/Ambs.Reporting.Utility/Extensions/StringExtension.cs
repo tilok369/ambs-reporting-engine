@@ -11,4 +11,14 @@ public static class StringExtension
 
     public static SqlParameter[] ToSqlParameterVals(this string str) =>
         str.Split('|').Select(s => new SqlParameter(s.Split('#').First(), s.Split('#').Last())).ToArray();
+
+    public static Dictionary<string, string> ToDictionary(this string str) =>
+        str.Split('|').ToDictionary(k => k.Split('#').First(), v => v.Split('#').Last());
+
+    public static double ToDouble(this string str)
+    {
+        double d = 0;
+        if (str == null) return d;
+        return double.TryParse(str, out d) ? d : 0;
+    }
 }
