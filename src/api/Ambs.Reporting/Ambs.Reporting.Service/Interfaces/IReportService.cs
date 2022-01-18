@@ -1,8 +1,16 @@
-﻿using Microsoft.Data.SqlClient;
-using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Ambs.Reporting.Service.Interfaces;
 public interface IReportService
 {
-    Task<(List<string>, List<List<string>>)> GetReportData(string commandText, CommandType commandType, SqlParameter[] parameters);
+    Report Get(long id);
+    IEnumerable<Report> GetAll();
+    Report Add(Report report);
+    Report Edit(Report report);
+    Report Delete(long id);
 }
+

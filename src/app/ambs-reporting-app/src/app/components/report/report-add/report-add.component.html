@@ -1,1 +1,218 @@
-<p>report-add works!</p>
+<div class="row container-outer-layout">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="alert alert-dark" role="alert">
+            <label class="fs-5 fw-bold">Report Add</label> 
+            <button type="button" class="btn btn-secondary float-end plus-btn" title="save report" (click)="saveReport()"><i class="fa fa-save"></i></button>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 offset-lg-2 offset-md-2">          
+                <div class="alert alert-danger" role="alert" *ngIf="message">
+                    {{message}}
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">          
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="widget" placeholder="widget name" required>
+                    <label for="widget">Widget</label>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">          
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="name" placeholder="report name" required>
+                    <label for="name">Report Name</label>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">          
+                <div class="form-floating mb-3">
+                    <select id="type" class="form-select">
+                        <option value="1">Tabular</option>
+                        <option value="2">Graphical</option>
+                    </select>
+                    <label for="type">Type</label>
+                </div>
+            </div>
+
+            <div class="row gx-2">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="p-1 bg-light">
+                        <div class="alert alert-dark" role="alert">
+                            <label class="fs-6">Filter Configuration</label>
+                        </div> 
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <select id="a-filter" multiple class="form-select" style="height: 100px;">
+                                        <option value="1">Branch</option>
+                                        <option value="2">Region</option>
+                                        <option value="3">Start Date</option>
+                                        <option value="4">End Date</option>
+                                    </select>
+                                    <label for="a-filter">Available Filters</label>
+                                </div>
+                            </div>  
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <select id="s-filter" multiple class="form-select" style="height: 100px;">
+                                        <option value="1">Branch</option>
+                                        <option value="2">Region</option>
+                                        <option value="3">Start Date</option>
+                                        <option value="4">End Date</option>
+                                    </select>
+                                    <label for="s-filter">Selected Filters</label>
+                                </div>
+                            </div>
+                        </div>
+                                               
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gx-2">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="p-1 bg-light">
+                        <div class="alert alert-dark" role="alert">
+                            <label class="fs-6">Tabular Configuration</label>
+                        </div>                        
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="t-title" placeholder="tabular report title" required>
+                                    <label for="t-tile">Title</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="t-template" placeholder="template" required>
+                                    <label for="t-template">Template</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="t-subtitle" placeholder="tabular report sub title" required>
+                                    <label for="t-subtitle">Sub Title</label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="t-hasTotalColumn" required>
+                                    <label class="form-check-label" for="t-hasTotalColumn">
+                                      Has Total Column
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="t-hasTotalRow" required>
+                                    <label class="form-check-label" for="t-hasTotalRow">
+                                      Has Total Row
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="t-showFilterInfo" required>
+                                    <label class="form-check-label" for="t-showFilterInfo">
+                                      Show Filter Info
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="t-asOnDate" required>
+                                    <label class="form-check-label" for="t-asOnDate">
+                                      As On Date
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="t-exportable" required>
+                                    <label class="form-check-label" for="t-exportable">
+                                      Exportable
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" style="height: 150px" placeholder="Put your script here" id="t-script"></textarea>
+                                    <label for="t-script">Scripts</label>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="row gx-2">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="p-1 bg-light">
+                        <div class="alert alert-dark" role="alert">
+                            <label class="fs-6">Graphical Configuration</label>
+                        </div>                        
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="g-title" placeholder="graphical report title" required>
+                                    <label for="g-title">Title</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="g-xaxisTitle" placeholder="x axis title" required>
+                                    <label for="g-xaxisTitle">X Axis Title</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="g-subtitle" placeholder="graphical report sub title" required>
+                                    <label for="g-subtitle">Sub Title</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="g-yaxisTitle" placeholder="y axis title" required>
+                                    <label for="g-xaxisTitle">Y Axis Title</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="g-showFilterInfo" required>
+                                    <label class="form-check-label" for="g-showFilterInfo">
+                                      Show Filter Info
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="g-showLegend" required>
+                                    <label class="form-check-label" for="g-showLegend">
+                                      Show Legend
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="g-yaxissuffix" placeholder="x axis suffix" required>
+                                    <label for="g-xaxissuffix">X Axis Suffix</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="g-yaxisprefix" placeholder="x axis prefix" required>
+                                    <label for="g-xaxisprefix">X Axis Prefix</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="g-yaxisTitle" placeholder="y axis suffix" required>
+                                    <label for="g-yaxissuffix">Y Axis Suffix</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="g-yaxisprefix" placeholder="y axis prefix" required>
+                                    <label for="g-xaxisprefix">Y Axis Prefix</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" style="height: 150px" placeholder="Put your script here" id="g-script"></textarea>
+                                    <label for="g-script">Scripts</label>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

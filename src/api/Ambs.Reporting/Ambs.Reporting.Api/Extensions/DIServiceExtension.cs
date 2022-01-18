@@ -16,25 +16,35 @@ public static class DIServiceExtension
         return services
             .AddScoped<IApplicationConfigurationManager, ApplicationConfigurationManager>()
             .AddScoped<IGenericRepository, GenericRepository>()
-            .AddScoped<IReportRepository, ReportRepository>();
+            .AddScoped<IReportExportRepository, ReportExportRepository>()
+            .AddScoped<IReportRepository,ReportRepository>();
     }
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         return services
+            .AddScoped<IReportExportService, ReportExportService>()
+            .AddScoped<IDashboardService, DashboardService>()
+            .AddScoped<IMetaDataService, MetaDataService>()
+            .AddScoped<IWidgetService, WidgetService>()
             .AddScoped<IReportService, ReportService>()
             .AddScoped<IDashboardService, DashboardService>()
             .AddScoped<IMetaDataService, MetaDataService>()
             .AddScoped<IFilterService, FilterService>();
+            .AddScoped<IReportFilterService, ReportFilterService>()
+            .AddScoped<ITablularFeatureService, TabularFeatureService>()
+            .AddScoped<IGraphicalFeatureService, GraphicalFeatureService>();
     }
     public static IServiceCollection AddLogics(this IServiceCollection services)
     {
         return services
-            .AddScoped<IReportLogic, ReportLogic>()
+            .AddScoped<IReportExportLogic, ReportExportLogic>()
             .AddScoped<IExporter, Exporter>()
             .AddScoped<IDashboardLogic, DashboardLogic>()
             .AddScoped<IMetaDataLogic, MetaDataLogic>()
             .AddScoped<IReportingEngine, ReportingEngine>()
-            .AddScoped<IFilterLogic, FilterLogic>();
+            .AddScoped<IFilterLogic, FilterLogic>()
 
+            .AddScoped<IWidgetLogic, WidgetLogic>()
+            .AddScoped<IReportLogic,ReportLogic>();
     }
 }

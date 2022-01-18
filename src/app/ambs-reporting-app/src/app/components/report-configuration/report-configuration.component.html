@@ -23,7 +23,7 @@
                         <label *ngIf="!db.iframeUrl">Not available</label>
                     </td>
                     <td>
-                        <i class="fa fa-windows icon icon-widgets" title="show widgets"></i>
+                        <i class="fa fa-windows icon icon-widgets" title="show widgets" (click)="showWidgets(db.id)"></i>
                     </td>
                     <td>
                         <i class="fa fa-edit icon icon-edit" title="edit dashboard" (click)="editDashboard(db.id)"></i> 
