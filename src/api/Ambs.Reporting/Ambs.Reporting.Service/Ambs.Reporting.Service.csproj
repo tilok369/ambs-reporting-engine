@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Ambs.Reporting.DAL\Ambs.Reporting.DAL.csproj" />
     <ProjectReference Include="..\Ambs.Reporting.Engine\Ambs.Reporting.Engine.csproj" />
+    <ProjectReference Include="..\Ambs.Reporting.ViewModel\Ambs.Reporting.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>
