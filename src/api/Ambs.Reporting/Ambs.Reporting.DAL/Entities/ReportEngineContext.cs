@@ -69,8 +69,6 @@ namespace Ambs.Reporting.DAL.Entities
 
                 entity.Property(e => e.Parameter).HasMaxLength(50);
 
-                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
-
                 entity.Property(e => e.UpdatedBy).HasMaxLength(20);
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
@@ -111,9 +109,25 @@ namespace Ambs.Reporting.DAL.Entities
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
 
+                entity.Property(e => e.XaxisPrefix)
+                    .HasMaxLength(10)
+                    .HasColumnName("XAxisPrefix");
+
+                entity.Property(e => e.XaxisSuffix)
+                    .HasMaxLength(10)
+                    .HasColumnName("XAxisSuffix");
+
                 entity.Property(e => e.XaxisTitle)
                     .HasMaxLength(100)
                     .HasColumnName("XAxisTitle");
+
+                entity.Property(e => e.YaxisPrefix)
+                    .HasMaxLength(10)
+                    .HasColumnName("YAxisPrefix");
+
+                entity.Property(e => e.YaxisSuffix)
+                    .HasMaxLength(10)
+                    .HasColumnName("YAxisSuffix");
 
                 entity.Property(e => e.YaxisTitle)
                     .HasMaxLength(100)
