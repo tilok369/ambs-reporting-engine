@@ -16,6 +16,7 @@ export class ReportAddComponent implements OnInit {
     this.report = {
       id: 0,
       widgetId: 0,
+      widgetName: '',
       name: '',
       status: true,
       type: 1,
@@ -51,6 +52,10 @@ export class ReportAddComponent implements OnInit {
         showLegend: true,
         xaxisTitle: '',
         yaxisTitle: '',
+        xaxisSuffix: '',
+        xaxisPrefix: '',
+        yaxisSuffix: '',
+        yaxisPrefix: '',
         createdOn: new Date(),
         createdBy: "admin",
         updatedOn: new Date(),
