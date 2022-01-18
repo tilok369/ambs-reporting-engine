@@ -20,6 +20,7 @@ public class ReportExportController : ControllerBase
     public async Task<IActionResult> ExportExcel()
     {
         var data = await _reportLogic.GetReportData(ExportType.Excel, _hostingEnvironment.ContentRootPath);
+       
         var stream = new MemoryStream(data)
         {
             Position = 0
@@ -31,6 +32,7 @@ public class ReportExportController : ControllerBase
     public async Task<IActionResult> ExportPdf()
     {
         var data = await _reportLogic.GetReportData(ExportType.Pdf, _hostingEnvironment.ContentRootPath);
+        
         var stream = new MemoryStream(data)
         {
             Position = 0

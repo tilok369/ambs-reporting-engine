@@ -16,11 +16,13 @@
                     <label for="iFrameUrl">Filter Label</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="script" placeholder="filter script" required [(ngModel)]="filter.script">
-                    <label for="iFrameUrl">Script</label>
+                    <textarea rows="10" type="text" class="md-textarea md-textarea-auto form-control" id="script" placeholder="filter script" required [(ngModel)]="filter.script"></textarea>
+                    
+                    <label for="script">Script</label>
+                
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="parameter" placeholder="filter parameter" required [(ngModel)]="filter.parameter">
+                    <input type="text area" class="form-control" id="parameter" placeholder="filter parameter" required [(ngModel)]="filter.parameter">
                     <label for="iFrameUrl">Parameter</label>
                 </div>
                 <div class="form-floating mb-3">
