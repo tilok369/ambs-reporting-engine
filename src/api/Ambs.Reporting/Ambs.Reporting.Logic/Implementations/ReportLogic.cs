@@ -1,4 +1,5 @@
-﻿using Ambs.Reporting.ViewModel.Reponse.Report;
+﻿using Ambs.Reporting.DAL.CalculativeModels;
+using Ambs.Reporting.ViewModel.Reponse.Report;
 using Ambs.Reporting.ViewModel.Request;
 using Ambs.Reporting.ViewModel.Request.GraphicalFeature;
 using Ambs.Reporting.ViewModel.Request.Report;
@@ -33,9 +34,9 @@ public class ReportLogic : IReportLogic
         return _mapper.Map<Report,ReportResponseDTO>(_reportService.Get(id));
     }
 
-    public IEnumerable<ReportResponseDTO> GetAll(int page, int size)
+    public IEnumerable<ReportListResponseDTO> GetAll(int page, int size)
     {
-        return _mapper.Map<IEnumerable<Report>,IEnumerable<ReportResponseDTO>>(_reportService.GetAll().Take((page - 1)..size));
+        return _mapper.Map<IEnumerable<ReportList>, IEnumerable<ReportListResponseDTO>>(_reportService.GetAll(page, size));
     }
 
     public ReportPostResponseDTO Add(ReportPostRequestDTO report)

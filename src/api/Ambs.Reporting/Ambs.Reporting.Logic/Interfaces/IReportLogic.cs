@@ -11,7 +11,7 @@ namespace Ambs.Reporting.Logic.Interfaces;
 public interface IReportLogic
 {
     ReportResponseDTO Get(long id);
-    IEnumerable<ReportResponseDTO> GetAll(int page, int size);
+    IEnumerable<ReportListResponseDTO> GetAll(int page, int size);
     ReportPostResponseDTO Add(ReportPostRequestDTO report);
     ReportPostResponseDTO Edit(ReportPostRequestDTO report);
     ReportPostResponseDTO Delete(long id);

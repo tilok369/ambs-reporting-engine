@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ambs.Reporting.DAL.CalculativeModels;
 
 namespace Ambs.Reporting.DAL.Repository.Interfaces;
-
-    public interface IReportRepository
-    {
-    }
+public interface IReportRepository
+{
+    IEnumerable<ReportList> GetAll(int page, int size);
+}
 

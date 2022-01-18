@@ -1,16 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ambs.Reporting.DAL.CalculativeModels;
 
 namespace Ambs.Reporting.DAL.Repository.Implementations;
 
-public class ReportRepository:IReportRepository
+public class ReportRepository : IReportRepository
 {
-    public ReportRepository()
+    private readonly DbContextOptionsBuilder<ReportEngineContext> _dbContextOptionBuilder;
+    public ReportRepository(IApplicationConfigurationManager applicationConfigurationManager)
     {
+        _dbContextOptionBuilder = new DbContextOptionsBuilder<ReportEngineContext>();
+        _dbContextOptionBuilder.UseSqlServer(applicationConfigurationManager.GetConnectionString());
+    }
 
+    public IEnumerable<ReportList> GetAll(int page, int size)
+    {
+        using var context = new ReportEngineContext(_dbContextOptionBuilder.Options);
+        return (from report in context.Reports
+                      join widget in context.Widgets on report.WidgetId equals widget.Id
+                      join dashboard in context.Dashboards on widget.DashboardId equals dashboard.Id
+                      select new ReportList(report.Id, report.Name, (bool)report.Status, (Utility.Enum.ReportEnum.ReportType)report.Type, widget.Name, dashboard.Name)
+                ).ToList().Take(page..size);
     }
 }
 
