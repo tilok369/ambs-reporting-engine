@@ -1,5 +1,5 @@
 ﻿
-using Ambs.Reporting.Logic.GraphModels;
+using Ambs.Reporting.Engine.GraphModels;
 using Ambs.Reporting.ViewModel.Reponse.GraphicalFeature;
 
 namespace Ambs.Reporting.Logic.Interfaces;

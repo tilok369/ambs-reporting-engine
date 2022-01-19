@@ -1,5 +1,5 @@
 ﻿
-namespace Ambs.Reporting.Logic.GraphModels;
+namespace Ambs.Reporting.Engine.GraphModels;
 
 public interface IDataPoint
 {

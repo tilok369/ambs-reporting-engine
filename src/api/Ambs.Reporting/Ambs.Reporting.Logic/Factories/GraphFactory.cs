@@ -1,5 +1,5 @@
 ﻿
-using Ambs.Reporting.Logic.GraphModels;
+using Ambs.Reporting.Engine.GraphModels;
 
 namespace Ambs.Reporting.Logic.Factories;
 

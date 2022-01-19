@@ -1,6 +1,6 @@
 ﻿
+using Ambs.Reporting.Engine.GraphModels;
 using Ambs.Reporting.Logic.Factories;
-using Ambs.Reporting.Logic.GraphModels;
 using Ambs.Reporting.Utility.Extensions;
 using Ambs.Reporting.ViewModel.Reponse.GraphicalFeature;
 using Microsoft.Data.SqlClient;

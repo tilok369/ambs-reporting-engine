@@ -1,4 +1,4 @@
-﻿using Ambs.Reporting.Logic.GraphModels;
+﻿using Ambs.Reporting.Engine.GraphModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
