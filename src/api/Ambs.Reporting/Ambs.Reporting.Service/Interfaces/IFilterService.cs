@@ -12,5 +12,6 @@ namespace Ambs.Reporting.Service.Interfaces
         IEnumerable<Filter> GetAll();
 
         Filter Save(Filter filter);
+        IEnumerable<GraphType> GetGraphType();
     }
 }

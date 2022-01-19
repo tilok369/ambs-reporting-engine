@@ -41,7 +41,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <select id="a-filter" class="form-select" style="height: 100px;" (change)="selectFilter($event.target);">
+                                    <select id="a-filter" class="form-select" (change)="selectFilter($event.target);">
                                         <option *ngFor="let filter of deSelectedFilterList" [value]="filter.id">{{filter.name}}</option>
                                     </select>
                                     <label for="a-filter">Available Filters</label>
@@ -49,7 +49,7 @@
                             </div>  
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <select id="s-filter" class="form-select" style="height: 100px;" (change)="deSelectFilter($event.target);"> 
+                                    <select id="s-filter" class="form-select" (change)="deSelectFilter($event.target);"> 
                                         <option *ngFor="let filter of selectedFilterList" [value]="filter.id">{{filter.name}}</option>
                                     </select>
                                     <label for="s-filter">Selected Filters</label>

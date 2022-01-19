@@ -1,9 +1,9 @@
 import { ReportType } from "src/app/enums/report-enum";
-import { IGraphicalFeature } from "./graphical-feature.model";
-import { ReportFilter } from "./report-filter.model";
-import { ITabularFeature } from "./tabular-feature.model";
+import { GraphicalFeature } from "./graphical-feature.model";
+import { IReportFilter } from "./report-filter.model";
+import { TabularFeature } from "./tabular-feature.model";
 
-export interface IReport {
+export class Report {
     id: number
     widgetId: number
     name: string
@@ -13,19 +13,50 @@ export interface IReport {
     createdBy: string
     updatedOn: Date
     updatedBy: string
-    reportFilterList: Array<ReportFilter>
-    tabularFeature?: ITabularFeature
-    graphicalFeature?: IGraphicalFeature
+    reportFilterList: Array<IReportFilter>
+    tabularFeature: TabularFeature
+    graphicalFeature: GraphicalFeature
+    widgetName:string
+    constructor(){
+        this.id=0
+        this.widgetId=0
+        this.name= ''
+        this.status= true
+        this.type= ReportType.Tabular
+        this.createdOn= new Date()
+        this.createdBy= 'admin'
+        this.updatedOn= new Date()
+        this.updatedBy= 'admin'
+        this.reportFilterList= []
+        this.tabularFeature=new TabularFeature()
+        this.graphicalFeature=new GraphicalFeature()
+        this.widgetName=''
+    }
 }
-const createDefaultReport: IReport = {
-    id: 0,
-    widgetId: 0,
-    name: '',
-    status: true,
-    type: ReportType.Tabular,
-    createdOn: new Date(),
-    createdBy: 'admin',
-    updatedOn: new Date(),
-    updatedBy: 'admin',
-    reportFilterList: []
-}
+// export const createDefaultReport = ({
+//     id= 0,
+//     widgetId= 0,
+    // name= '',
+    // status= true,
+    // type= ReportType.Tabular,
+    // createdOn= new Date(),
+    // createdBy= 'admin',
+    // updatedOn= new Date(),
+    // updatedBy= 'admin',
+    // reportFilterList= [],
+    // tabularFeature=createDefaultTabularFeature(),
+    // graphicalFeature=createDefaultGraphicalFeature()
+//   }: IReport = {}): IReport => ({
+//     id,
+//     widgetId,
+//     name,
+//     status,
+//     type,
+//     createdOn,
+//     createdBy,
+//     updatedOn,
+//     updatedBy,
+//     reportFilterList,
+//     tabularFeature,
+//     graphicalFeature
+//   });

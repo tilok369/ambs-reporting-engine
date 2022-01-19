@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ambs.Reporting.Utility.Enum
+﻿namespace Ambs.Reporting.Utility.Enum;
+public static class ReportEnum
 {
-    public static class ReportEnum
+    public enum ReportType
     {
-        public enum ReportType
-        {
-            Tabular=1,
-            Graphical=2
-        }
+        Tabular = 1,
+        Graphical = 2
     }
 }
+

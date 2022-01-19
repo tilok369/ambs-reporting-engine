@@ -20,7 +20,7 @@
                     <td class="fw-bold">{{w.name}}</td>
                     <td>{{w.status ? 'Active' : 'Inactive'}}</td>
                     <td>
-                        <i class="fa fa-table icon icon-widgets" title="show reports"></i>
+                        <i class="fa fa-table icon icon-widgets" title="show reports" (click)="goToReport(w);"></i>
                     </td>
                     <td>
                         <i class="fa fa-edit icon icon-edit" title="edit widgets" (click)="editWidget(w.id)"></i> 
