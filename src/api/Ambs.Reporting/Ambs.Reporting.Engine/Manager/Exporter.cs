@@ -1,4 +1,5 @@
-﻿using Ambs.Reporting.Engine.Model;
+﻿using Ambs.Reporting.Engine.GraphModels;
+using Ambs.Reporting.Engine.Model;
 using Ambs.Reporting.Utility.Report;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
@@ -94,7 +95,7 @@ public class Exporter : IExporter
         return excelToPdf.ConvertBytes(excelByteArray);
     }
 
-    public async Task<byte[]> ReportExport(string fileName)
+    public async Task<byte[]> ReportExport(string fileName, IGraph graph)
     {
         var filePath = string.Empty;
 
@@ -106,25 +107,32 @@ public class Exporter : IExporter
         using (ExcelPackage package = new ExcelPackage())
         {
             ExcelWorksheet myWorksheet = package.Workbook.Worksheets.Add("Test Report");
+            var i = 1;
+            foreach(var datapoint in graph.DataPoints)
+            {
+                myWorksheet.Cells[1, i].Value = datapoint.Label;
+                myWorksheet.Cells[2, i].Value = datapoint.Y;
+                i++;
 
+            }
 
-            myWorksheet.Cells[1, 1].Value = "Developer";
-            myWorksheet.Cells[2, 1].Value = 26;
-            myWorksheet.Cells[1, 2].Value = "QA";
-            myWorksheet.Cells[2, 2].Value = 10;
-            myWorksheet.Cells[1, 3].Value = "Implementation";
-            myWorksheet.Cells[2, 3].Value = 5;
+            //myWorksheet.Cells[1, 1].Value = "Developer";
+            //myWorksheet.Cells[2, 1].Value = 26;
+            //myWorksheet.Cells[1, 2].Value = "QA";
+            //myWorksheet.Cells[2, 2].Value = 10;
+            //myWorksheet.Cells[1, 3].Value = "Implementation";
+            //myWorksheet.Cells[2, 3].Value = 5;
 
 
             var myChart = myWorksheet.Drawings.AddChart("pieChart", eChartType.Pie3D) as ExcelPieChart;
 
-            myChart.Series.Add(ExcelRange.GetAddress(2, 1, 2, 3), ExcelRange.GetAddress(1, 1, 1, 3));
+            myChart.Series.Add(ExcelRange.GetAddress(2, 1, 2, i), ExcelRange.GetAddress(1, 1, 1, i));
             //var series = myChart.Series.Add("C2: C4", "B2: B4");
             myChart.Border.Fill.Color = System.Drawing.Color.Green;
-            myChart.Title.Text = "Employee Ratio";
+            myChart.Title.Text = graph.Title;
 
-            myChart.SetSize(400, 400);
-            myChart.SetPosition(6, 0, 6, 0);
+            myChart.SetSize(600, 600);
+            myChart.SetPosition(i+1, 0, i+1, 0);
 
             //FileInfo fi = new FileInfo(@"D:\ambs-reporting-engine\src\api\Ambs.Reporting\Ambs.Reporting.Api\ExportData\" + fileName + ".xlsx");
             

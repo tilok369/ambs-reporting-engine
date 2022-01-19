@@ -41,15 +41,15 @@ public class ReportExportController : ControllerBase
 
     }
 
-    [HttpGet("reportExport")]
-    public async Task<IActionResult> ReportExport(string fileName)
-    {
-        var data = await _reportLogic.GetReportExport(fileName);
-        var stream = new MemoryStream(data)
-        {
-            Position = 0
-        };
-        return File(stream, "application/ms-excel", fileName+ ".xlsx");
+    //[HttpGet("reportExport")]
+    //public async Task<IActionResult> ReportExport(string fileName)
+    //{
+    //    var data = await _reportLogic.GetReportExport(fileName);
+    //    var stream = new MemoryStream(data)
+    //    {
+    //        Position = 0
+    //    };
+    //    return File(stream, "application/ms-excel", fileName+ ".xlsx");
 
-    }
+    //}
 }
