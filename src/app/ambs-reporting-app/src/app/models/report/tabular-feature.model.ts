@@ -23,7 +23,7 @@ export class TabularFeature {
         this.showFilterInfo = false
         this.template = ''
         this.asOnDate = false
-        this.exportable = false
+        this.exportable = true
         this.hasTotalColumn = false
         this.hasTotalRow = true
         this.createdOn = new Date()

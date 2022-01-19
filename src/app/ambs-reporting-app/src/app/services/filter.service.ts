@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilterService {
+  
 
   constructor(private http: HttpClient) {  }
 
@@ -19,5 +21,8 @@ export class FilterService {
 
   saveFilter(filter: any){
     return this.http.post(environment.apiEndPoint + 'filter', filter, environment.getHttpHeader());
+  }
+  getGraphTypes():Observable<any> {
+    return this.http.get(environment.apiEndPoint + 'filter/graphType');
   }
 }

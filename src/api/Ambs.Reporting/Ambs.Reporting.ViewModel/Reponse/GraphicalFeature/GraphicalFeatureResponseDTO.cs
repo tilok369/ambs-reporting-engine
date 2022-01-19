@@ -1,9 +1,9 @@
 ﻿
 namespace Ambs.Reporting.ViewModel.Reponse.GraphicalFeature;
 
-public record GraphicalFeatureDTO: BaseGetResponseDTO
+public record GraphicalFeatureResponseDTO: BaseGetResponseDTO
 {
-    public GraphicalFeatureDTO(long Id): base(Id) { }
+    public GraphicalFeatureResponseDTO(long Id): base(Id) { }
 
     public long ReportId { get; set; }
     public int GraphType { get; set; }
@@ -22,4 +22,5 @@ public record GraphicalFeatureDTO: BaseGetResponseDTO
     public string? XaxisPrefix { get; set; }
     public string? YaxisSuffix { get; set; }
     public string? YaxisPrefix { get; set; }
+    public bool? Exportable { get; set; }
 }

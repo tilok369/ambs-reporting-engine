@@ -17,6 +17,7 @@ export class GraphicalFeature {
     xaxisPrefix: string
     yaxisSuffix: string
     yaxisPrefix: string
+    exportable: boolean
     constructor(){
         this.id=0,
         this.reportId=0,
@@ -35,7 +36,8 @@ export class GraphicalFeature {
         this.xaxisSuffix= '',
         this.xaxisPrefix= '',
         this.yaxisSuffix= '',
-        this.yaxisPrefix= ''
+        this.yaxisPrefix= '',
+        this.exportable=true
     }
 }
 // export const createDefaultGraphicalFeature=({

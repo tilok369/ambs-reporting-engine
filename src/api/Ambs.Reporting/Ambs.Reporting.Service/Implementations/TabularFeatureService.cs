@@ -27,5 +27,10 @@ public class TabularFeatureService : ITablularFeatureService
     {
         return _genericRepository.Edit<TabularFeature>(tabularFeature);
     }
+
+    public bool DeleteByReportId(long reportId)
+    {
+        return _genericRepository.DeleteByProperty<TabularFeature>(tf=>tf.ReportId == reportId);
+    }
 }
 

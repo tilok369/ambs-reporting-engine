@@ -20,7 +20,7 @@ public record ReportPostRequestDTO : BasePostRequestDTO
     public string? UpdatedBy { get; set; }
 
     public List<ReportFilterPostRequestDTO> ReportFilterList { get; set; }
-    public TabularFeaturePostRequestDTO TabularFeature { get; set; }
-    public GraphicalFeaturePostRequestDTO GraphicalFeature { get; set; }
+    public TabularFeaturePostRequestDTO? TabularFeature { get; set; }
+    public GraphicalFeaturePostRequestDTO? GraphicalFeature { get; set; }
 }
 

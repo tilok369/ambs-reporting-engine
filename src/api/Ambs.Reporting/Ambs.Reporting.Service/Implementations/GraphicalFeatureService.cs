@@ -31,5 +31,10 @@ public class GraphicalFeatureService : IGraphicalFeatureService
     {
         return _genericRepository.Find<GraphicalFeature>(gf => gf.ReportId == reportId).ToList();
     }
+
+    public bool DeleteByReportId(long reportId)
+    {
+        return _genericRepository.DeleteByProperty<GraphicalFeature>(gf=>gf.ReportId == reportId);
+    }
 }
 

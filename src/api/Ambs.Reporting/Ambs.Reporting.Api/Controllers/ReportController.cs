@@ -12,7 +12,7 @@ namespace Ambs.Reporting.Api.Controllers
         {
             _reportLogic = reportLogic;
         }
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
             var data = _reportLogic.Get(id);

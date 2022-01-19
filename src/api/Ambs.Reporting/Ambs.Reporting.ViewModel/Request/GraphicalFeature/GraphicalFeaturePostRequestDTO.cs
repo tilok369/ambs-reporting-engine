@@ -21,5 +21,6 @@ public record GraphicalFeaturePostRequestDTO : BasePostRequestDTO
     public string? XaxisPrefix { get; set; }
     public string? YaxisSuffix { get; set; }
     public string? YaxisPrefix { get; set; }
+    public bool? Exportable { get; set; }
 }
 

@@ -93,6 +93,10 @@ namespace Ambs.Reporting.DAL.Entities
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
+                entity.Property(e => e.Exportable)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.ShowFilterInfo)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
