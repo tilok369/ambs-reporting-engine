@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GraphService } from 'src/app/services/graph.service';
+import { ReportService } from 'src/app/services/report.service';
 import * as CanvasJS from '../../../assets/canvasjs.min';
 //var CanvasJS = require('../../../assets/canvasjs.min');
 
@@ -9,12 +10,14 @@ import * as CanvasJS from '../../../assets/canvasjs.min';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
-  constructor(private graphService: GraphService) { }
+tableData:any;
+  constructor(private graphService: GraphService
+    ,private _reportService:ReportService) { }
 
   ngOnInit(): void {
-    this.renderGraph("chart-container-1", 6, '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333');
-    this.renderGraph("chart-container-2", 5, '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333');
+     this.renderGraph("chart-container-1", 6, '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333');
+     this.renderGraph("chart-container-2", 5, '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333');
+    this.getExportReportData();
   }
 
   renderGraph(chartContainerId, reportId, parameterVals){
@@ -51,6 +54,12 @@ export class DashboardComponent implements OnInit {
     });
       
     chart.render();
+  }
+  getExportReportData(){
+this._reportService.getExportReportData().subscribe((res:any)=>{
+  console.log(res);
+  this.tableData=res[0];
+})
   }
 
 }

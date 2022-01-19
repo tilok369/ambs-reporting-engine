@@ -20,7 +20,7 @@ public class ReportExportRepository : GenericRepository, IReportExportRepository
         using var sqlCommand = new SqlCommand(commandText, sqlConnection);
         sqlCommand.CommandType = commandType;
         sqlCommand.CommandTimeout = 5000;
-        if (parameters.Any())
+        if (parameters!=null && parameters.Any())
             sqlCommand.Parameters.AddRange(parameters);
         if (sqlConnection.State == ConnectionState.Closed)
             sqlConnection.Open();

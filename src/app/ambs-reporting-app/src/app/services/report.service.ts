@@ -22,4 +22,7 @@ export class ReportService {
   edit(report: Report) {
     return this.http.put(environment.apiEndPoint + 'report', report, environment.getHttpHeader());
   }
+  getExportReportData(){
+    return this.http.get(environment.apiEndPoint + 'report-export/data');
+  }
 }

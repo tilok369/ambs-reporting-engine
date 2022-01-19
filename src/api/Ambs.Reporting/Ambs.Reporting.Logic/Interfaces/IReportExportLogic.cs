@@ -1,6 +1,9 @@
-﻿namespace Ambs.Reporting.Logic.Interfaces;
+﻿using Ambs.Reporting.Engine.Model;
+
+namespace Ambs.Reporting.Logic.Interfaces;
 public interface IReportExportLogic
 {
-    Task<byte[]> GetReportData(ExportType exportType, string contentRootPath);
+    Task<byte[]> GetReportDataForExport(ExportType exportType, string contentRootPath);
+    Task<List<ExportData>> GetReportData();
     //Task<byte[]> GetReportExport(string fileName);
 }

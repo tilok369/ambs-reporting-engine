@@ -19,7 +19,7 @@ public class ReportExportController : ControllerBase
     [HttpGet("excel")]
     public async Task<IActionResult> ExportExcel()
     {
-        var data = await _reportLogic.GetReportData(ExportType.Excel, _hostingEnvironment.ContentRootPath);
+        var data = await _reportLogic.GetReportDataForExport(ExportType.Excel, _hostingEnvironment.ContentRootPath);
        
         var stream = new MemoryStream(data)
         {
@@ -31,7 +31,7 @@ public class ReportExportController : ControllerBase
     [HttpGet("pdf")]
     public async Task<IActionResult> ExportPdf()
     {
-        var data = await _reportLogic.GetReportData(ExportType.Pdf, _hostingEnvironment.ContentRootPath);
+        var data = await _reportLogic.GetReportDataForExport(ExportType.Pdf, _hostingEnvironment.ContentRootPath);
         
         var stream = new MemoryStream(data)
         {
@@ -39,6 +39,12 @@ public class ReportExportController : ControllerBase
         };
         return File(stream, "application/pdf", "Test.pdf");
 
+    }
+    [HttpGet("data")]
+    public async Task<IActionResult> GetData()
+    {
+        //var data = await _reportLogic.GetReportData();
+        return Ok(await _reportLogic.GetReportData());
     }
 
     //[HttpGet("reportExport")]

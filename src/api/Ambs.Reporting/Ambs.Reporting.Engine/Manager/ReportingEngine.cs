@@ -35,6 +35,18 @@ public class ReportingEngine : IReportingEngine
     private static List<DataLayer> GetLayers(List<string> columns, int maxLayerCount)
     {
         var dataLayers = new List<DataLayer>();
+        if (maxLayerCount == 1)
+        {
+            var columnList = new List<Column>();
+            var index = 0;
+            foreach(var column in columns)
+            {
+                index++;
+                columnList.Add(new Column { ColumnIndex = index, ColumnName = column, ColumnSpan = 1, ParentColumn = string.Empty, RowIndex = 1, RowSpan = 1, Order = index });
+            }
+            var dataLayer = new DataLayer { Columns = columnList, Order = 1 };
+            return new List<DataLayer> { dataLayer };
+        }
         var colOrder = 0;
         for (var i = 0; i < maxLayerCount; i++)
         {
