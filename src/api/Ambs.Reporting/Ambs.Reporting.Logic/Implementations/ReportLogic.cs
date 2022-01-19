@@ -115,11 +115,13 @@ public class ReportLogic : IReportLogic
                 if (report.Type == ReportType.Tabular)
                 {
                     _graphicalFeatureService.DeleteByReportId(report.Id);
+                    report.TabularFeature.ReportId = report.Id;
                     _tablularFeatureService.Add(_mapper.Map<TabularFeaturePostRequestDTO, TabularFeature>(report.TabularFeature));
                 }
                 else
                 {
                     _tablularFeatureService.DeleteByReportId(report.Id);
+                    report.GraphicalFeature.ReportId = report.Id;
                     _graphicalFeatureService.Add(_mapper.Map<GraphicalFeaturePostRequestDTO, GraphicalFeature>(report.GraphicalFeature));
                 }
             }

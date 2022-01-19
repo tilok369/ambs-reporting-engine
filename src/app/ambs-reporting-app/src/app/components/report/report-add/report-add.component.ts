@@ -71,7 +71,21 @@ export class ReportAddComponent implements OnInit {
   public get reportType(): typeof ReportType {
     return ReportType;
   }
+  validate():string{
+    let errorMessage:string='';
+    if(!this.report.name)errorMessage+='Name is required<br>';
+      if(!this.report.type) errorMessage+='Type is required<br>';
+      if(this.report.type==ReportType.Tabular){
+       if(!this.report.tabularFeature.script) errorMessage+='Script is required<br>';
+      }else{
+        if(!this.report.graphicalFeature.script) errorMessage+='Script is required<br>';
+        if(!this.report.graphicalFeature.graphType) errorMessage+='Graph Type is required<br>';
+      }
+    return errorMessage;
+  }
   saveReport() {
+    this.message=this.validate();
+    if(this.message.length>0)return;
     this.report.reportFilterList=[];
     if (this.selectedFilterList.length > 0) {
       this.selectedFilterList.filter(f => f.id != 0).forEach((f, i) => {

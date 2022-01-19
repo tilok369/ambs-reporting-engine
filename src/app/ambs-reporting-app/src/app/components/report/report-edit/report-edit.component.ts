@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportType } from 'src/app/enums/report-enum';
 import { IDropdownFilter } from 'src/app/models/report/dropdown-filter.model';
+import { GraphicalFeature } from 'src/app/models/report/graphical-feature.model';
 import { Report } from 'src/app/models/report/report.model';
+import { TabularFeature } from 'src/app/models/report/tabular-feature.model';
 import { FilterService } from 'src/app/services/filter.service';
 import { ReportService } from 'src/app/services/report.service';
 
@@ -23,7 +25,7 @@ export class ReportEditComponent implements OnInit {
     , private _filterService: FilterService) { }
 
   ngOnInit(): void {
-    this.reportId = window.history.state.reportId;
+    this.reportId = window.history.state.reportId;    
     //----------- start: this will be changed with getReport() call -----------------------
     this.getFilters();
     //-------------- end --------------------------
@@ -31,11 +33,11 @@ export class ReportEditComponent implements OnInit {
   getReport() {
     this._reportService.get(this.reportId).subscribe((res: Report) => {
       this.report = res;
-
-      this.selectedFilterList=this.filterList.filter((objFromA) => {
-        return !this.report.reportFilterList.find(function (objFromB) {
-          return objFromA.id !== objFromB.filterId
-        })
+      if(this.report.type==ReportType.Tabular)this.report.graphicalFeature=new GraphicalFeature();
+      else this.report.tabularFeature=new TabularFeature();
+      this.report.widgetName = window.history.state.widgetName;
+      this.report.reportFilterList.forEach(rf=>{
+        this.selectedFilterList=this.selectedFilterList.concat(this.filterList.filter(fl=>fl.id==rf.filterId));
       })
       if (!this.selectedFilterList.find(f => f.id == 0)) this.selectedFilterList.unshift({ id: 0, name: '' });
 
@@ -86,7 +88,21 @@ export class ReportEditComponent implements OnInit {
   public get reportType(): typeof ReportType {
     return ReportType;
   }
+  validate():string{
+    let errorMessage:string='';
+    if(!this.report.name)errorMessage+='Name is required<br>';
+      if(!this.report.type) errorMessage+='Type is required<br>';
+      if(this.report.type==ReportType.Tabular){
+       if(!this.report.tabularFeature.script) errorMessage+='Script is required<br>';
+      }else{
+        if(!this.report.graphicalFeature.script) errorMessage+='Script is required<br>';
+        if(!this.report.graphicalFeature.graphType) errorMessage+='Graph Type is required<br>';
+      }
+    return errorMessage;
+  }
   saveReport() {
+    this.message=this.validate();
+    if(this.message.length>0)return;
     this.report.reportFilterList=[];
     if(this.selectedFilterList.length>0){
       this.selectedFilterList.filter(f=>f.id!=0).forEach((f,i) =>{

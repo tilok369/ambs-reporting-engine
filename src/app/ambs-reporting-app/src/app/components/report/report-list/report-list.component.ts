@@ -35,7 +35,7 @@ widgetName:string='';
   }
 
   editReport(id:number){
-    this._router.navigateByUrl('/report-edit', {state: {reportId: id}});
+    this._router.navigateByUrl('/report-edit', {state: {reportId: id,widgetId:this.widgetId,widgetName:this.widgetName}});
   }
   deleteReport(id:number){
 

@@ -7,8 +7,7 @@
         </div>
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 offset-lg-2 offset-md-2">
-                <div class="alert alert-danger" role="alert" *ngIf="message">
-                    {{message}}
+                <div class="alert alert-danger" role="alert" *ngIf="message" [innerHTML]="message">                   
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -20,7 +19,7 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="name" placeholder="report name" required
+                    <input type="text" class="form-control" id="name" placeholder="report name" required maxlength="50"
                         [(ngModel)]="report.name">
                     <label for="name">Report Name</label>
                 </div>
@@ -77,12 +76,12 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="t-title"
                                         placeholder="tabular report title" required
-                                        [(ngModel)]="report.tabularFeature.title">
+                                        [(ngModel)]="report.tabularFeature.title" maxlength="100">
                                     <label for="t-tile">Title</label>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="t-template" placeholder="template"
-                                        required [(ngModel)]="report.tabularFeature.template">
+                                        required [(ngModel)]="report.tabularFeature.template" maxlength="200">
                                     <label for="t-template">Template</label>
                                 </div>
                             </div>
@@ -90,7 +89,7 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="t-subtitle"
                                         placeholder="tabular report sub title" required
-                                        [(ngModel)]="report.tabularFeature.subTitle">
+                                        [(ngModel)]="report.tabularFeature.subTitle" maxlength="100">
                                     <label for="t-subtitle">Sub Title</label>
                                 </div>
                                 <div class="form-check mb-3">
@@ -158,12 +157,12 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="g-title"
                                         placeholder="graphical report title" required
-                                        [(ngModel)]="report.graphicalFeature.title">
+                                        [(ngModel)]="report.graphicalFeature.title" maxlength="100">
                                     <label for="g-title">Title</label>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="g-xaxisTitle" placeholder="x axis title"
-                                        required [(ngModel)]="report.graphicalFeature.xaxisTitle">
+                                        required [(ngModel)]="report.graphicalFeature.xaxisTitle" maxlength="100">
                                     <label for="g-xaxisTitle">X Axis Title</label>
                                 </div>
                             </div>
@@ -171,12 +170,12 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="g-subtitle"
                                         placeholder="graphical report sub title" required
-                                        [(ngModel)]="report.graphicalFeature.subTitle">
+                                        [(ngModel)]="report.graphicalFeature.subTitle" maxlength="100">
                                     <label for="g-subtitle">Sub Title</label>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="g-yaxisTitle" placeholder="y axis title"
-                                        required [(ngModel)]="report.graphicalFeature.yaxisTitle">
+                                        required [(ngModel)]="report.graphicalFeature.yaxisTitle"> maxlength="100"
                                     <label for="g-xaxisTitle">Y Axis Title</label>
                                 </div>
                             </div>
@@ -200,7 +199,7 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="g-yaxissuffix"
                                         placeholder="x axis suffix" required
-                                        [(ngModel)]="report.graphicalFeature.xaxisSuffix">
+                                        [(ngModel)]="report.graphicalFeature.xaxisSuffix" maxlength="10">
                                     <label for="g-xaxissuffix">X Axis Suffix</label>
                                 </div>
                             </div>
@@ -208,7 +207,7 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="g-yaxisprefix"
                                         placeholder="x axis prefix" required
-                                        [(ngModel)]="report.graphicalFeature.xaxisPrefix">
+                                        [(ngModel)]="report.graphicalFeature.xaxisPrefix" maxlength="10">
                                     <label for="g-xaxisprefix">X Axis Prefix</label>
                                 </div>
                             </div>
@@ -226,7 +225,7 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="g-yaxisTitle"
                                         placeholder="y axis suffix" required
-                                        [(ngModel)]="report.graphicalFeature.yaxisSuffix">
+                                        [(ngModel)]="report.graphicalFeature.yaxisSuffix" maxlength="10">
                                     <label for="g-yaxissuffix">Y Axis Suffix</label>
                                 </div>
                             </div>
@@ -234,7 +233,7 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="g-yaxisprefix"
                                         placeholder="y axis prefix" required
-                                        [(ngModel)]="report.graphicalFeature.yaxisPrefix">
+                                        [(ngModel)]="report.graphicalFeature.yaxisPrefix" maxlength="10">
                                     <label for="g-yaxisprefix">Y Axis Prefix</label>
                                 </div>
                             </div>
