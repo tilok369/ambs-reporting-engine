@@ -11,6 +11,7 @@ namespace Ambs.Reporting.Service.Interfaces
         GraphicalFeature Add(GraphicalFeature graphicalFeature);
         GraphicalFeature Edit(GraphicalFeature graphicalFeature);
         GraphicalFeature GetByReportId(long reportId);
+        List<GraphicalFeature> GetAllByReportId(long reportId);
         GraphicalFeature Delete(long id);
     }
 }

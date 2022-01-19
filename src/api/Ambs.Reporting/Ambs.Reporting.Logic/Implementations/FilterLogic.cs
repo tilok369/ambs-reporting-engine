@@ -1,4 +1,5 @@
 ﻿
+using Ambs.Reporting.ViewModel.Reponse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +59,11 @@ namespace Ambs.Reporting.Logic.Implementations
             }
 
             return filters;
+        }
+
+        public IEnumerable<DropdownFilter> GetGraphType()
+        {
+            return _filterService.GetGraphType().Select(gt=>new DropdownFilter (gt.Id,gt.Name));
         }
 
         public FilterPostResponseDTO Save(FilterPostRequestDTO filter)

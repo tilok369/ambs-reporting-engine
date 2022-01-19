@@ -33,5 +33,10 @@ namespace Ambs.Reporting.Api.Controllers
         {
             return _filterLogic.Save(filter);
         }
+        [HttpGet("graphType")]
+        public IActionResult GetGraphType()
+        {
+            return _filterLogic.GetGraphType();
+        }
     }
 }

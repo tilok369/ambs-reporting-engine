@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 export class WidgetComponent implements OnInit {
 
   public widgets: any[] = [];
-
   public dashboardId: Number = 0;
   constructor(private router: Router, private widgetService: WidgetService) { }
 
@@ -32,6 +31,9 @@ export class WidgetComponent implements OnInit {
 
   editWidget(id){
     this.router.navigateByUrl('/widget-edit', {state: {widgetId: id, dashboardId: this.dashboardId}});
+  }
+  goToReport(widget){
+    this.router.navigateByUrl('/report',{state:{widgetId:widget.id,widgetName:widget.name}});
   }
 
 }

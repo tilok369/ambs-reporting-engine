@@ -26,6 +26,11 @@ namespace Ambs.Reporting.Service.Implementations
             return _genericRepository.GetAll<Filter>();
         }
 
+        public IEnumerable<GraphType> GetGraphType()
+        {
+            return _genericRepository.Find<GraphType>(gt => gt.Status == true);
+        }
+
         public Filter Save(Filter filter)
         {
             if (filter.Id == 0)
