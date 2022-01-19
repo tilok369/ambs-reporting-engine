@@ -2,5 +2,5 @@
 public interface IReportExportLogic
 {
     Task<byte[]> GetReportData(ExportType exportType, string contentRootPath);
-    Task<byte[]> GetReportExport(string fileName);
+    //Task<byte[]> GetReportExport(string fileName);
 }

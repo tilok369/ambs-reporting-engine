@@ -32,10 +32,10 @@ public class ReportExportLogic : IReportExportLogic
     }
 
 
-    public async Task<byte[]> GetReportExport(string fileName)
-    {
-        return await _exporter.ReportExport(fileName);
-    }
+    //public async Task<byte[]> GetReportExport(string fileName)
+    //{
+    //    return await _exporter.ReportExport(fileName);
+    //}
 
 
 }
