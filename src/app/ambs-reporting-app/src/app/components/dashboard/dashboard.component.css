@@ -1,0 +1,18 @@
+.report-tab{
+    cursor: pointer;
+    background-color: gray;
+    color: white;
+    font-size: larger;
+    font-style: italic;
+    border: 1px solid white;
+    margin-right: 5px;
+}
+.report-tab-active{
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    font-size: larger;
+    font-style: italic;
+    border: 1px solid white;
+    margin-right: 5px;
+}

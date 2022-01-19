@@ -10,7 +10,7 @@ import * as CanvasJS from '../../../assets/canvasjs.min';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-tableData:any;
+  tableDatas:any;
   constructor(private graphService: GraphService
     ,private _reportService:ReportService) { }
 
@@ -55,10 +55,20 @@ tableData:any;
       
     chart.render();
   }
+  tabClicked(data:any){
+    data.isActive=true;
+    this.tableDatas.filter(dt=>dt.sheetName!==data.sheetName).forEach(td => {
+      td.isActive=false;
+    });
+  }
   getExportReportData(){
 this._reportService.getExportReportData().subscribe((res:any)=>{
   console.log(res);
-  this.tableData=res[0];
+  this.tableDatas=res;
+  this.tableDatas.forEach(td => {
+    td.isActive=false;
+  });
+  this.tableDatas[0].isActive=true;
 })
   }
 

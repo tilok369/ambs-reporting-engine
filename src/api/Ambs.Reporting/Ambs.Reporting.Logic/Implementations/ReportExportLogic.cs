@@ -30,10 +30,10 @@ public class ReportExportLogic : IReportExportLogic
         var paramDate = new SqlParameter("@Date", new DateTime(2021, 09, 10));
         var (columns, rows) = await _reportService.GetReportData(commandText, CommandType.StoredProcedure, new[] { paramBranchId, paramDate });
         var ambsReportDataReceiveAndPayment = new ReportData { Columns = columns, Rows = rows };
-        //commandText = "dbo.P_TransactionSummaryLoanDisbursedAndFullPaid";
-        //(columns, rows) = await _reportService.GetReportData(commandText, CommandType.StoredProcedure, new[] { paramBranchId, paramDate });
-        //var ambsReportDataLoanDisburseAndFullPaid = new ReportData { Columns = columns, Rows = rows };
-        return await _reportingEngine.GetExportData(new List<ReportData> { ambsReportDataReceiveAndPayment });
+        commandText = "dbo.P_TransactionSummaryLoanDisbursedAndFullPaid";
+        (columns, rows) = await _reportService.GetReportData(commandText, CommandType.StoredProcedure, new[] { paramBranchId, paramDate });
+        var ambsReportDataLoanDisburseAndFullPaid = new ReportData { Columns = columns, Rows = rows };
+        return await _reportingEngine.GetExportData(new List<ReportData> { ambsReportDataReceiveAndPayment, ambsReportDataLoanDisburseAndFullPaid });
     }
 
     public async Task<byte[]> GetReportDataForExport(ExportType exportType,string contentRootPath)
