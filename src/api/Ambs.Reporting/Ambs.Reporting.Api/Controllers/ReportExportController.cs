@@ -40,11 +40,11 @@ public class ReportExportController : ControllerBase
         return File(stream, "application/pdf", "Test.pdf");
 
     }
-    [HttpGet("data")]
-    public async Task<IActionResult> GetData()
+    [HttpGet("data/{reportId}/{paraVals}")]
+    public async Task<IActionResult> GetData(long reportId,string paraVals)
     {
         //var data = await _reportLogic.GetReportData();
-        return Ok(await _reportLogic.GetReportData());
+        return Ok(await _reportLogic.GetReportData(reportId,paraVals));
     }
 
     //[HttpGet("reportExport")]

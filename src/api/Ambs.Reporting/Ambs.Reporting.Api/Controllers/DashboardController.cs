@@ -35,6 +35,11 @@ namespace Ambs.Reporting.Api.Controllers
         {
             return _dashboardLogic.Save(dashboard);
         }
+        [HttpGet("dashboard/{id}")]
+        public IActionResult GetDashboard(long id)
+        {
+            return Ok(_dashboardLogic.GetDashboard(id));
+        }
 
 
         [HttpPost("photo")]

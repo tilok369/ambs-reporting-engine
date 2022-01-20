@@ -20,6 +20,11 @@ public class WidgetService : IWidgetService
         return _genericRepository.GetAll<Widget>();
     }
 
+    public IEnumerable<Widget> GetByDashboardId(long id)
+    {
+        return _genericRepository.Find<Widget>(wd=>wd.DashboardId == id);
+    }
+
     public Widget Save(Widget widget)
     {
         if (widget.Id == 0)
