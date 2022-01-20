@@ -19,6 +19,7 @@ namespace Ambs.Reporting.DAL.Entities
         public string CreatedBy { get; set; } = null!;
         public DateTime? UpdatedOn { get; set; }
         public string? UpdatedBy { get; set; }
+        public string BrandImage { get; set; }
 
         public virtual ICollection<MetaDatum> MetaData { get; set; }
         public virtual ICollection<Widget> Widgets { get; set; }

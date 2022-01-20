@@ -64,6 +64,7 @@ public class DashboardLogic : IDashboardLogic
                 Status = dashboard.Status,
                 UpdatedBy = "admin",
                 UpdatedOn = DateTime.Now,
+                BrandImage = dashboard.BrandImage
             };
             var result = _dashboardService.Save(db);
 

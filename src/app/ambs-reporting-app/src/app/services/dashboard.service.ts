@@ -21,4 +21,8 @@ export class DashboardService {
     return this.http.post(environment.apiEndPoint + 'dashboard', dashboad, environment.getHttpHeader());
   }
 
+  uploadDashboardPhoto(formData: FormData) {
+    return this.http.post(environment.apiEndPoint + "dashboard/photo", formData);
+  }
+
 }

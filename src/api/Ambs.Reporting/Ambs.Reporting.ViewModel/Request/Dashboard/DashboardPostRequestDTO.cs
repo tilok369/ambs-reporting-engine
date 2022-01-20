@@ -15,4 +15,5 @@ public record DashboardPostRequestDTO: BasePostRequestDTO
     public string CreatedBy { get; set; } = null!;
     public DateTime? UpdatedOn { get; set; }
     public string? UpdatedBy { get; set; }
+    public string BrandImage { get; set; }
 }

@@ -11,9 +11,10 @@ export class ReportConfigurationAddComponent implements OnInit {
 
   public dashboard: any;
   public message: string = '';
+  fileData: any;
 
   constructor(private dashboardService: DashboardService) { }
-
+  
   ngOnInit(): void {
     this.dashboard = {
       id: 0,
@@ -23,8 +24,10 @@ export class ReportConfigurationAddComponent implements OnInit {
       createdOn: new Date(),
       createdBy: "admin",
       updatedOn: new Date(),
-      updatedBy: "admin"
+      updatedBy: "admin",
+      brandImage: '',
     }
+    
   }
 
   validateDashboard(){
@@ -35,15 +38,31 @@ export class ReportConfigurationAddComponent implements OnInit {
     return true;
   }
 
+  fileProgress(fileInput: any) {
+    this.fileData = <File>fileInput.target.files[0];
+    
+  }
+
   saveDashboad(){
     this.message = '';
+    let fileToUpload = this.fileData;
+    const formData = new FormData();
+    formData.append('file',fileToUpload,fileToUpload.name);
+    this.dashboard.brandImage = fileToUpload.name;
     console.log(this.dashboard);
-    if(this.validateDashboard()){
-      this.dashboardService.saveDashboard(this.dashboard).subscribe((res: any) => {
-        console.log(res);
-        this.message = res.message;
-      });
-    }
+    this.dashboardService.uploadDashboardPhoto(formData).subscribe((photores:any)=>{
+      if(formData){
+        if(this.validateDashboard()){
+          this.dashboardService.saveDashboard(this.dashboard).subscribe((res: any) => {
+            console.log(res);
+            this.message = res.message;
+          });
+        }
+
+      }
+
+    })
+    
   }
 
 }

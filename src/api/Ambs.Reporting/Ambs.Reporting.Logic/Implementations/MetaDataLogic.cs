@@ -59,7 +59,8 @@ public class MetaDataLogic : IMetaDataLogic
             {
                 Id = metaData.Id,
                 DataSource = metaData.DataSource,
-                DashboardId=metaData.DashboardId
+                DashboardId=metaData.DashboardId,
+                BrandImage = metaData.BrandImage
             };
             var result = _metaDataService.Save(md);
 
