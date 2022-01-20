@@ -38,5 +38,11 @@ namespace Ambs.Reporting.Api.Controllers
         {
             return Ok(_filterLogic.GetGraphType());
         }
+
+        [HttpGet("GetFilterbyReportId")]
+        public IList<FilterResponseDTO> GetFilterbyReportId(long reportId)
+        {
+            return _filterLogic.GetFilterbyReportId(reportId);
+        }
     }
 }

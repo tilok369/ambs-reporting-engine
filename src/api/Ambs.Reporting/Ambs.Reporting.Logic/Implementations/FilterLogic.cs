@@ -11,10 +11,12 @@ namespace Ambs.Reporting.Logic.Implementations
     public class  FilterLogic : IFilterLogic
     {
         private readonly IFilterService _filterService;
+        private readonly IReportFilterService _reportFilterService;
 
-        public FilterLogic(IFilterService filterService)
+        public FilterLogic(IFilterService filterService, IReportFilterService reportFilterService)
         {
             _filterService = filterService;
+            _reportFilterService = reportFilterService;
         }
 
         public FilterResponseDTO Get(long id)
@@ -104,5 +106,34 @@ namespace Ambs.Reporting.Logic.Implementations
                 };
             }
         }
+
+
+        public IList<FilterResponseDTO> GetFilterbyReportId(long reportId)
+        {
+            var filterReports = _reportFilterService.GetReportFiltersByReportId(reportId);
+            
+            var filters = new List<FilterResponseDTO>();
+            foreach (var filterReport in filterReports)
+            {
+                var filter = _filterService.Get(filterReport.FilterId);
+                filters.Add(new FilterResponseDTO(filter.Id)
+                {
+                    Name = filter.Name,
+                    Label = filter.Label,
+                    Script = filter.Script,
+                    Parameter = filter.Parameter,
+                    DependentParameters = filter.DependentParameters,
+                    Status = filter.Status,
+                    CreatedOn = filter.CreatedOn,
+                    CreatedBy = filter.CreatedBy,
+                    UpdatedOn = filter.UpdatedOn,
+                    UpdatedBy = filter.UpdatedBy
+                });
+            }
+
+            return filters;
+        }
+
+
     }
 }

@@ -38,5 +38,7 @@ namespace Ambs.Reporting.Service.Implementations
 
             return _genericRepository.Edit<Filter>(filter);
         }
+
+      
     }
 }
