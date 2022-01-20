@@ -1,35 +1,12 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div style="margin-top: 50px;" >
-            <ul class="nav nav-tabs" *ngIf="tableDatas">
-                <li *ngFor="let tab of tableDatas" (click)="tabClicked(tab);"> 
-                    <a data-target="#{{tab.sheetName}}" data-toggle="tab" class="btn report-tab" [ngClass]="{'report-tab-active' : tab.isActive}">{{tab.sheetName}}</a>
-                </li>
-            </ul>
-            <div class="overflow-auto" style="height: 450px;">
-            <div *ngIf="tableDatas" class="tab-content">
-                <div *ngFor="let tableData of tableDatas" class="tab-pane" [ngClass]="{'active' : tableData.isActive}" id="{{tableData.sheetName}}">
-                    <table class="table table-bordered">
-                        <ng-container>
-                            <thead>
-                                <tr *ngFor="let layer of tableData?.layers">
-                                    <th *ngFor="let column of layer?.columns" [attr.colspan]="column.columnSpan"
-                                        [attr.rowspan]="column.rowSpan" style="text-align: center;">
-                                        {{column.columnName}}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let row of tableData?.rows">
-                                    <td *ngFor="let cell of row">{{cell}}</td>
-                                </tr>
-                            </tbody>
-                        </ng-container>
-                    </table>
-                </div>
-            </div>
+        <div style="height: 450px;">
+            <app-report-data [tableDatas]="transactionSummaryReceiveAndPayment"></app-report-data>
+        </div>
+        <div style="height: 450px;">
+            <app-report-data [tableDatas]="loanDisburseAndFullPayment"></app-report-data>
         </div>
 
-        </div>
         <div id="chart-container-1" style="height: 450px;"></div>
         <div id="chart-container-2" style="height: 450px;"></div>
     </div>

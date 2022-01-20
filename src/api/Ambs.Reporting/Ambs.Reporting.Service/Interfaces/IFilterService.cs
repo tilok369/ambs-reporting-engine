@@ -13,5 +13,6 @@ namespace Ambs.Reporting.Service.Interfaces
 
         Filter Save(Filter filter);
         IEnumerable<GraphType> GetGraphType();
+        //IEnumerable<T> GetDrowpdownFilterValues<T>(string script) where T : class;
     }
 }

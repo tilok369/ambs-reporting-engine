@@ -8,4 +8,5 @@ public interface IDashboardLogic
     DashboardResponseDTO Get(long id);
     IList<DashboardResponseDTO> GetAll(int page, int size);
     DashboardPostResponseDTO Save(DashboardPostRequestDTO dashboard);
+    DashboardWidgetReportResponseDTO GetDashboard(long id);
 }

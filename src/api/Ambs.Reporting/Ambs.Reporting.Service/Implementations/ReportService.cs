@@ -36,4 +36,9 @@ public class ReportService : IReportService
     {
         return _genericRepository.Delete<Report>(id);
     }
+
+    public IEnumerable<Report> GetByWidgetId(long widgetId)
+    {
+        return _genericRepository.Find<Report>(rp => rp.WidgetId == widgetId);
+    }
 }

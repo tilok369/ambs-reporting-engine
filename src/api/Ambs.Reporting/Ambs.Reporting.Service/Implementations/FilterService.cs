@@ -26,6 +26,16 @@ namespace Ambs.Reporting.Service.Implementations
             return _genericRepository.GetAll<Filter>();
         }
 
+        public IEnumerable<GraphType> GetDrowpdownFilterValues(string script)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> GetDrowpdownFilterValues<T>(string script) where T : class
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<GraphType> GetGraphType()
         {
             return _genericRepository.Find<GraphType>(gt => gt.Status == true);
