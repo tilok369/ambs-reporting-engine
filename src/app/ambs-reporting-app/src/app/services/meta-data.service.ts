@@ -20,4 +20,8 @@ export class MetaDataService {
   saveMetadata(metadata: any){
     return this.http.post(environment.apiEndPoint + 'metadata', metadata, environment.getHttpHeader());
   }
+
+  uploadMetaDatadPhoto(formData: FormData, id) {
+    return this.http.post(environment.apiEndPoint + "metadata/photo/"+id, formData);
+  }
 }
