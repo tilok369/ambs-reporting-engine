@@ -4,6 +4,7 @@ using Ambs.Reporting.ViewModel.Reponse.Dashboard;
 using Ambs.Reporting.ViewModel.Request.Dashboard;
 using AutoMapper;
 using Ambs.Reporting.DAL.CalculativeModels;
+using static Ambs.Reporting.Utility.Enum.ReportEnum;
 
 namespace Ambs.Reporting.Logic.Implementations;
 
@@ -143,7 +144,8 @@ public class DashboardLogic : IDashboardLogic
                         Parameter = filter.Parameter,
                         DependentParameters = filter.DependentParameters,
                         ReportId = report.Id,
-                        DropdownFilters = reportFilter.SortOrder == 1 ? _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(filter.Script)) : new List<DropdownFilter>()
+                        Type=filter.Type,
+                        DropdownFilters = filter.Type == (int)FilterType.Dropdown ? _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(filter.Script)) : new List<DropdownFilter>()
                     };
                     reportDto.Filters.Add(filterDto);
                 }
