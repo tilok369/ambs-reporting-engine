@@ -31,9 +31,10 @@ public class ReportExportLogic : IReportExportLogic
     }
     private static string ConstructCommand(string script, Dictionary<string, string> parameters)
     {
+        script = script.ToLower();
         foreach (var p in parameters)
         {
-            script = script.Replace(p.Key, p.Value);
+            script = script.Replace(p.Key.ToLower(), p.Value);
         }
         return script;
     }
@@ -49,7 +50,8 @@ public class ReportExportLogic : IReportExportLogic
         //var commandText = "dbo.P_TransactionSummaryDailyReceiveAndPayment";
         //var paramBranchId = new SqlParameter("@BranchId", 2);
         //var paramDate = new SqlParameter("@Date", new DateTime(2021, 09, 10));
-        var (columns, rows) = await _exportReportService.GetReportData(ConstructCommand(script,paramVals.ToDictionary()), CommandType.Text);
+        var dbScript = ConstructCommand(script, paramVals.ToDictionary());
+        var (columns, rows) = await _exportReportService.GetReportData(dbScript, CommandType.Text);
         var ambsReportDataReceiveAndPayment = new ReportData { Columns = columns, Rows = rows };
         //commandText = "dbo.P_TransactionSummaryLoanDisbursedAndFullPaid";
         //(columns, rows) = await _exportReportService.GetReportData(commandText, CommandType.StoredProcedure, new[] { paramBranchId, paramDate });

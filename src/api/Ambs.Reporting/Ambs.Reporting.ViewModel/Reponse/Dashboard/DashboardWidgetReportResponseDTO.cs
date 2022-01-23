@@ -46,6 +46,7 @@ public record FilterDTO : BaseGetResponseDTO
     public string Parameter { get; set; }
     public string DependentParameters { get; set; }
     public bool Status { get; set; }
-    public IEnumerable<DropdownFilter> DropdownFilters { get; set; }
+    public int? Type { get; set; }
+    public IEnumerable<DropdownFilter>? DropdownFilters { get; set; }
 }
 

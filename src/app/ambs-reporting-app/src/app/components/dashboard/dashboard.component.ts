@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FilterType } from 'src/app/enums/filter-enum';
 import { ReportType } from 'src/app/enums/report-enum';
 import { DashboardWidgetReportVM, ReportVM } from 'src/app/models/dashboard/dashboard-widget-report.model';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -91,21 +92,28 @@ export class DashboardComponent implements OnInit {
       this.loanDisburseAndFullPayment[0].isActive = true;
     })
   }
+  public get filterType(): typeof FilterType {
+    return FilterType;
+  }
   getParamVals(report: ReportVM): string {
     let paramVals: string = ''
-    report.filters.forEach(flt => {
+    report.filters.forEach(function (flt, index) {
       if (flt.value)
-        paramVals = paramVals + '%40' + flt.parameter + '%23' + flt.value + '%7C';
+        paramVals = paramVals + '%40' + flt.parameter + '%23' + (index == report.filters.length - 1 ? flt.value : flt.value + '%7C');
     })
-    return "%40BranchId%232%7C%40Date%232021-09-02";
+    return paramVals;
+    //return "%40BranchId%232%7C%40Date%232021-09-02";
   }
   getReportData(report: ReportVM) {
     if (report.type === ReportType.Tabular) {
       this._reportService.getExportReportData(report.id, this.getParamVals(report)).subscribe((res: any) => {
         report.data = res;
-        report.data.forEach(td => {
-          td.isActive = false;
-        });
+        if (report.data) {
+          report.data.forEach(td => {
+            td.isActive = false;
+          });
+          report.data[0].isActive = true;
+        }
       })
     } else {
       this._graphService.getGraph(report.id, this.getParamVals(report)).subscribe((res: any) => {
