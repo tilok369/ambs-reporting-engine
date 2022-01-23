@@ -9,6 +9,7 @@
                 <tr class="table-dark">
                     <th>Dashboard</th>
                     <th>Data Source</th>
+                    <th>Brand Image</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -16,6 +17,7 @@
                 <tr *ngFor="let md of metadatas">
                     <td class="fw-bold">{{md.dashboardName}}</td>
                     <td>{{md.dataSource}}</td>
+                    <td>{{md.brandImage}}</td>
                     <td>
                         <i class="fa fa-edit icon icon-edit" title="edit dashboard" (click)="editMetadata(md.id)"></i> 
                         <i class="fa fa-times icon icon-delete" title="delete dashboard"></i>

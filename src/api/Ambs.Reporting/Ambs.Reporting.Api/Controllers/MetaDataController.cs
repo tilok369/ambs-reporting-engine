@@ -35,8 +35,8 @@ namespace Ambs.Reporting.Api.Controllers
             return _metaDataLogic.Save(dashboard);
         }
 
-        [HttpPost("photo/{id}")]
-        public ActionResult UploadPhoto(long id)
+        [HttpPost("photo/{id}/{prevPhoto?}")]
+        public ActionResult UploadPhoto(long id, string? prevPhoto)
         {
             try
             {
@@ -45,10 +45,17 @@ namespace Ambs.Reporting.Api.Controllers
                     var file = Request.Form.Files[0];
                     var folderName = Path.Combine("Resources", "Dashboard");
                     var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                    if(prevPhoto.Length>0)
+                    {
+                        var fullPath = Path.Combine(pathToSave, prevPhoto);
+                        if (System.IO.File.Exists(fullPath))
+                            System.IO.File.Delete(fullPath);
+
+                    }
                     if (file.Length > 0)
                     {
-                        //var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                        var fileName = "Dashboard-" + id.ToString() + "-BrandImage.jpg";
+                        var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                        var fileName = "Dashboard-" + id.ToString()+"-" + originalFileName;
                         var fullPath = Path.Combine(pathToSave, fileName);
                         if (System.IO.File.Exists(fullPath))
                             System.IO.File.Delete(fullPath);

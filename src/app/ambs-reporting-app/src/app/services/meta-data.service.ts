@@ -21,7 +21,7 @@ export class MetaDataService {
     return this.http.post(environment.apiEndPoint + 'metadata', metadata, environment.getHttpHeader());
   }
 
-  uploadMetaDatadPhoto(formData: FormData, id) {
-    return this.http.post(environment.apiEndPoint + "metadata/photo/"+id, formData);
+  uploadMetaDatadPhoto(formData: FormData, id, prevPhoto?:any) {
+    return this.http.post(environment.apiEndPoint + "metadata/photo/"+id +"/" + prevPhoto ,formData );
   }
 }

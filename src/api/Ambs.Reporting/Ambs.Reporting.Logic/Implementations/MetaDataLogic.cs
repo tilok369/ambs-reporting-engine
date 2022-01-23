@@ -27,7 +27,8 @@ public class MetaDataLogic : IMetaDataLogic
         {
             DataSource = metaData.DataSource,
             DashboardId = metaData.DashboardId,
-            DashboardName = dashboard.Name
+            DashboardName = dashboard.Name,
+            BrandImage = metaData?.BrandImage ?? ""
         };
     }
 
@@ -45,6 +46,7 @@ public class MetaDataLogic : IMetaDataLogic
                 DataSource=metaData.DataSource,
                 DashboardId=metaData.DashboardId,
                 DashboardName=dashboard.Name,
+                BrandImage = metaData?.BrandImage ?? ""
             });
         }
 
@@ -59,7 +61,8 @@ public class MetaDataLogic : IMetaDataLogic
             {
                 Id = metaData.Id,
                 DataSource = metaData.DataSource,
-                DashboardId=metaData.DashboardId
+                DashboardId=metaData.DashboardId,
+                BrandImage = "Dashboard-" + metaData.DashboardId.ToString() +"-"+ metaData.BrandImage
             };
             var result = _metaDataService.Save(md);
 

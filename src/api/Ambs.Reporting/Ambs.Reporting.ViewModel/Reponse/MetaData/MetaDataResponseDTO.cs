@@ -8,5 +8,7 @@ public record MetaDataResponseDTO: BaseGetResponseDTO
     public long DashboardId { get; set; }
     public string DashboardName { get; set; }
     public string DataSource { get; set; } = null!;
+
+    public string? BrandImage { get; set; }
 }
 
