@@ -13,7 +13,7 @@ export class ReportConfigurationComponent implements OnInit {
   constructor(private router: Router, private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
-    this.getDasgboards(1, 10);
+    this.getDasgboards(1, 20);
   }
 
   getDasgboards(page, size){

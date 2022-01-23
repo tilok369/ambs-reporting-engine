@@ -21,6 +21,7 @@ namespace Ambs.Reporting.DAL.Entities
         public string CreatedBy { get; set; } = null!;
         public DateTime? UpdatedOn { get; set; }
         public string? UpdatedBy { get; set; }
+        public int? Type { get; set; }
 
         public virtual ICollection<ReportFilter> ReportFilters { get; set; }
     }

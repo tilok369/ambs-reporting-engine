@@ -1,4 +1,5 @@
 export interface IDropdownFilter {
     value:number,
-    name:string
+    name:string,
+    sortOrder:number
 }

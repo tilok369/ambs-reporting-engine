@@ -7,6 +7,7 @@ using Ambs.Reporting.ViewModel.Request.GraphicalFeature;
 using Ambs.Reporting.ViewModel.Request.Report;
 using Ambs.Reporting.ViewModel.Request.ReportFilter;
 using Ambs.Reporting.ViewModel.Request.TabularFeature;
+using Ambs.Reporting.ViewModel.Reponse;
 using AutoMapper;
 
 namespace Ambs.Reporting.Api.Mapper
@@ -27,6 +28,8 @@ namespace Ambs.Reporting.Api.Mapper
 
             CreateMap<GraphicalFeaturePostRequestDTO, GraphicalFeature>();
             CreateMap<GraphicalFeature, GraphicalFeatureResponseDTO>();
+
+            CreateMap<DropdownFilterCM, DropdownFilter>();
         }
     }
 }
