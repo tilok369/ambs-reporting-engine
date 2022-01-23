@@ -4,6 +4,6 @@ namespace Ambs.Reporting.DAL.Repository.Interfaces;
 
 public interface IFilterRepository
 {
-    IEnumerable<DropDownFilter> GetDrowpdownFilterValues(string script);
+    IEnumerable<DropdownFilterCM> GetDrowpdownFilterValues(string script);
 }
 

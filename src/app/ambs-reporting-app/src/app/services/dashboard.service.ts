@@ -16,6 +16,9 @@ export class DashboardService {
   getDashboard(id){
     return this.http.get(environment.apiEndPoint + 'dashboard/' + id);
   }
+  getDashboardWidgetReport(dashboardId:number){
+    return this.http.get(environment.apiEndPoint + 'dashboard/dashboard-widget-report/' + dashboardId);
+  }
 
   saveDashboard(dashboad: any){
     return this.http.post(environment.apiEndPoint + 'dashboard', dashboad, environment.getHttpHeader());

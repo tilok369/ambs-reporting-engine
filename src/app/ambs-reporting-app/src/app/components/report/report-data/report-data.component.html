@@ -1,12 +1,12 @@
-<div style="margin-top: 50px;">
-    <ul class="nav nav-tabs" *ngIf="tableDatas">
+<div style="margin-top: 50px;" *ngIf="tableDatas">
+    <ul class="nav nav-tabs" >
         <li *ngFor="let tab of tableDatas" (click)="tabClicked(tab);">
             <a data-target="#{{tab.sheetName}}" data-toggle="tab" class="btn report-tab"
                 [ngClass]="{'report-tab-active' : tab.isActive}">{{tab.sheetName}}</a>
         </li>
     </ul>
     <div class="overflow-auto" style="height: 450px;">
-        <div *ngIf="tableDatas" class="tab-content">
+        <div >
             <div *ngFor="let tableData of tableDatas" class="tab-pane" [ngClass]="{'active' : tableData.isActive}"
                 id="{{tableData.sheetName}}">
                 <table class="table table-bordered">

@@ -148,6 +148,10 @@ namespace Ambs.Reporting.DAL.Entities
             {
                 entity.ToTable("MetaData", "config");
 
+                entity.Property(e => e.BrandImage)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.DataSource).HasMaxLength(200);
 
                 entity.HasOne(d => d.Dashboard)

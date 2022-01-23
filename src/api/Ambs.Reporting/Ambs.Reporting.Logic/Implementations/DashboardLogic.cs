@@ -109,11 +109,11 @@ public class DashboardLogic : IDashboardLogic
             };
         }
     }
-    public DashboardWidgetReportResponseDTO GetDashboard(long id)
+    public DashboardWidgetReportResponseDTO GetDashboard(long dashboardId)
     {
-        var dbDashboard = _dashboardService.Get(id);
-        var dashboard = new DashboardWidgetReportResponseDTO(id) { Name=dbDashboard.Name,IframeUrl=dbDashboard.IframeUrl,Status=dbDashboard.Status};
-        var widgets = _widgetService.GetByDashboardId(id);
+        var dbDashboard = _dashboardService.Get(dashboardId);
+        var dashboard = new DashboardWidgetReportResponseDTO(dashboardId) { Name=dbDashboard.Name,IframeUrl=dbDashboard.IframeUrl,Status=dbDashboard.Status};
+        var widgets = _widgetService.GetByDashboardId(dashboardId);
         dashboard.Widgets=new List<WidgetDTO>();
         foreach (var widget in widgets)
         {
@@ -143,7 +143,7 @@ public class DashboardLogic : IDashboardLogic
                         Parameter = filter.Parameter,
                         DependentParameters = filter.DependentParameters,
                         ReportId = report.Id,
-                        DropdownFilters = reportFilter.SortOrder == 1 ? _mapper.Map<IEnumerable<DropDownFilter>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(filter.Script)) : new List<DropdownFilter>()
+                        DropdownFilters = reportFilter.SortOrder == 1 ? _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(filter.Script)) : new List<DropdownFilter>()
                     };
                     reportDto.Filters.Add(filterDto);
                 }
