@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ambs.Reporting.DAL.CalculativeModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,6 @@ namespace Ambs.Reporting.Service.Interfaces
 
         Filter Save(Filter filter);
         IEnumerable<GraphType> GetGraphType();
-        //IEnumerable<T> GetDrowpdownFilterValues<T>(string script) where T : class;
+        IEnumerable<DropDownFilter> GetDrowpdownFilterValues(string script);
     }
 }

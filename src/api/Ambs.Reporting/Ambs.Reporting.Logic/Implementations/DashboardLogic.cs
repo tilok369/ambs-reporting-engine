@@ -2,6 +2,8 @@
 using Ambs.Reporting.ViewModel.Reponse;
 using Ambs.Reporting.ViewModel.Reponse.Dashboard;
 using Ambs.Reporting.ViewModel.Request.Dashboard;
+using AutoMapper;
+using Ambs.Reporting.DAL.CalculativeModels;
 
 namespace Ambs.Reporting.Logic.Implementations;
 
@@ -14,6 +16,7 @@ public class DashboardLogic : IDashboardLogic
     private readonly IFilterService _filterService;
     private readonly ITablularFeatureService _tablularFeatureService;
     private readonly IGraphicalFeatureService _graphicalFeatureService;
+    private readonly IMapper _mapper;
 
     public DashboardLogic(IDashboardService dashboardService
         , IWidgetService widgetService
@@ -21,7 +24,8 @@ public class DashboardLogic : IDashboardLogic
         , IReportFilterService reportFilterService
         ,IFilterService filterService
         ,ITablularFeatureService tablularFeatureService
-        , IGraphicalFeatureService graphicalFeatureService)
+        , IGraphicalFeatureService graphicalFeatureService
+        , IMapper mapper)
     {
         _dashboardService = dashboardService;
         _widgetService = widgetService;
@@ -30,6 +34,7 @@ public class DashboardLogic : IDashboardLogic
         _filterService= filterService;
         _graphicalFeatureService= graphicalFeatureService;
         _tablularFeatureService= tablularFeatureService;
+        _mapper= mapper;
     }
 
     public DashboardResponseDTO Get(long id)
@@ -126,11 +131,11 @@ public class DashboardLogic : IDashboardLogic
                     Data = null,
                     Filters = new List<FilterDTO>() 
                 };
-                var reportFilters=_reportFilterService.GetReportFiltersByReportId(report.Id);
+                var reportFilters=_reportFilterService.GetReportFiltersByReportId(report.Id).OrderBy(rf=>rf.SortOrder).ToList();
                 foreach(var reportFilter in reportFilters)
                 {
                     var filter = _filterService.Get(reportFilter.FilterId);
-                    var filterDto = new FilterDTO(reportFilter.FilterId) 
+                    var filterDto = new FilterDTO(reportFilter.FilterId)
                     {
                         Label = filter.Label,
                         Name = filter.Name,
@@ -138,7 +143,7 @@ public class DashboardLogic : IDashboardLogic
                         Parameter = filter.Parameter,
                         DependentParameters = filter.DependentParameters,
                         ReportId = report.Id,
-                        DropdownFilters = new List<DropdownFilter>() 
+                        DropdownFilters = reportFilter.SortOrder == 1 ? _mapper.Map<IEnumerable<DropDownFilter>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(filter.Script)) : new List<DropdownFilter>()
                     };
                     reportDto.Filters.Add(filterDto);
                 }
@@ -146,7 +151,6 @@ public class DashboardLogic : IDashboardLogic
             }
             dashboard.Widgets.Add(widgetDto);
         }
-
         return dashboard;
     }
 }

@@ -49,7 +49,6 @@ public class ReportExportLogic : IReportExportLogic
         //var commandText = "dbo.P_TransactionSummaryDailyReceiveAndPayment";
         //var paramBranchId = new SqlParameter("@BranchId", 2);
         //var paramDate = new SqlParameter("@Date", new DateTime(2021, 09, 10));
-        var scrpt = ConstructCommand(script, paramVals.ToDictionary());
         var (columns, rows) = await _exportReportService.GetReportData(ConstructCommand(script,paramVals.ToDictionary()), CommandType.Text);
         var ambsReportDataReceiveAndPayment = new ReportData { Columns = columns, Rows = rows };
         //commandText = "dbo.P_TransactionSummaryLoanDisbursedAndFullPaid";
