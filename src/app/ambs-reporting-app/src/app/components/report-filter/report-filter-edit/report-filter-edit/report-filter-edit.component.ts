@@ -20,7 +20,8 @@ export class ReportFilterEditComponent implements OnInit {
       id: 0,
       name: '',
       label: '',
-      parameter:''
+      parameter:'',
+      type:0
     };
     var id = window.history.state.filterId;
     this.getDasgboards(1, 100);

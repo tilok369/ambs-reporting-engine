@@ -33,7 +33,8 @@ namespace Ambs.Reporting.Logic.Implementations
                 CreatedOn = filter.CreatedOn,
                 CreatedBy = filter.CreatedBy,
                 UpdatedOn = filter.UpdatedOn,
-                UpdatedBy = filter.UpdatedBy
+                UpdatedBy = filter.UpdatedBy,
+                Type = filter?.Type
             };
         }
 
@@ -54,7 +55,8 @@ namespace Ambs.Reporting.Logic.Implementations
                     CreatedOn = filter.CreatedOn,
                     CreatedBy = filter.CreatedBy,
                     UpdatedOn = filter.UpdatedOn,
-                    UpdatedBy = filter.UpdatedBy
+                    UpdatedBy = filter.UpdatedBy,
+                    Type = filter?.Type
                 });
             }
 
@@ -83,6 +85,7 @@ namespace Ambs.Reporting.Logic.Implementations
                     UpdatedBy = "admin",
                     CreatedBy = "admin" ,
                     CreatedOn = filter.Id == 0 ? DateTime.Now : filter.CreatedOn,
+                    Type = filter?.Type 
 
                 };
                 var result = _filterService.Save(db);

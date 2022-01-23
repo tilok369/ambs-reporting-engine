@@ -29,6 +29,17 @@
                     <input type="text" class="form-control" id="dependentParameters" placeholder="filter dependentParameters" required [(ngModel)]="filter.dependentParameters">
                     <label for="iFrameUrl">Dependent Parameters</label>
                 </div>
+                <div class="form-floating mb-3">
+                    <select id="type" class="form-select" [(ngModel)]="filter.type">
+                        <option [ngValue]="1">TextBox</option>
+                        <option [ngValue]="2"> DateTime</option>
+                        <option [ngValue]="3"> CheckBox </option>
+                        <option [ngValue]="4"> Dropdown</option>
+                        <option [ngValue]="5"> RadioButton</option>
+                    </select>
+                    <label for="type">Type</label>
+                </div>
+              
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="status" required [(ngModel)]="filter.status">
                     <label class="form-check-label" for="flexCheckDefault">

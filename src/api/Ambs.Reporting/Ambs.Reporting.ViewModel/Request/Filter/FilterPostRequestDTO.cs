@@ -22,5 +22,6 @@ namespace Ambs.Reporting.ViewModel.Request.Filter
         public string CreatedBy { get; set; } = null!;
         public DateTime? UpdatedOn { get; set; }
         public string? UpdatedBy { get; set; }
+        public int? Type { get; set; }
     }
 }
