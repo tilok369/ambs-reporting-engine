@@ -12,6 +12,7 @@ export class ReportMetadataAddComponent implements OnInit {
   public metadata: any;
   public dashboards: any[] = [];
   public message: string = '';
+  fileData: any;
 
   constructor(private metadataService: MetaDataService, private dashboardService: DashboardService) { }
 
@@ -19,10 +20,16 @@ export class ReportMetadataAddComponent implements OnInit {
     this.metadata = {
       id: 0,
       dashboardId: 0,
-      dataSource: ''
+      dataSource: '',
+      brandImage: '',
     };
 
     this.getDasgboards(1, 100);
+  }
+
+  fileProgress(fileInput: any) {
+    this.fileData = <File>fileInput.target.files[0];
+    
   }
 
   getDasgboards(page, size){
@@ -42,13 +49,26 @@ export class ReportMetadataAddComponent implements OnInit {
 
   saveMetadata(){
     this.message = '';
+    let fileToUpload = this.fileData;
+    const formData = new FormData();
+    formData.append('file',fileToUpload,fileToUpload.name);
+    this.metadata.brandImage = fileToUpload.name;
     console.log(this.metadata);
-    if(this.validateMetadata()){
-      this.metadataService.saveMetadata(this.metadata).subscribe((res: any) => {
-        console.log(res);
-        this.message = res.message;
-      });
-    }
+
+    this.metadataService.uploadMetaDatadPhoto(formData,this.metadata.dashboardId).subscribe((photores:any)=>{
+      if(formData){
+        if(this.validateMetadata()){
+          this.metadataService.saveMetadata(this.metadata).subscribe((res: any) => {
+            console.log(res);
+            this.message = res.message;
+          });
+        }
+
+      }
+
+    })
+
+    
   }
 
 }
