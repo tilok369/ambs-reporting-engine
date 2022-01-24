@@ -48,8 +48,8 @@
                                         <option *ngFor="let filter of deSelectedFilterList" [value]="filter.id">
                                             {{filter.name}}</option>
                                     </select> -->
-                                    <div *ngFor="let filter of deSelectedFilterList" (click)="selectFilter(filter);">
-                                        <label>{{filter.name}}</label>
+                                    <div *ngFor="let filter of deSelectedFilterList" >
+                                        <label (click)="selectFilter(filter);">{{filter.name}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -59,10 +59,11 @@
                                     <div *ngFor="let filter of selectedFilterList"
                                         class="col-lg-12 col-md-12 col-sm-12">
                                         <div class="col-lg-6 col-md-6 col-sm-12">
-                                            <label (click)="deSelectFilter(filter);">{{filter.name}}</label>
+                                            <label (click)="deSelectFilter(filter);" >{{filter.name}}</label>
                                             <i class="fa fa-angle-double-down my-icon" *ngIf="filter.name" (click)="downPosition(filter);"></i>
                                             <i class="fa fa-angle-double-up my-icon" *ngIf="filter.name" (click)="upPosition(filter);"></i>
                                         </div>
+                                        
                                     </div>
                                     <!-- <select id="s-filter" class="form-select" (change)="deSelectFilter($event.target);">
                                         <option *ngFor="let filter of selectedFilterList" [value]="filter.id">
