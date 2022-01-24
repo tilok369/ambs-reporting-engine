@@ -38,10 +38,10 @@ public class GraphicalFeatureLogic : IGraphicalFeatureLogic
         graph.ShowLegend = gf.ShowLegend ?? false;
         graph.XaxisSuffix = gf.XaxisSuffix ?? "";
         graph.YaxisSuffix = gf.YaxisSuffix ?? "";
+        graph.XaxisPrefix = gf.XaxisPrefix ?? "";
         graph.YaxisPrefix = gf.YaxisPrefix ?? "";
-        graph.XaxisSuffix = gf.XaxisSuffix ?? "";
-        graph.YaxisTitle = gf.YaxisTitle ?? "";
         graph.XaxisTitle = gf.XaxisTitle ?? "";
+        graph.YaxisTitle = gf.YaxisTitle ?? "";
 
         return graph;
     }

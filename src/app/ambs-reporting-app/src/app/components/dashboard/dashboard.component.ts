@@ -95,13 +95,18 @@ export class DashboardComponent implements OnInit {
   public get filterType(): typeof FilterType {
     return FilterType;
   }
+  public get reportType(): typeof ReportType {
+    return ReportType;
+  }
   getParamVals(report: ReportVM): string {
+    if(report.type==ReportType.Tabular){
     let paramVals: string = ''
     report.filters.forEach(function (flt, index) {
       if (flt.value)
         paramVals = paramVals + '%40' + flt.parameter + '%23' + (index == report.filters.length - 1 ? flt.value : flt.value + '%7C');
     })
-    return paramVals;
+    return paramVals;}
+    return '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333';
     //return "%40BranchId%232%7C%40Date%232021-09-02";
   }
   getReportData(report: ReportVM) {
@@ -118,6 +123,7 @@ export class DashboardComponent implements OnInit {
     } else {
       this._graphService.getGraph(report.id, this.getParamVals(report)).subscribe((res: any) => {
         report.data = res;
+        this.drawGraph(report.id.toString(),report.data);
       })
     }
   }

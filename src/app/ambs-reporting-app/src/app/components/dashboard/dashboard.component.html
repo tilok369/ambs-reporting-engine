@@ -27,8 +27,11 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div *ngIf="report.type==reportType.Tabular">
                 <app-report-data [tableDatas]="report?.data"></app-report-data>
+            </div>
+            <div id="{{report?.id}}" style="height: 450px;" *ngIf="report.type==reportType.Graphical">
+                
             </div>
         </div>
 
