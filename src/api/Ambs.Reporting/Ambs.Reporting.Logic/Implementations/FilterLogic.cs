@@ -1,20 +1,20 @@
 ﻿
+using Ambs.Reporting.DAL.CalculativeModels;
 using Ambs.Reporting.ViewModel.Reponse;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace Ambs.Reporting.Logic.Implementations
 {
     public class  FilterLogic : IFilterLogic
     {
         private readonly IFilterService _filterService;
+        private readonly IMapper _mapper;
 
-        public FilterLogic(IFilterService filterService)
+        public FilterLogic(IFilterService filterService
+            , IMapper mapper)
         {
             _filterService = filterService;
+            _mapper = mapper;
         }
 
         public FilterResponseDTO Get(long id)
@@ -70,6 +70,20 @@ namespace Ambs.Reporting.Logic.Implementations
             }
 
             return filters;
+        }
+
+        public IEnumerable<DropdownFilter> GetDropdownValues(long reportId, long filterId,string filterValue)
+        {
+            var filter=_filterService.Get(filterId);
+            var filtersOfThisReport = _filterService.GetByReportId(reportId);
+            var filterToChange=filtersOfThisReport.FirstOrDefault(f=>f.Parameter.ToLower()==filter.DependentParameters.ToLower());
+            if (filterToChange != null)
+            {
+                filterToChange.Script= filterToChange.Script.ToLower().Replace(filter.Name.ToLower(), filterValue.ToString()).Replace('@',' ');
+                var data = _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(filterToChange.Script));
+                return data;
+            }            
+            return new List<DropdownFilter>();
         }
 
         public IEnumerable<DropdownFilter> GetGraphType()

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FilterType } from 'src/app/enums/filter-enum';
 import { ReportType } from 'src/app/enums/report-enum';
-import { DashboardWidgetReportVM, ReportVM } from 'src/app/models/dashboard/dashboard-widget-report.model';
+import { DashboardWidgetReportVM, FilterVM, ReportVM } from 'src/app/models/dashboard/dashboard-widget-report.model';
+import { IDropdownFilter } from 'src/app/models/report/dropdown-filter.model';
 import { DashboardService } from 'src/app/services/dashboard.service';
+import { FilterService } from 'src/app/services/filter.service';
 import { GraphService } from 'src/app/services/graph.service';
 import { ReportService } from 'src/app/services/report.service';
 import * as CanvasJS from '../../../assets/canvasjs.min';
@@ -19,7 +21,8 @@ export class DashboardComponent implements OnInit {
   dashboard: DashboardWidgetReportVM = new DashboardWidgetReportVM();
   constructor(private _graphService: GraphService
     , private _reportService: ReportService
-    , private _dashboardService: DashboardService) { }
+    , private _dashboardService: DashboardService
+    , private _filterService: FilterService) { }
 
   ngOnInit(): void {
     // this.renderGraph("chart-container-1", 6, '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333');
@@ -99,14 +102,13 @@ export class DashboardComponent implements OnInit {
     return ReportType;
   }
   getParamVals(report: ReportVM): string {
-    if(report.type==ReportType.Tabular){
     let paramVals: string = ''
     report.filters.forEach(function (flt, index) {
       if (flt.value)
         paramVals = paramVals + '%40' + flt.parameter + '%23' + (index == report.filters.length - 1 ? flt.value : flt.value + '%7C');
     })
-    return paramVals;}
-    return '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333';
+    return paramVals;
+    //return '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333';
     //return "%40BranchId%232%7C%40Date%232021-09-02";
   }
   getReportData(report: ReportVM) {
@@ -123,9 +125,20 @@ export class DashboardComponent implements OnInit {
     } else {
       this._graphService.getGraph(report.id, this.getParamVals(report)).subscribe((res: any) => {
         report.data = res;
-        this.drawGraph(report.id.toString(),report.data);
+        this.drawGraph(report.id.toString(), report.data);
       })
     }
+  }
+  ddfChange(report: ReportVM, filter: FilterVM) {
+    if (!filter.dependentParameters) return;
+    this._filterService.getDropdownFilter(report.id, filter.id, filter.value).subscribe((res: Array<IDropdownFilter>) => {
+      report.filters.forEach(rf => {
+        if (rf.parameter.toLowerCase() == filter.dependentParameters.toLowerCase()) {
+          rf.dropdownFilters = res;
+          return;
+        }
+      })
+    })
   }
 }
 

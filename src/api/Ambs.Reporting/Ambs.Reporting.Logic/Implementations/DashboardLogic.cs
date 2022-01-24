@@ -6,6 +6,7 @@ using AutoMapper;
 using Ambs.Reporting.DAL.CalculativeModels;
 using static Ambs.Reporting.Utility.Enum.ReportEnum;
 using FilterType = Ambs.Reporting.DAL.Entities.FilterType;
+using Ambs.Reporting.Utility.Globals;
 
 namespace Ambs.Reporting.Logic.Implementations;
 
@@ -128,7 +129,7 @@ public class DashboardLogic : IDashboardLogic
                 { 
                     Name = report.Name,
                     Status = (bool)report.Status,
-                    Type = (ReportEnum.ReportType)report.Type,
+                    Type = (ReportType)report.Type,
                     WidgetId = widget.Id,
                     Data = null,
                     Filters = new List<FilterDTO>() 
@@ -146,7 +147,9 @@ public class DashboardLogic : IDashboardLogic
                         DependentParameters = filter.DependentParameters,
                         ReportId = report.Id,
                         Type=filter.Type,
-                        DropdownFilters = filter.Type == (int)FilterType.Dropdown ? _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(filter.Script)) : new List<DropdownFilter>()
+                        DropdownFilters = filter.Type == (int)FilterType.Dropdown && reportFilter.SortOrder==1 
+                            ? _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(Helper.ConstructScriptForDropdown(filter.Script))) 
+                            : null
                     };
                     reportDto.Filters.Add(filterDto);
                 }
