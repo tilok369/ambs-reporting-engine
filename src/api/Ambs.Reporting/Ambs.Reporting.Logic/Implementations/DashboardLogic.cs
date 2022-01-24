@@ -5,6 +5,7 @@ using Ambs.Reporting.ViewModel.Request.Dashboard;
 using AutoMapper;
 using Ambs.Reporting.DAL.CalculativeModels;
 using static Ambs.Reporting.Utility.Enum.ReportEnum;
+using FilterType = Ambs.Reporting.DAL.Entities.FilterType;
 
 namespace Ambs.Reporting.Logic.Implementations;
 

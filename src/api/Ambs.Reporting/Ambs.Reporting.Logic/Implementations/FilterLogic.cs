@@ -21,6 +21,9 @@ namespace Ambs.Reporting.Logic.Implementations
         {
             var filter = _filterService.Get(id);
             if (filter == null) return null;
+            int value = (int)filter.Type;
+            var filterTypeName = (FilterType)value;
+            string stringValue = filterTypeName.ToString();
 
             return new FilterResponseDTO(filter.Id)
             {
@@ -34,7 +37,8 @@ namespace Ambs.Reporting.Logic.Implementations
                 CreatedBy = filter.CreatedBy,
                 UpdatedOn = filter.UpdatedOn,
                 UpdatedBy = filter.UpdatedBy,
-                Type = filter?.Type
+                Type = filter.Type,
+                TypeStr = stringValue
             };
         }
 
@@ -44,6 +48,10 @@ namespace Ambs.Reporting.Logic.Implementations
             var filters = new List<FilterResponseDTO>();
             foreach (var filter in filterList.Take((page - 1)..size))
             {
+                int value = (int)filter.Type;
+                var filterTypeName = (FilterType)value;
+                string stringValue = filterTypeName.ToString();
+                int filterType = (int)filter.Type;
                 filters.Add(new FilterResponseDTO(filter.Id)
                 {   
                     Name = filter.Name,
@@ -56,7 +64,8 @@ namespace Ambs.Reporting.Logic.Implementations
                     CreatedBy = filter.CreatedBy,
                     UpdatedOn = filter.UpdatedOn,
                     UpdatedBy = filter.UpdatedBy,
-                    Type = filter?.Type
+                    Type = filter.Type,
+                    TypeStr = stringValue
                 });
             }
 
