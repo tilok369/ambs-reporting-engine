@@ -26,4 +26,7 @@ export class FilterService {
   getGraphTypes():Observable<any> {
     return this.http.get(environment.apiEndPoint + 'filter/graphType');
   }
+  getDropdownFilter(reportId:number,filterId:number,filterValue:any):Observable<any>{
+    return this.http.get(environment.apiEndPoint + 'filter/dropdownvalues/'+reportId+"/"+filterId+"/"+filterValue);
+  }
 }

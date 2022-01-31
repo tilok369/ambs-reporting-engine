@@ -23,5 +23,6 @@ namespace Ambs.Reporting.ViewModel.Reponse.Filter
         public DateTime? UpdatedOn { get; set; }
         public string? UpdatedBy { get; set; }
         public int? Type { get; set; }
+        public string TypeStr { get; set; }
     }
 }

@@ -38,24 +38,35 @@
                             <label class="fs-6">Filter Configuration</label>
                         </div> 
                         <div class="row">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                    <div class="form-floating mb-3">
-                                        <select id="a-filter" class="form-select" (change)="selectFilter($event.target);">
-                                            <option *ngFor="let filter of deSelectedFilterList" [value]="filter.id">
-                                                {{filter.name}}</option>
-                                        </select>
-                                        <label for="a-filter">Available Filters</label>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="a-filter"><b>Available Filters</b></label>
+                                <div class="form-floating mb-3">
+                                    <!-- <select id="a-filter" class="form-select" (change)="selectFilter($event.target);">
+                                        <option *ngFor="let filter of deSelectedFilterList" [value]="filter.id">
+                                            {{filter.name}}</option>
+                                    </select> -->
+                                    <div *ngFor="let filter of deSelectedFilterList" >
+                                        <label  (click)="selectFilter(filter);">{{filter.name}}</label>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                    <div class="form-floating mb-3">
-                                        <select id="s-filter" class="form-select" (change)="deSelectFilter($event.target);">
-                                            <option *ngFor="let filter of selectedFilterList" [value]="filter.id">
-                                                {{filter.name}}</option>
-                                        </select>
-                                        <label for="s-filter">Selected Filters</label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="s-filter"><b>Selected Filters</b></label>
+                                <div class="row">
+                                    <div *ngFor="let filter of selectedFilterList"
+                                        class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <label (click)="deSelectFilter(filter);" >{{filter.name}}</label>
+                                            <i class="fa fa-angle-double-down my-icon" *ngIf="filter.name" (click)="downPosition(filter);"></i>
+                                            <i class="fa fa-angle-double-up my-icon" *ngIf="filter.name" (click)="upPosition(filter);"></i>
+                                        </div>
+                                        
                                     </div>
+                                    <!-- <select id="s-filter" class="form-select" (change)="deSelectFilter($event.target);">
+                                        <option *ngFor="let filter of selectedFilterList" [value]="filter.id">
+                                            {{filter.name}}</option>
+                                    </select> -->
+
                                 </div>
                             </div>
                         </div>

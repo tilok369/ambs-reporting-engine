@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 offset-lg-2 offset-md-2">
-                <div class="alert alert-danger" role="alert" *ngIf="message" [innerHTML]="message">                   
+                <div class="alert alert-danger" role="alert" *ngIf="message" [innerHTML]="message">
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -42,21 +42,34 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="a-filter"><b>Available Filters</b></label>
                                 <div class="form-floating mb-3">
-                                    <select id="a-filter" class="form-select" (change)="selectFilter($event.target);">
+                                    <!-- <select id="a-filter" class="form-select" (change)="selectFilter($event.target);">
                                         <option *ngFor="let filter of deSelectedFilterList" [value]="filter.id">
                                             {{filter.name}}</option>
-                                    </select>
-                                    <label for="a-filter">Available Filters</label>
+                                    </select> -->
+                                    <div *ngFor="let filter of deSelectedFilterList" >
+                                        <label (click)="selectFilter(filter);">{{filter.name}}</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="form-floating mb-3">
-                                    <select id="s-filter" class="form-select" (change)="deSelectFilter($event.target);">
+                                <label for="s-filter"><b>Selected Filters</b></label>
+                                <div class="row">
+                                    <div *ngFor="let filter of selectedFilterList"
+                                        class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <label (click)="deSelectFilter(filter);" >{{filter.name}}</label>
+                                            <i class="fa fa-angle-double-down my-icon" *ngIf="filter.name" (click)="downPosition(filter);"></i>
+                                            <i class="fa fa-angle-double-up my-icon" *ngIf="filter.name" (click)="upPosition(filter);"></i>
+                                        </div>
+                                        
+                                    </div>
+                                    <!-- <select id="s-filter" class="form-select" (change)="deSelectFilter($event.target);">
                                         <option *ngFor="let filter of selectedFilterList" [value]="filter.id">
                                             {{filter.name}}</option>
-                                    </select>
-                                    <label for="s-filter">Selected Filters</label>
+                                    </select> -->
+
                                 </div>
                             </div>
                         </div>
@@ -181,7 +194,8 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <select id="g-type" class="form-select" [(ngModel)]="report.graphicalFeature.graphType">
+                                    <select id="g-type" class="form-select"
+                                        [(ngModel)]="report.graphicalFeature.graphType">
                                         <option *ngFor="let graphType of graphTypeList" [ngValue]="graphType.value">
                                             {{graphType.name}}</option>
                                     </select>

@@ -53,9 +53,9 @@ export class ReportEditComponent implements OnInit {
     this._filterService.getFilters(1, 50).subscribe((res: any) => {
       console.log(res);
       this.filterList = res;
-      this.filterList.unshift({ id: 0, name: '' });
+      //this.filterList.unshift({ id: 0, name: '' });
       this.deSelectedFilterList = [...this.filterList];
-      this.selectedFilterList.unshift({ id: 0, name: '' });
+      //this.selectedFilterList.unshift({ id: 0, name: '' });
       this.getGraphTypes();
     })
   }
@@ -66,25 +66,49 @@ export class ReportEditComponent implements OnInit {
     })
   }
   selectFilter(selectedValue: any) {
-    if (selectedValue.value == 0) return;
-    this.deSelectedFilterList = this.deSelectedFilterList.filter(f => f.id != selectedValue.value);
-    this.selectedFilterList = this.filterList.filter((objFromA) => {
-      return !this.deSelectedFilterList.find(function (objFromB) {
-        return objFromA.id === objFromB.id
-      })
-    })
-    if (!this.selectedFilterList.find(f => f.id == 0)) this.selectedFilterList.unshift({ id: 0, name: '' });
+    if (!selectedValue) return;
+    this.deSelectedFilterList = this.deSelectedFilterList.filter(f => f.id != selectedValue.id);
+    // this.selectedFilterList = this.filterList.filter((objFromA) => {
+    //   return !this.deSelectedFilterList.find(function (objFromB) {
+    //     return objFromA.id === objFromB.id
+    //   })
+    // })
+    // if (!this.selectedFilterList.find(f => f.id == 0)) this.selectedFilterList.unshift({ id: 0, name: '' });
+    this.selectedFilterList.push(selectedValue);
   }
   deSelectFilter(deSelectedValue: any) {
-    if (deSelectedValue.value == 0) return;
-    this.selectedFilterList = this.selectedFilterList.filter(f => f.id != deSelectedValue.value);
-    this.deSelectedFilterList = this.filterList.filter((objFromA) => {
-      return !this.selectedFilterList.find(function (objFromB) {
-        return objFromA.id === objFromB.id
-      })
-    })
-    if (!this.deSelectedFilterList.find(f => f.id == 0)) this.deSelectedFilterList.unshift({ id: 0, name: '' });
+    if (!deSelectedValue) return;
+    this.selectedFilterList = this.selectedFilterList.filter(f => f.id != deSelectedValue.id);
+    this.deSelectedFilterList.push(deSelectedValue);
+    // if (deSelectedValue.value == 0) return;
+    // this.selectedFilterList = this.selectedFilterList.filter(f => f.id != deSelectedValue.value);
+    // this.deSelectedFilterList = this.filterList.filter((objFromA) => {
+    //   return !this.selectedFilterList.find(function (objFromB) {
+    //     return objFromA.id === objFromB.id
+    //   })
+    // })
+    // if (!this.deSelectedFilterList.find(f => f.id == 0)) this.deSelectedFilterList.unshift({ id: 0, name: '' });
   }
+  downPosition(filter: any) {
+    let currentIndex = this.selectedFilterList.indexOf(filter);
+    if (currentIndex === this.selectedFilterList.length - 1) return;
+    this.selectedFilterList=this.arrayMove(this.selectedFilterList,currentIndex,currentIndex+1);
+  }
+  upPosition(filter: any) {
+    let currentIndex = this.selectedFilterList.indexOf(filter);
+    if (currentIndex <1) return;
+    this.selectedFilterList=this.arrayMove(this.selectedFilterList,currentIndex,currentIndex-1);
+  }
+  arrayMove(arr:any, oldIndex:number, newIndex:number) {
+    if (newIndex >= arr.length) {
+      var k = newIndex - arr.length + 1;
+      while (k--) {
+        arr.push(undefined);
+      }
+    }
+    arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
+    return arr; 
+  };
   public get reportType(): typeof ReportType {
     return ReportType;
   }

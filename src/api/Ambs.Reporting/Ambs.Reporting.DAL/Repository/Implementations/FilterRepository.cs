@@ -13,6 +13,15 @@ public class FilterRepository:IFilterRepository
         _dbContextOptionBuilder.UseSqlServer(applicationConfigurationManager.GetConnectionString());
     }
 
+    public IEnumerable<Filter> GetByReportId(long reportId)
+    {
+        using var context = new ReportEngineContext(_dbContextOptionBuilder.Options);
+        return (from filter in context.Filters
+                join reportFilter in context.ReportFilters on filter.Id equals reportFilter.FilterId
+                where reportFilter.ReportId== reportId
+                select filter).ToList();
+    }
+
     public IEnumerable<DropdownFilterCM> GetDrowpdownFilterValues(string script)
     {
         var data=new List<DropdownFilterCM>();
