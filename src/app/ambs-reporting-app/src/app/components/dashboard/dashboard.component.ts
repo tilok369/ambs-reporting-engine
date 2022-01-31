@@ -134,11 +134,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   exportReport(report:ReportVM){
-    console.log(report);
     window.open(environment.apiEndPoint + 'report-export/export/'+report.id+'/'+this.getParamVals(report)+'/'+report.exportType+'/'+report.name);
-    // this._reportService.exportReport(report.id,this.getParamVals(report),report.exportType,report.name).subscribe((res:any)=>{
-
-    // })
   }
   ddfChange(report: ReportVM, filter: FilterVM) {
     if (!filter.dependentParameters) return;
