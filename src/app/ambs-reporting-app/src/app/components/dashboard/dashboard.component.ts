@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   transactionSummaryReceiveAndPayment: any;
   loanDisburseAndFullPayment: any;
   dashboard: DashboardWidgetReportVM = new DashboardWidgetReportVM();
+  dashboardId: number =0;
   exportTypes:Array<IDropdownFilter>=[];
   constructor(private _graphService: GraphService
     , private _reportService: ReportService
@@ -34,7 +35,10 @@ export class DashboardComponent implements OnInit {
     // this.getExportReportDataLoanDisburseAndFullPayment(12, "%40BranchId%232%7C%40Date%232021-09-02");
     this.exportTypes.push({name:'Excel',value:ExportType.Excel,sortOrder:1})
     this.exportTypes.push({name:'PDF',value:ExportType.PDF,sortOrder:2})
-    this.getDashboardWidgetReport(15);
+
+    this.dashboardId = window.history.state.dashboardId;
+    console.log(this.dashboardId);
+    this.getDashboardWidgetReport(this.dashboardId);
   }
 
   getDashboardWidgetReport(dashboardId: number) {

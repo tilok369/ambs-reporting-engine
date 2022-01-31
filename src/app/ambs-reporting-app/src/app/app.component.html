@@ -6,8 +6,15 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="dashboard">Dashboard</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dashboards
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li *ngFor="let db of dashboards">
+              <a class="dropdown-item" (click)="redirectToDashboard(db.id)">{{db.name}}</a>
+            </li>
+          </ul>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -17,6 +24,7 @@
             <li><a class="dropdown-item" routerLink="report-configuration">Report</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" routerLink="report-metadata">Meta Data</a></li>
+            <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" routerLink="report-filter">Filter</a></li>
           </ul>
         </li>
