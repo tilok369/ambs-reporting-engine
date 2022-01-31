@@ -1,5 +1,55 @@
 <div class="row">
-    <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngFor="let widget of dashboard?.widgets">
+    <div class="row" *ngFor="let widget of dashboard?.widgets">
+        {{widget.name}}
+        <div class="row" *ngFor="let report of widget?.reports">
+            {{report.name}}
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12" *ngFor="let filter of report?.filters">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="filter.type==filterType.TextBox">
+                        <label for="a-filter">{{filter.label}}</label>
+                        <input type="text" class="form-control" [(ngModel)]="filter.value">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="filter.type==filterType.DateTime">
+                        <label for="a-filter">{{filter.label}}</label>
+                        <input type="date" class="form-control" [(ngModel)]="filter.value">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="filter.type==filterType.CheckBox">
+                        <label for="a-filter">{{filter.label}}</label>
+                        <input type="checkbox" class="form-control" [(ngModel)]="filter.value">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="filter.type==filterType.Dropdown">
+                        <label for="a-filter">{{filter.label}}</label>
+                        <select id="a-filter" class="form-control form-select" [(ngModel)]="filter.value"
+                            (change)="ddfChange(report,filter);">
+                            <option *ngFor="let ddf of filter.dropdownFilters" [value]="ddf.value">
+                                {{ddf.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary col-lg-2 col-md-2 col-sm-12"
+                    (click)="getReportData(report);">Submit</button>
+
+            </div>
+            <div class="row">
+                <div *ngIf="report.type==reportType.Tabular">
+                    <div class="col-lg-3 col-md-3 col-sm-12">
+                        <label>Export As </label>
+                        <select id="a-export" class="form-control form-select" [(ngModel)]="report.exportType"
+                            >
+                            <option *ngFor="let et of exportTypes" [ngValue]="et.value">
+                                {{et.name}}</option>
+                        </select>
+                        <button type="button" class="btn btn-primary" (click)="exportReport(report);" *ngIf="report.exportType">Export</button>
+                    </div>
+                    <app-report-data [tableDatas]="report?.data"></app-report-data>
+                </div>
+                <div id="{{report?.id}}" style="height: 450px;" *ngIf="report.type==reportType.Graphical">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngFor="let widget of dashboard?.widgets">
         {{widget.name}}
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngFor="let report of widget?.reports">
             {{report.name}}
@@ -20,7 +70,8 @@
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="filter.type==filterType.Dropdown">
                         <label for="a-filter">{{filter.label}}</label>
-                        <select id="a-filter" class="form-control form-select" [(ngModel)]="filter.value" (change)="ddfChange(report,filter);">
+                        <select id="a-filter" class="form-control form-select" [(ngModel)]="filter.value"
+                            (change)="ddfChange(report,filter);">
                             <option *ngFor="let ddf of filter.dropdownFilters" [value]="ddf.value">
                                 {{ddf.name}}</option>
                         </select>
@@ -31,12 +82,12 @@
                 <app-report-data [tableDatas]="report?.data"></app-report-data>
             </div>
             <div id="{{report?.id}}" style="height: 450px;" *ngIf="report.type==reportType.Graphical">
-                
+
             </div>
         </div>
 
 
-        <!-- <div style="height: 450px;">
+         <div style="height: 450px;">
             <app-report-data [tableDatas]="transactionSummaryReceiveAndPayment"></app-report-data>
         </div>
         <div style="height: 450px;">
@@ -44,6 +95,6 @@
         </div>
 
         <div id="chart-container-1" style="height: 450px;"></div>
-        <div id="chart-container-2" style="height: 450px;"></div> -->
-    </div>
+        <div id="chart-container-2" style="height: 450px;"></div>
+    </div> -->
 </div>

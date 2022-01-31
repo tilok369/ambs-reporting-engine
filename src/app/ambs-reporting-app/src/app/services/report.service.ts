@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ExportType } from '../enums/report-enum';
 import { Report } from '../models/report/report.model';
 
 @Injectable({
@@ -24,5 +25,8 @@ export class ReportService {
   }
   getExportReportData(reportId:number,paramVals:string){
     return this.http.get(environment.apiEndPoint + 'report-export/data/'+reportId+'/'+paramVals);
+  }
+  exportReport(reportId:number,paramVals:string,exportType:ExportType,reportName:string){
+    return this.http.get(environment.apiEndPoint + 'report-export/export/'+reportId+'/'+paramVals+'/'+exportType+'/'+reportName,{responseType: "arraybuffer"});
   }
 }

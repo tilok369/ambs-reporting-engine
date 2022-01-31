@@ -2,6 +2,7 @@
 using Ambs.Reporting.ViewModel.Reponse.MetaData;
 using Ambs.Reporting.ViewModel.Request.MetaData;
 using System.Net.Http.Headers;
+using AutoMapper;
 
 namespace Ambs.Reporting.Logic.Implementations;
 
@@ -9,11 +10,15 @@ public class MetaDataLogic : IMetaDataLogic
 {
     private readonly IMetaDataService _metaDataService;
     private readonly IDashboardService _dashboardService;
+    private readonly IMapper _mapper;
 
-    public MetaDataLogic(IMetaDataService metaDataService, IDashboardService dashboardService)
+    public MetaDataLogic(IMetaDataService metaDataService
+        , IDashboardService dashboardService
+        , IMapper mapper)
     {
         this._metaDataService = metaDataService;
         this._dashboardService = dashboardService;
+        _mapper=mapper;
     }
 
     public MetaDataResponseDTO Get(long id)
@@ -63,6 +68,11 @@ public class MetaDataLogic : IMetaDataLogic
         }
 
         return metaDatas;
+    }
+
+    public MetaDataResponseDTO GetMetadataByReportId(long reportId)
+    {
+        return _mapper.Map<MetaDatum, MetaDataResponseDTO>(_metaDataService.GetMetaDatumByReport(reportId));
     }
 
     public MetaDataPostResponseDTO Save(MetaDataPostRequestDTO metaData)

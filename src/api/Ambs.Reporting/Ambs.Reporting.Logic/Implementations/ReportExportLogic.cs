@@ -14,12 +14,14 @@ public class ReportExportLogic : IReportExportLogic
     private readonly IReportService _reportService;
     private readonly ITablularFeatureService _tabularFeatureService;
     private readonly IGraphicalFeatureService _graphicalFeatureService;
+    private readonly IMetaDataLogic _metaDataLogic;
     public ReportExportLogic(IReportExportService exportReportService
         , IReportingEngine reportingEngine
         , IExporter exporter
         ,IReportService reportService
         , ITablularFeatureService tabularFeatureService
         ,IGraphicalFeatureService graphicalFeatureService
+        ,IMetaDataLogic metaDataLogic
         )
     {
         _exportReportService = exportReportService;
@@ -28,6 +30,7 @@ public class ReportExportLogic : IReportExportLogic
         _reportService = reportService;
         _tabularFeatureService = tabularFeatureService;
         _graphicalFeatureService = graphicalFeatureService;
+        _metaDataLogic = metaDataLogic;
     }
     private static string ConstructCommand(string script, Dictionary<string, string> parameters)
     {
@@ -40,45 +43,24 @@ public class ReportExportLogic : IReportExportLogic
     }
     public async Task<List<ExportData>> GetReportData(long reportId,string paramVals)
     {
-        //var commandText = "SELECT [Id],[P_ProgramTypeId] as ProgramTypeId,[ShortName],[Name],[Description],[IsPrimary],[IsLongTerm],[IsCollectionSheet],[StartingDate],[EndingDate],[SortOrder],[IgnoreHoliday] FROM P_Program";
-        //var paramBranchId = new SqlParameter("@BranchId", 2);
-        //var paramDate = new SqlParameter("@Date", new DateTime(2021, 09, 10));
-        //var (columns, rows) = await _reportService.GetReportData(commandText, CommandType.Text);
-        //var ambsReportDataReceiveAndPayment = new ReportData { Columns = columns, Rows = rows };
         var report=_reportService.Get(reportId);
         var script=(ReportType)report.Type==ReportType.Tabular ? _tabularFeatureService.GetByReportId(reportId).Script : _graphicalFeatureService.GetByReportId(reportId).Script;
-        //var commandText = "dbo.P_TransactionSummaryDailyReceiveAndPayment";
-        //var paramBranchId = new SqlParameter("@BranchId", 2);
-        //var paramDate = new SqlParameter("@Date", new DateTime(2021, 09, 10));
         var dbScript = ConstructCommand(script, paramVals.ToDictionary());
-        var (columns, rows) = await _exportReportService.GetReportData(dbScript, CommandType.Text);
-        var ambsReportDataReceiveAndPayment = new ReportData { Columns = columns, Rows = rows };
-        //commandText = "dbo.P_TransactionSummaryLoanDisbursedAndFullPaid";
-        //(columns, rows) = await _exportReportService.GetReportData(commandText, CommandType.StoredProcedure, new[] { paramBranchId, paramDate });
-        //var ambsReportDataLoanDisburseAndFullPaid = new ReportData { Columns = columns, Rows = rows };
-        return await _reportingEngine.GetExportData(new List<ReportData> { ambsReportDataReceiveAndPayment});
+        var metaData = _metaDataLogic.GetMetadataByReportId(reportId);
+        if(metaData != null)
+        {
+            var (columns, rows) = await _exportReportService.GetReportData(dbScript, CommandType.Text, metaData.DataSource);
+            var reportData = new ReportData { Columns = columns, Rows = rows, ReportName = report.Name };
+            return await _reportingEngine.GetExportData(new List<ReportData> { reportData });
+        }
+        return null;
+        
     }
 
-    public async Task<byte[]> GetReportDataForExport(ExportType exportType,string contentRootPath)
+    public async Task<byte[]> GetReportDataForExport(long reportId, string paramVals,ExportType exportType,string contentRootPath)
     {
-        var commandText = "dbo.P_TransactionSummaryDailyReceiveAndPayment";
-        var paramBranchId = new SqlParameter("@BranchId", 2);
-        var paramDate = new SqlParameter("@Date", new DateTime(2021, 09, 10));
-        var (columns, rows) = await _exportReportService.GetReportData(commandText, CommandType.StoredProcedure, new[] { paramBranchId, paramDate });
-        var ambsReportDataReceiveAndPayment = new ReportData { Columns = columns, Rows = rows };
-        commandText = "dbo.P_TransactionSummaryLoanDisbursedAndFullPaid";
-        (columns, rows) = await _exportReportService.GetReportData(commandText, CommandType.StoredProcedure, new[] { paramBranchId, paramDate });
-        var ambsReportDataLoanDisburseAndFullPaid = new ReportData { Columns = columns, Rows = rows };
-        var exportData =await _reportingEngine.GetExportData(new List<ReportData> { ambsReportDataReceiveAndPayment, ambsReportDataLoanDisburseAndFullPaid });
+        var exportData = await GetReportData(reportId,paramVals);
         return await(exportType == ExportType.Excel ? _exporter.GetExcelData(exportData, "Test", contentRootPath) : _exporter.GetPdfData(exportData, "Test", contentRootPath));
     }
-
-
-    //public async Task<byte[]> GetReportExport(string fileName)
-    //{
-    //    return await _exporter.ReportExport(fileName);
-    //}
-
-
 }
 

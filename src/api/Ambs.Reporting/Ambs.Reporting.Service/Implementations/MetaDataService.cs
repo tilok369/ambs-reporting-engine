@@ -4,10 +4,13 @@ namespace Ambs.Reporting.Service.Implementations;
 public class MetaDataService : IMetaDataService
 {
     private readonly IGenericRepository _genericRepository;
+    private readonly IMetaDataRepository _metaDataRepository;
 
-    public MetaDataService(IGenericRepository genericRepository)
+    public MetaDataService(IGenericRepository genericRepository
+        , IMetaDataRepository metaDataRepository)
     {
         this._genericRepository = genericRepository;
+        _metaDataRepository = metaDataRepository;
     }
 
     public MetaDatum Get(long id)
@@ -18,6 +21,11 @@ public class MetaDataService : IMetaDataService
     public IEnumerable<MetaDatum> GetAll()
     {
         return _genericRepository.GetAll<MetaDatum>();
+    }
+
+    public MetaDatum GetMetaDatumByReport(long reportId)
+    {
+        return _metaDataRepository.GetMetaDatumByReport(reportId);
     }
 
     public MetaDatum Save(MetaDatum dashboard)

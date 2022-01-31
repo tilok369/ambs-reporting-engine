@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FilterType } from 'src/app/enums/filter-enum';
-import { ReportType } from 'src/app/enums/report-enum';
+import { ExportType, ReportType } from 'src/app/enums/report-enum';
 import { DashboardWidgetReportVM, FilterVM, ReportVM } from 'src/app/models/dashboard/dashboard-widget-report.model';
 import { IDropdownFilter } from 'src/app/models/report/dropdown-filter.model';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { FilterService } from 'src/app/services/filter.service';
 import { GraphService } from 'src/app/services/graph.service';
 import { ReportService } from 'src/app/services/report.service';
+import { environment } from 'src/environments/environment';
 import * as CanvasJS from '../../../assets/canvasjs.min';
 //var CanvasJS = require('../../../assets/canvasjs.min');
 
@@ -20,6 +21,7 @@ export class DashboardComponent implements OnInit {
   loanDisburseAndFullPayment: any;
   dashboard: DashboardWidgetReportVM = new DashboardWidgetReportVM();
   dashboardId: number =0;
+  exportTypes:Array<IDropdownFilter>=[];
   constructor(private _graphService: GraphService
     , private _reportService: ReportService
     , private _dashboardService: DashboardService
@@ -31,6 +33,9 @@ export class DashboardComponent implements OnInit {
     // //this.renderGraph("chart-container-2", 5, '@EndDate#2021-01-31|@StateId#-1|@ZoneId#4|@DistrictId#4|@RegionId#27|@BranchId#33');
     // this.getExportReportData(11, "%40BranchId%232%7C%40Date%232021-09-02");
     // this.getExportReportDataLoanDisburseAndFullPayment(12, "%40BranchId%232%7C%40Date%232021-09-02");
+    this.exportTypes.push({name:'Excel',value:ExportType.Excel,sortOrder:1})
+    this.exportTypes.push({name:'PDF',value:ExportType.PDF,sortOrder:2})
+
     this.dashboardId = window.history.state.dashboardId;
     console.log(this.dashboardId);
     this.getDashboardWidgetReport(this.dashboardId);
@@ -132,12 +137,17 @@ export class DashboardComponent implements OnInit {
       })
     }
   }
+  exportReport(report:ReportVM){
+    window.open(environment.apiEndPoint + 'report-export/export/'+report.id+'/'+this.getParamVals(report)+'/'+report.exportType+'/'+report.name);
+  }
   ddfChange(report: ReportVM, filter: FilterVM) {
     if (!filter.dependentParameters) return;
     this._filterService.getDropdownFilter(report.id, filter.id, filter.value).subscribe((res: Array<IDropdownFilter>) => {
       report.filters.forEach(rf => {
         if (rf.parameter.toLowerCase() == filter.dependentParameters.toLowerCase()) {
           rf.dropdownFilters = res;
+          rf.value=res.length>0?res[0].value:-1;
+          this.ddfChange(report,rf);
           return;
         }
       })

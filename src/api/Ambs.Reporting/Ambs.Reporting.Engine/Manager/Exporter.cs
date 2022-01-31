@@ -21,7 +21,12 @@ public class Exporter : IExporter
         {
             package.Workbook.Worksheets.Add(sheetData.SheetName);
             var worksheet = package.Workbook.Worksheets[index++];
-
+            if (File.Exists(contentRootPath + @"\Resources\Images\ASAI Logo.png"))
+            {
+                var asaiLogo = worksheet.Drawings.AddPicture("Test", System.Drawing.Image.FromFile(contentRootPath + @"\Resources\Images\ASAI Logo.png"));
+                asaiLogo.SetPosition(0, 1, 0, 1);
+                asaiLogo.SetSize(50, 50);
+            }
             worksheet.Cells[1, 1].Value = sheetData.SheetName;
             worksheet.Cells[1, 1, 1, sheetData.Columns.Count].Merge = true;
             worksheet.Cells[1, 1].Style.Font.Bold = true;
@@ -37,12 +42,7 @@ public class Exporter : IExporter
             worksheet.Cells[2, 7, 2, 12].Style.Font.Bold = true;
             worksheet.Cells[2, 7, 2, 12].Style.Font.Size = 14;
             worksheet.Cells[2, 7, 2, 12].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            if (File.Exists(contentRootPath + @"\Resources\Images\ASAI Logo.png"))
-            {
-                var asaiLogo = worksheet.Drawings.AddPicture("Test", System.Drawing.Image.FromFile(contentRootPath + @"\Resources\Images\ASAI Logo.png"));
-                asaiLogo.SetPosition(3, 5, 3, 5);
-                asaiLogo.SetSize(300, 300);
-            }
+            
             var layers = sheetData.Layers;
             var rowIndex = 4;
             rowIndex -= 1;

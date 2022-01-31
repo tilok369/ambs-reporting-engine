@@ -4,19 +4,16 @@ using Ambs.Reporting.Utility.Extensions;
 
 namespace Ambs.Reporting.DAL.Repository.Implementations;
 
-public class ReportExportRepository : GenericRepository, IReportExportRepository
+public class ReportExportRepository : IReportExportRepository
 {
-    private readonly IApplicationConfigurationManager _applicationConfigurationManager;
-    public ReportExportRepository(IApplicationConfigurationManager applicationConfigurationManager) : base(applicationConfigurationManager)
+    public ReportExportRepository()
     {
-        _applicationConfigurationManager = applicationConfigurationManager;
     }
-    public async Task<(List<string>, List<List<string>>)> GetReportData(string commandText, CommandType commandType, SqlParameter[] parameters)
+    public async Task<(List<string>, List<List<string>>)> GetReportData(string commandText, CommandType commandType,string connectionString, SqlParameter[] parameters)
     {
         var columns = new List<string>();
         var rows = new List<List<string>>();
-        var metaData = First<MetaDatum>(d => d.Id == 1);
-        using var sqlConnection = new SqlConnection(metaData.DataSource);
+        using var sqlConnection = new SqlConnection(connectionString);
         using var sqlCommand = new SqlCommand(commandText, sqlConnection);
         sqlCommand.CommandType = commandType;
         sqlCommand.CommandTimeout = 5000;
@@ -30,7 +27,6 @@ public class ReportExportRepository : GenericRepository, IReportExportRepository
         {
             rows.Add(columns.Select(columnName => sqlReader.GetStringValue(columnName)).ToList());
         }
-        //columns = columns.Select(c => c.ToSentenceCase()).ToList();
         sqlCommand.Parameters.Clear();
         return (columns, rows);
     }

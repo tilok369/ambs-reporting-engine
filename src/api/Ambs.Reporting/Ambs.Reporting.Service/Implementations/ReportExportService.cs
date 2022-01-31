@@ -9,8 +9,8 @@ public class ReportExportService : IReportExportService
         _reportRepository = reportRepository;
     }
 
-    public async Task<(List<string>, List<List<string>>)> GetReportData(string commandText, CommandType commandType, SqlParameter[] parameters)
+    public async Task<(List<string>, List<List<string>>)> GetReportData(string commandText, CommandType commandType, string connectionString, SqlParameter[] parameters)
     {
-        return await _reportRepository.GetReportData(commandText, commandType, parameters);
+        return await _reportRepository.GetReportData(commandText, commandType, connectionString, parameters);
     }
 }

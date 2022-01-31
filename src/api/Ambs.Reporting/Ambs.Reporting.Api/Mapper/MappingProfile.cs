@@ -9,6 +9,7 @@ using Ambs.Reporting.ViewModel.Request.ReportFilter;
 using Ambs.Reporting.ViewModel.Request.TabularFeature;
 using Ambs.Reporting.ViewModel.Reponse;
 using AutoMapper;
+using Ambs.Reporting.ViewModel.Reponse.MetaData;
 
 namespace Ambs.Reporting.Api.Mapper
 {
@@ -30,6 +31,8 @@ namespace Ambs.Reporting.Api.Mapper
             CreateMap<GraphicalFeature, GraphicalFeatureResponseDTO>();
 
             CreateMap<DropdownFilterCM, DropdownFilter>();
+
+            CreateMap<MetaDatum, MetaDataResponseDTO>();
         }
     }
 }
