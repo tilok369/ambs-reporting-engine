@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
   transactionSummaryReceiveAndPayment: any;
   loanDisburseAndFullPayment: any;
   dashboard: DashboardWidgetReportVM = new DashboardWidgetReportVM();
+  dashboardId: number =0;
   constructor(private _graphService: GraphService
     , private _reportService: ReportService
     , private _dashboardService: DashboardService
@@ -30,7 +31,9 @@ export class DashboardComponent implements OnInit {
     // //this.renderGraph("chart-container-2", 5, '@EndDate#2021-01-31|@StateId#-1|@ZoneId#4|@DistrictId#4|@RegionId#27|@BranchId#33');
     // this.getExportReportData(11, "%40BranchId%232%7C%40Date%232021-09-02");
     // this.getExportReportDataLoanDisburseAndFullPayment(12, "%40BranchId%232%7C%40Date%232021-09-02");
-    this.getDashboardWidgetReport(15);
+    this.dashboardId = window.history.state.dashboardId;
+    console.log(this.dashboardId);
+    this.getDashboardWidgetReport(this.dashboardId);
   }
 
   getDashboardWidgetReport(dashboardId: number) {
