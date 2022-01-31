@@ -1,6 +1,49 @@
 <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngFor="let widget of dashboard?.widgets">
+        {{widget.name}}
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngFor="let report of widget?.reports">
+            {{report.name}}
+            <button type="button" class="btn btn-primary" (click)="getReportData(report);">Submit</button>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngFor="let filter of report?.filters">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="filter.type==filterType.TextBox">
+                        <label for="a-filter">{{filter.label}}</label>
+                        <input type="text" class="form-control" [(ngModel)]="filter.value">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="filter.type==filterType.DateTime">
+                        <label for="a-filter">{{filter.label}}</label>
+                        <input type="date" class="form-control" [(ngModel)]="filter.value">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="filter.type==filterType.CheckBox">
+                        <label for="a-filter">{{filter.label}}</label>
+                        <input type="checkbox" class="form-control" [(ngModel)]="filter.value">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="filter.type==filterType.Dropdown">
+                        <label for="a-filter">{{filter.label}}</label>
+                        <select id="a-filter" class="form-control form-select" [(ngModel)]="filter.value" (change)="ddfChange(report,filter);">
+                            <option *ngFor="let ddf of filter.dropdownFilters" [value]="ddf.value">
+                                {{ddf.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="report.type==reportType.Tabular">
+                <app-report-data [tableDatas]="report?.data"></app-report-data>
+            </div>
+            <div id="{{report?.id}}" style="height: 450px;" *ngIf="report.type==reportType.Graphical">
+                
+            </div>
+        </div>
+
+
+        <!-- <div style="height: 450px;">
+            <app-report-data [tableDatas]="transactionSummaryReceiveAndPayment"></app-report-data>
+        </div>
+        <div style="height: 450px;">
+            <app-report-data [tableDatas]="loanDisburseAndFullPayment"></app-report-data>
+        </div>
+
         <div id="chart-container-1" style="height: 450px;"></div>
-        <div id="chart-container-2" style="height: 450px;"></div>
+        <div id="chart-container-2" style="height: 450px;"></div> -->
     </div>
 </div>

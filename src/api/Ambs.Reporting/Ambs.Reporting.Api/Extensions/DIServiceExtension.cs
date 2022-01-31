@@ -17,7 +17,8 @@ public static class DIServiceExtension
             .AddScoped<IApplicationConfigurationManager, ApplicationConfigurationManager>()
             .AddScoped<IGenericRepository, GenericRepository>()
             .AddScoped<IReportExportRepository, ReportExportRepository>()
-            .AddScoped<IReportRepository,ReportRepository>();
+            .AddScoped<IReportRepository,ReportRepository>()
+            .AddScoped<IFilterRepository,FilterRepository>();
     }
     public static IServiceCollection AddServices(this IServiceCollection services)
     {

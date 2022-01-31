@@ -12,7 +12,7 @@ namespace Ambs.Reporting.Api.Controllers
         {
             _reportLogic = reportLogic;
         }
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
             var data = _reportLogic.Get(id);
@@ -38,6 +38,7 @@ namespace Ambs.Reporting.Api.Controllers
         public IActionResult Edit(ReportPostRequestDTO report)
         {
             var result = _reportLogic.Edit(report);
+            
             return result.Success ? Ok(result) : BadRequest();
         }
         [HttpDelete("id")]

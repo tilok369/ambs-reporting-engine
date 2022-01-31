@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Filter } from 'src/app/models/report/filter.model';
 import { FilterService } from 'src/app/services/filter.service';
 
 @Component({
@@ -11,10 +12,12 @@ export class ReportFilterAddComponent implements OnInit {
 
   public filter: any;
   public message: string = '';
+  filtaar: Filter = new Filter();
 
   constructor(private filterService: FilterService) { }
 
   ngOnInit(): void {
+    
     this.filter = {
       id: 0,
       name: '',
@@ -26,7 +29,8 @@ export class ReportFilterAddComponent implements OnInit {
       createdOn: new Date(),
       createdBy: "admin",
       updatedOn: new Date(),
-      updatedBy: "admin"
+      updatedBy: "admin",
+      type:1
     }
   }
 

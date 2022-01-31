@@ -16,17 +16,30 @@
                     <label for="iFrameUrl">Filter Label</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="script" placeholder="filter script" required [(ngModel)]="filter.script">
-                    <label for="iFrameUrl">Script</label>
+                    <textarea rows="10" type="text" class="md-textarea md-textarea-auto form-control" id="script" placeholder="filter script" required [(ngModel)]="filter.script"></textarea>
+                    
+                    <label for="script">Script</label>
+                
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="parameter" placeholder="filter parameter" required [(ngModel)]="filter.parameter">
+                    <input type="text area" class="form-control" id="parameter" placeholder="filter parameter" required [(ngModel)]="filter.parameter">
                     <label for="iFrameUrl">Parameter</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="dependentParameters" placeholder="filter dependentParameters" required [(ngModel)]="filter.dependentParameters">
                     <label for="iFrameUrl">Dependent Parameters</label>
                 </div>
+                <div class="form-floating mb-3">
+                    <select id="type" class="form-select" [(ngModel)]="filter.type">
+                        <option [ngValue]="1">TextBox</option>
+                        <option [ngValue]="2"> DateTime</option>
+                        <option [ngValue]="3"> CheckBox </option>
+                        <option [ngValue]="4"> Dropdown</option>
+                        <option [ngValue]="5"> RadioButton</option>
+                    </select>
+                    <label for="type">Type</label>
+                </div>
+              
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="status" required [(ngModel)]="filter.status">
                     <label class="form-check-label" for="flexCheckDefault">

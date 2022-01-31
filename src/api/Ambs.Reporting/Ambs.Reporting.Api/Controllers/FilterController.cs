@@ -33,5 +33,15 @@ namespace Ambs.Reporting.Api.Controllers
         {
             return _filterLogic.Save(filter);
         }
+        [HttpGet("graphType")]
+        public IActionResult GetGraphType()
+        {
+            return Ok(_filterLogic.GetGraphType());
+        }
+        [HttpGet("dropdownvalues/{reportId}/{filterId}/{filterValue}")]
+        public IActionResult GetDropdownValues(long reportId,long filterId,string filterValue)
+        {
+            return Ok(_filterLogic.GetDropdownValues(reportId, filterId, filterValue));
+        }
     }
 }

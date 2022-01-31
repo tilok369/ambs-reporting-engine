@@ -2,6 +2,7 @@
 using Ambs.Reporting.ViewModel.Request.MetaData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 
 namespace Ambs.Reporting.Api.Controllers
 {
@@ -32,6 +33,45 @@ namespace Ambs.Reporting.Api.Controllers
         public MetaDataPostResponseDTO Save(MetaDataPostRequestDTO dashboard)
         {
             return _metaDataLogic.Save(dashboard);
+        }
+
+        [HttpPost("photo/{id}/{prevPhoto?}")]
+        public ActionResult UploadPhoto(long id, string? prevPhoto)
+        {
+            try
+            {
+                if (Request.Form.Files.Any())
+                {
+                    var file = Request.Form.Files[0];
+                    var folderName = Path.Combine("Resources", "Dashboard");
+                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                    if(prevPhoto.Length>0)
+                    {
+                        var fullPath = Path.Combine(pathToSave, prevPhoto);
+                        if (System.IO.File.Exists(fullPath))
+                            System.IO.File.Delete(fullPath);
+
+                    }
+                    if (file.Length > 0)
+                    {
+                        var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                        var fileName = "Dashboard-" + id.ToString()+"-" + originalFileName;
+                        var fullPath = Path.Combine(pathToSave, fileName);
+                        if (System.IO.File.Exists(fullPath))
+                            System.IO.File.Delete(fullPath);
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
+                    }
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Ok();
+            }
+
         }
     }
 }

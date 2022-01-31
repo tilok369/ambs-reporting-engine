@@ -93,6 +93,10 @@ namespace Ambs.Reporting.DAL.Entities
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
+                entity.Property(e => e.Exportable)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.ShowFilterInfo)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
@@ -143,6 +147,10 @@ namespace Ambs.Reporting.DAL.Entities
             modelBuilder.Entity<MetaDatum>(entity =>
             {
                 entity.ToTable("MetaData", "config");
+
+                entity.Property(e => e.BrandImage)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.DataSource).HasMaxLength(200);
 

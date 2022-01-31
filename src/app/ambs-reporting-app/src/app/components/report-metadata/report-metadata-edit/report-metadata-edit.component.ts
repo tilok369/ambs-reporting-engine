@@ -15,15 +15,24 @@ export class ReportMetadataEditComponent implements OnInit {
 
   constructor(private metadataService: MetaDataService, private dashboardService: DashboardService) { }
 
+  fileData: any;
+
   ngOnInit(): void {
     this.metadata = {
       id: 0,
       dashboardId: 0,
-      dataSource: ''
+      dataSource: '',
+      brandImage: '',
+      prevBrandImage:'',
     };
     var id = window.history.state.metadataId;
     this.getDasgboards(1, 100);
     this.getMetadata(id);
+  }
+
+  fileProgress(fileInput: any) {
+    this.fileData = <File>fileInput.target.files[0];
+    
   }
 
   getDasgboards(page, size){
@@ -36,6 +45,7 @@ export class ReportMetadataEditComponent implements OnInit {
   getMetadata(id){
     this,this.metadataService.getMetadata(id).subscribe((res: any) => {
       this.metadata = res;
+      this.metadata.prevBrandImage = res.brandImage;
     });
   }
 
@@ -49,13 +59,39 @@ export class ReportMetadataEditComponent implements OnInit {
 
   saveMetadata(){
     this.message = '';
-    console.log(this.metadata);
-    if(this.validateMetadata()){
-      this.metadataService.saveMetadata(this.metadata).subscribe((res: any) => {
-        console.log(res);
-        this.message = res.message;
-      });
+    let fileToUpload = this.fileData;
+    if(!this.fileData)
+    {
+      if(this.validateMetadata()){
+        this.metadataService.saveMetadata(this.metadata).subscribe((res: any) => {
+          console.log(res);
+          this.message = res.message;
+        });
+      }
+      return
     }
+         
+    const formData = new FormData();
+    formData.append('file',fileToUpload,fileToUpload.name);
+    this.metadata.brandImage = fileToUpload.name;
+    console.log(this.metadata);
+
+    this.metadataService.uploadMetaDatadPhoto(formData,this.metadata.dashboardId,this.metadata.prevBrandImage).subscribe((photores:any)=>{
+      if(formData){
+        if(this.validateMetadata()){
+          this.metadataService.saveMetadata(this.metadata).subscribe((res: any) => {
+            console.log(res);
+            this.message = res.message;
+          });
+        }
+
+      }
+
+    })
+
+    
   }
+
+
 
 }

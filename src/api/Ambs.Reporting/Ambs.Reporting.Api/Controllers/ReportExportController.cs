@@ -19,7 +19,8 @@ public class ReportExportController : ControllerBase
     [HttpGet("excel")]
     public async Task<IActionResult> ExportExcel()
     {
-        var data = await _reportLogic.GetReportData(ExportType.Excel, _hostingEnvironment.ContentRootPath);
+        var data = await _reportLogic.GetReportDataForExport(ExportType.Excel, _hostingEnvironment.ContentRootPath);
+       
         var stream = new MemoryStream(data)
         {
             Position = 0
@@ -30,7 +31,8 @@ public class ReportExportController : ControllerBase
     [HttpGet("pdf")]
     public async Task<IActionResult> ExportPdf()
     {
-        var data = await _reportLogic.GetReportData(ExportType.Pdf, _hostingEnvironment.ContentRootPath);
+        var data = await _reportLogic.GetReportDataForExport(ExportType.Pdf, _hostingEnvironment.ContentRootPath);
+        
         var stream = new MemoryStream(data)
         {
             Position = 0
@@ -38,16 +40,22 @@ public class ReportExportController : ControllerBase
         return File(stream, "application/pdf", "Test.pdf");
 
     }
-
-    [HttpGet("reportExport")]
-    public async Task<IActionResult> ReportExport(string fileName)
+    [HttpGet("data/{reportId}/{paraVals}")]
+    public async Task<IActionResult> GetData(long reportId,string paraVals)
     {
-        var data = await _reportLogic.GetReportExport(fileName);
-        var stream = new MemoryStream(data)
-        {
-            Position = 0
-        };
-        return File(stream, "application/ms-excel", fileName+ ".xlsx");
-
+        //var data = await _reportLogic.GetReportData();
+        return Ok(await _reportLogic.GetReportData(reportId,paraVals));
     }
+
+    //[HttpGet("reportExport")]
+    //public async Task<IActionResult> ReportExport(string fileName)
+    //{
+    //    var data = await _reportLogic.GetReportExport(fileName);
+    //    var stream = new MemoryStream(data)
+    //    {
+    //        Position = 0
+    //    };
+    //    return File(stream, "application/ms-excel", fileName+ ".xlsx");
+
+    //}
 }

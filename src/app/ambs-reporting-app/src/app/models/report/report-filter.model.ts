@@ -1,4 +1,4 @@
-export interface ReportFilter {
+export interface IReportFilter {
     id:number
     reportId:number
     filterId:number

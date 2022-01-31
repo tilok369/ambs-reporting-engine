@@ -26,6 +26,9 @@ import { ReportFilterAddComponent } from './components/report-filter/report-filt
 import { ReportFilterComponent } from './components/report-filter/report-filter/report-filter.component';
 import { FilterService } from './services/filter.service';
 import { ReportFilterEditComponent } from './components/report-filter/report-filter-edit/report-filter-edit/report-filter-edit.component';
+import { InputOutputService } from './services/input-output.service';
+import { ReportDataComponent } from './components/report/report-data/report-data.component';
+import { ReportChartDataComponent } from './components/report/report-chart-data/report-chart-data.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,9 @@ import { ReportFilterEditComponent } from './components/report-filter/report-fil
     WidgetEditComponent,
     ReportFilterAddComponent,
     ReportFilterComponent,
-    ReportFilterEditComponent
+    ReportFilterEditComponent,
+    ReportDataComponent,
+    ReportChartDataComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +63,8 @@ import { ReportFilterEditComponent } from './components/report-filter/report-fil
     ReportService,
     MetaDataService,
     WidgetService,
-    FilterService
+    FilterService,
+    InputOutputService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,25 +1,29 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Ambs.Reporting.DAL.CalculativeModels;
+using Ambs.Reporting.ViewModel.Reponse;
+using AutoMapper;
 
 namespace Ambs.Reporting.Logic.Implementations
 {
     public class  FilterLogic : IFilterLogic
     {
         private readonly IFilterService _filterService;
+        private readonly IMapper _mapper;
 
-        public FilterLogic(IFilterService filterService)
+        public FilterLogic(IFilterService filterService
+            , IMapper mapper)
         {
             _filterService = filterService;
+            _mapper = mapper;
         }
 
         public FilterResponseDTO Get(long id)
         {
             var filter = _filterService.Get(id);
             if (filter == null) return null;
+            int value = (int)filter.Type;
+            var filterTypeName = (FilterType)value;
+            string stringValue = filterTypeName.ToString();
 
             return new FilterResponseDTO(filter.Id)
             {
@@ -32,7 +36,9 @@ namespace Ambs.Reporting.Logic.Implementations
                 CreatedOn = filter.CreatedOn,
                 CreatedBy = filter.CreatedBy,
                 UpdatedOn = filter.UpdatedOn,
-                UpdatedBy = filter.UpdatedBy
+                UpdatedBy = filter.UpdatedBy,
+                Type = filter.Type,
+                TypeStr = stringValue
             };
         }
 
@@ -42,6 +48,10 @@ namespace Ambs.Reporting.Logic.Implementations
             var filters = new List<FilterResponseDTO>();
             foreach (var filter in filterList.Take((page - 1)..size))
             {
+                int value = (int)filter.Type;
+                var filterTypeName = (FilterType)value;
+                string stringValue = filterTypeName.ToString();
+                int filterType = (int)filter.Type;
                 filters.Add(new FilterResponseDTO(filter.Id)
                 {   
                     Name = filter.Name,
@@ -53,11 +63,32 @@ namespace Ambs.Reporting.Logic.Implementations
                     CreatedOn = filter.CreatedOn,
                     CreatedBy = filter.CreatedBy,
                     UpdatedOn = filter.UpdatedOn,
-                    UpdatedBy = filter.UpdatedBy
+                    UpdatedBy = filter.UpdatedBy,
+                    Type = filter.Type,
+                    TypeStr = stringValue
                 });
             }
 
             return filters;
+        }
+
+        public IEnumerable<DropdownFilter> GetDropdownValues(long reportId, long filterId,string filterValue)
+        {
+            var filter=_filterService.Get(filterId);
+            var filtersOfThisReport = _filterService.GetByReportId(reportId);
+            var filterToChange=filtersOfThisReport.FirstOrDefault(f=>f.Parameter.ToLower()==filter.DependentParameters.ToLower());
+            if (filterToChange != null)
+            {
+                filterToChange.Script= filterToChange.Script.ToLower().Replace(filter.Name.ToLower(), filterValue.ToString()).Replace('@',' ');
+                var data = _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(filterToChange.Script));
+                return data;
+            }            
+            return new List<DropdownFilter>();
+        }
+
+        public IEnumerable<DropdownFilter> GetGraphType()
+        {
+            return _filterService.GetGraphType().Select(gt=>new DropdownFilter (gt.Id,gt.Name));
         }
 
         public FilterPostResponseDTO Save(FilterPostRequestDTO filter)
@@ -77,6 +108,7 @@ namespace Ambs.Reporting.Logic.Implementations
                     UpdatedBy = "admin",
                     CreatedBy = "admin" ,
                     CreatedOn = filter.Id == 0 ? DateTime.Now : filter.CreatedOn,
+                    Type = filter?.Type 
 
                 };
                 var result = _filterService.Save(db);

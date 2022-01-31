@@ -7,5 +7,6 @@ public interface IReportService
     Report Add(Report report);
     Report Edit(Report report);
     Report Delete(long id);
+    IEnumerable<Report> GetByWidgetId(long widgetId);
 }
 

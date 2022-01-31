@@ -12,5 +12,6 @@ namespace Ambs.Reporting.Service.Interfaces
         TabularFeature Edit(TabularFeature tabularFeature);
         TabularFeature GetByReportId(long reportId);
         TabularFeature Delete(long id);
+        bool DeleteByReportId(long reportId);
     }
 }

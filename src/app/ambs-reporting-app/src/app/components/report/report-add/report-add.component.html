@@ -1,32 +1,34 @@
 <div class="row container-outer-layout">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="alert alert-dark" role="alert">
-            <label class="fs-5 fw-bold">Report Add</label> 
-            <button type="button" class="btn btn-secondary float-end plus-btn" title="save report" (click)="saveReport()"><i class="fa fa-save"></i></button>
+            <label class="fs-5 fw-bold">Report Add</label>
+            <button type="button" class="btn btn-secondary float-end plus-btn" title="save report"
+                (click)="saveReport()"><i class="fa fa-save"></i></button>
         </div>
         <div class="row">
-            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 offset-lg-2 offset-md-2">          
-                <div class="alert alert-danger" role="alert" *ngIf="message">
-                    {{message}}
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 offset-lg-2 offset-md-2">
+                <div class="alert alert-danger" role="alert" *ngIf="message" [innerHTML]="message">
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">          
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="widget" placeholder="widget name" required [(ngModel)]="report.widgetName">
+                    <input type="text" class="form-control" id="widget" placeholder="widget name" required
+                        [(ngModel)]="report.widgetName">
                     <label for="widget">Widget</label>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">          
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="name" placeholder="report name" required [(ngModel)]="report.name">
+                    <input type="text" class="form-control" id="name" placeholder="report name" required maxlength="50"
+                        [(ngModel)]="report.name">
                     <label for="name">Report Name</label>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">          
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <div class="form-floating mb-3">
                     <select id="type" class="form-select" [(ngModel)]="report.type">
-                        <option value="1">Tabular</option>
-                        <option value="2">Graphical</option>
+                        <option [ngValue]="1">Tabular</option>
+                        <option [ngValue]="2">Graphical</option>
                     </select>
                     <label for="type">Type</label>
                 </div>
@@ -37,26 +39,41 @@
                     <div class="p-1 bg-light">
                         <div class="alert alert-dark" role="alert">
                             <label class="fs-6">Filter Configuration</label>
-                        </div> 
+                        </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label for="a-filter"><b>Available Filters</b></label>
                                 <div class="form-floating mb-3">
-                                    <select id="a-filter" class="form-select" style="height: 100px;" (change)="selectFilter($event.target);">
-                                        <option *ngFor="let filter of deSelectedFilterList" [value]="filter.id">{{filter.name}}</option>
-                                    </select>
-                                    <label for="a-filter">Available Filters</label>
+                                    <!-- <select id="a-filter" class="form-select" (change)="selectFilter($event.target);">
+                                        <option *ngFor="let filter of deSelectedFilterList" [value]="filter.id">
+                                            {{filter.name}}</option>
+                                    </select> -->
+                                    <div *ngFor="let filter of deSelectedFilterList" >
+                                        <label (click)="selectFilter(filter);">{{filter.name}}</label>
+                                    </div>
                                 </div>
-                            </div>  
+                            </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="form-floating mb-3">
-                                    <select id="s-filter" class="form-select" style="height: 100px;" (change)="deSelectFilter($event.target);"> 
-                                        <option *ngFor="let filter of selectedFilterList" [value]="filter.id">{{filter.name}}</option>
-                                    </select>
-                                    <label for="s-filter">Selected Filters</label>
+                                <label for="s-filter"><b>Selected Filters</b></label>
+                                <div class="row">
+                                    <div *ngFor="let filter of selectedFilterList"
+                                        class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <label (click)="deSelectFilter(filter);" >{{filter.name}}</label>
+                                            <i class="fa fa-angle-double-down my-icon" *ngIf="filter.name" (click)="downPosition(filter);"></i>
+                                            <i class="fa fa-angle-double-up my-icon" *ngIf="filter.name" (click)="upPosition(filter);"></i>
+                                        </div>
+                                        
+                                    </div>
+                                    <!-- <select id="s-filter" class="form-select" (change)="deSelectFilter($event.target);">
+                                        <option *ngFor="let filter of selectedFilterList" [value]="filter.id">
+                                            {{filter.name}}</option>
+                                    </select> -->
+
                                 </div>
                             </div>
                         </div>
-                                               
+
                     </div>
                 </div>
             </div>
@@ -66,61 +83,73 @@
                     <div class="p-1 bg-light">
                         <div class="alert alert-dark" role="alert">
                             <label class="fs-6">Tabular Configuration</label>
-                        </div>                        
+                        </div>
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="t-title" placeholder="tabular report title" required [(ngModel)]="report.tabularFeature.title">
+                                    <input type="text" class="form-control" id="t-title"
+                                        placeholder="tabular report title" required
+                                        [(ngModel)]="report.tabularFeature.title" maxlength="100">
                                     <label for="t-tile">Title</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="t-template" placeholder="template" required [(ngModel)]="report.tabularFeature.template">
+                                    <input type="text" class="form-control" id="t-template" placeholder="template"
+                                        required [(ngModel)]="report.tabularFeature.template" maxlength="200">
                                     <label for="t-template">Template</label>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="t-subtitle" placeholder="tabular report sub title" required [(ngModel)]="report.tabularFeature.subTitle">
+                                    <input type="text" class="form-control" id="t-subtitle"
+                                        placeholder="tabular report sub title" required
+                                        [(ngModel)]="report.tabularFeature.subTitle" maxlength="100">
                                     <label for="t-subtitle">Sub Title</label>
                                 </div>
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="t-hasTotalColumn" required [(ngModel)]="report.tabularFeature.hasTotalColumn">
+                                    <input class="form-check-input" type="checkbox" id="t-hasTotalColumn" required
+                                        [(ngModel)]="report.tabularFeature.hasTotalColumn">
                                     <label class="form-check-label" for="t-hasTotalColumn">
-                                      Has Total Column
+                                        Has Total Column
                                     </label>
                                 </div>
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="t-hasTotalRow" required [(ngModel)]="report.tabularFeature.hasTotalRow">
+                                    <input class="form-check-input" type="checkbox" id="t-hasTotalRow" required
+                                        [(ngModel)]="report.tabularFeature.hasTotalRow">
                                     <label class="form-check-label" for="t-hasTotalRow">
-                                      Has Total Row
+                                        Has Total Row
                                     </label>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="t-showFilterInfo" required [(ngModel)]="report.tabularFeature.showFilterInfo">
+                                    <input class="form-check-input" type="checkbox" id="t-showFilterInfo" required
+                                        [(ngModel)]="report.tabularFeature.showFilterInfo">
                                     <label class="form-check-label" for="t-showFilterInfo">
-                                      Show Filter Info
+                                        Show Filter Info
                                     </label>
                                 </div>
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="t-asOnDate" required [(ngModel)]="report.tabularFeature.asOnDate">
+                                    <input class="form-check-input" type="checkbox" id="t-asOnDate" required
+                                        [(ngModel)]="report.tabularFeature.asOnDate">
                                     <label class="form-check-label" for="t-asOnDate">
-                                      As On Date
+                                        As On Date
                                     </label>
                                 </div>
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="t-exportable" required [(ngModel)]="report.tabularFeature.exportable">
+                                    <input class="form-check-input" type="checkbox" id="t-exportable" required
+                                        [(ngModel)]="report.tabularFeature.exportable">
                                     <label class="form-check-label" for="t-exportable">
-                                      Exportable
+                                        Exportable
                                     </label>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" style="height: 150px" placeholder="Put your script here" id="t-script" [(ngModel)]="report.tabularFeature.script"></textarea>
+                                    <textarea class="form-control" style="height: 150px"
+                                        placeholder="Put your script here" id="t-script"
+                                        [(ngModel)]="report.tabularFeature.script"></textarea>
                                     <label for="t-script">Scripts</label>
-                                  </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -135,71 +164,110 @@
                     <div class="p-1 bg-light">
                         <div class="alert alert-dark" role="alert">
                             <label class="fs-6">Graphical Configuration</label>
-                        </div>                        
+                        </div>
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="g-title" placeholder="graphical report title" required [(ngModel)]="report.graphicalFeature.title">
+                                    <input type="text" class="form-control" id="g-title"
+                                        placeholder="graphical report title" required
+                                        [(ngModel)]="report.graphicalFeature.title" maxlength="100">
                                     <label for="g-title">Title</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="g-xaxisTitle" placeholder="x axis title" required [(ngModel)]="report.graphicalFeature.xaxisTitle">
+                                    <input type="text" class="form-control" id="g-xaxisTitle" placeholder="x axis title"
+                                        required [(ngModel)]="report.graphicalFeature.xaxisTitle" maxlength="100">
                                     <label for="g-xaxisTitle">X Axis Title</label>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="g-subtitle" placeholder="graphical report sub title" required [(ngModel)]="report.graphicalFeature.subTitle">
+                                    <input type="text" class="form-control" id="g-subtitle"
+                                        placeholder="graphical report sub title" required
+                                        [(ngModel)]="report.graphicalFeature.subTitle" maxlength="100">
                                     <label for="g-subtitle">Sub Title</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="g-yaxisTitle" placeholder="y axis title" required [(ngModel)]="report.graphicalFeature.yaxisTitle">
+                                    <input type="text" class="form-control" id="g-yaxisTitle" placeholder="y axis title"
+                                        required [(ngModel)]="report.graphicalFeature.yaxisTitle"> maxlength="100"
                                     <label for="g-xaxisTitle">Y Axis Title</label>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="g-showFilterInfo" required [(ngModel)]="report.graphicalFeature.showFilterInfo">
-                                    <label class="form-check-label" for="g-showFilterInfo">
-                                      Show Filter Info
-                                    </label>
+                                <div class="form-floating mb-3">
+                                    <select id="g-type" class="form-select"
+                                        [(ngModel)]="report.graphicalFeature.graphType">
+                                        <option *ngFor="let graphType of graphTypeList" [ngValue]="graphType.value">
+                                            {{graphType.name}}</option>
+                                    </select>
+                                    <label for="g-subtitle">Graph Type</label>
                                 </div>
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="g-showLegend" required [(ngModel)]="report.graphicalFeature.showLegend">
-                                    <label class="form-check-label" for="g-showLegend">
-                                      Show Legend
+                                    <input class="form-check-input" type="checkbox" id="g-exportable" required
+                                        [(ngModel)]="report.graphicalFeature.exportable">
+                                    <label class="form-check-label" for="g-exportable">
+                                        Exportable
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="g-yaxissuffix" placeholder="x axis suffix" required [(ngModel)]="report.graphicalFeature.xaxisSuffix">
+                                    <input type="text" class="form-control" id="g-yaxissuffix"
+                                        placeholder="x axis suffix" required
+                                        [(ngModel)]="report.graphicalFeature.xaxisSuffix" maxlength="10">
                                     <label for="g-xaxissuffix">X Axis Suffix</label>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="g-yaxisprefix" placeholder="x axis prefix" required [(ngModel)]="report.graphicalFeature.xaxisPrefix">
+                                    <input type="text" class="form-control" id="g-yaxisprefix"
+                                        placeholder="x axis prefix" required
+                                        [(ngModel)]="report.graphicalFeature.xaxisPrefix" maxlength="10">
                                     <label for="g-xaxisprefix">X Axis Prefix</label>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="g-showLegend" required
+                                        [(ngModel)]="report.graphicalFeature.showLegend">
+                                    <label class="form-check-label" for="g-showLegend">
+                                        Show Legend
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="g-yaxisTitle" placeholder="y axis suffix" required [(ngModel)]="report.graphicalFeature.yaxisSuffix">
+                                    <input type="text" class="form-control" id="g-yaxisTitle"
+                                        placeholder="y axis suffix" required
+                                        [(ngModel)]="report.graphicalFeature.yaxisSuffix" maxlength="10">
                                     <label for="g-yaxissuffix">Y Axis Suffix</label>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="g-yaxisprefix" placeholder="y axis prefix" required [(ngModel)]="report.graphicalFeature.yaxisPrefix">
+                                    <input type="text" class="form-control" id="g-yaxisprefix"
+                                        placeholder="y axis prefix" required
+                                        [(ngModel)]="report.graphicalFeature.yaxisPrefix" maxlength="10">
                                     <label for="g-yaxisprefix">Y Axis Prefix</label>
                                 </div>
                             </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="g-showFilterInfo" required
+                                        [(ngModel)]="report.graphicalFeature.showFilterInfo">
+                                    <label class="form-check-label" for="g-showFilterInfo">
+                                        Show Filter Info
+                                    </label>
+                                </div>
+                            </div>
+
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" style="height: 150px" placeholder="Put your script here" id="g-script" [(ngModel)]="report.graphicalFeature.script"></textarea>
+                                    <textarea class="form-control" style="height: 150px"
+                                        placeholder="Put your script here" id="g-script"
+                                        [(ngModel)]="report.graphicalFeature.script"></textarea>
                                     <label for="g-script">Scripts</label>
-                                  </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -208,5 +276,3 @@
         </div>
     </div>
 </div>
-
-

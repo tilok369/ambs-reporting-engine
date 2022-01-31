@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ambs.Reporting.DAL.CalculativeModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,8 @@ namespace Ambs.Reporting.Service.Interfaces
         IEnumerable<Filter> GetAll();
 
         Filter Save(Filter filter);
+        IEnumerable<GraphType> GetGraphType();
+        IEnumerable<DropdownFilterCM> GetDrowpdownFilterValues(string script);
+        IEnumerable<Filter> GetByReportId(long reportId);
     }
 }

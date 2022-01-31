@@ -1,0 +1,32 @@
+<div style="margin-top: 50px;" *ngIf="tableDatas">
+    <ul class="nav nav-tabs" >
+        <li *ngFor="let tab of tableDatas" (click)="tabClicked(tab);">
+            <a data-target="#{{tab.sheetName}}" data-toggle="tab" class="btn report-tab"
+                [ngClass]="{'report-tab-active' : tab.isActive}">{{tab.sheetName}}</a>
+        </li>
+    </ul>
+    <div class="overflow-auto" style="height: 450px;">
+        <div >
+            <div *ngFor="let tableData of tableDatas" class="tab-pane" [ngClass]="{'active' : tableData.isActive}"
+                id="{{tableData.sheetName}}">
+                <table class="table table-bordered">
+                    <ng-container>
+                        <thead>
+                            <tr *ngFor="let layer of tableData?.layers">
+                                <th *ngFor="let column of layer?.columns" [attr.colspan]="column.columnSpan"
+                                    [attr.rowspan]="column.rowSpan" style="text-align: center;">
+                                    {{column.columnName}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of tableData?.rows">
+                                <td *ngFor="let cell of row">{{cell}}</td>
+                            </tr>
+                        </tbody>
+                    </ng-container>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
