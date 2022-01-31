@@ -12,21 +12,25 @@ public class GraphicalFeatureLogic : IGraphicalFeatureLogic
     private readonly IGraphicalFeatureService _graphicalFeatureService;
     private readonly IReportExportService _reportExportService;
     private readonly IExporter _exporter;
+    private readonly IMetaDataLogic _metaDataLogic;
 
     public GraphicalFeatureLogic(IGraphicalFeatureService graphicalFeatureService,
         IReportExportService reportExportService,
-        IExporter exporter)
+        IExporter exporter
+        , IMetaDataLogic metaDataLogic)
     {
         _graphicalFeatureService = graphicalFeatureService;
         _reportExportService = reportExportService;
         _exporter = exporter;
+        _metaDataLogic = metaDataLogic;
     }
 
     public IGraph GetByReport(long reportId, string parameterVals)
     {
         var gf = _graphicalFeatureService.GetByReportId(reportId);
         if (gf == null) return null;
-        var (columns, rows) = _reportExportService.GetReportData(Helper.ConstructCommand(gf.Script, parameterVals.ToDictionary()), System.Data.CommandType.Text, new SqlParameter[] { }).GetAwaiter().GetResult();
+        var (columns, rows) = _reportExportService.GetReportData(Helper.ConstructCommand(gf.Script, parameterVals.ToDictionary()), System.Data.CommandType.Text, _metaDataLogic.GetMetadataByReportId(reportId)?.DataSource, new SqlParameter[] { }).GetAwaiter().GetResult();
+
 
         var graph = new GraphFactory().GetGraph(gf.GraphType);      
         graph.SetDataPoints(columns, rows);
@@ -49,7 +53,7 @@ public class GraphicalFeatureLogic : IGraphicalFeatureLogic
         var gf = _graphicalFeatureService.GetByReportId(reportId);
         if (gf == null) return null;
 
-        var (columns, rows) = _reportExportService.GetReportData(Helper.ConstructCommand(gf.Script, parameterVals.ToDictionary()), System.Data.CommandType.Text, new SqlParameter[] { }).GetAwaiter().GetResult();
+        var (columns, rows) = _reportExportService.GetReportData(Helper.ConstructCommand(gf.Script, parameterVals.ToDictionary()), System.Data.CommandType.Text,_metaDataLogic.GetMetadataByReportId(reportId)?.DataSource, new SqlParameter[] { }).GetAwaiter().GetResult();
 
         var graph = new GraphFactory().GetGraph(gf.GraphType);
         graph.SetDataPoints(columns, rows);

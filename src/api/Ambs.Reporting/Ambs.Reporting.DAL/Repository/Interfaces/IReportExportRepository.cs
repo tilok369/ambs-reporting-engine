@@ -10,6 +10,6 @@ namespace Ambs.Reporting.DAL.Repository.Interfaces;
 
 public interface IReportExportRepository
 {
-    Task<(List<string>, List<List<string>>)> GetReportData(string commandText, CommandType commandType, SqlParameter[] parameters);
+    Task<(List<string>, List<List<string>>)> GetReportData(string commandText, CommandType commandType, string connectionString, SqlParameter[] parameters);
 }
 

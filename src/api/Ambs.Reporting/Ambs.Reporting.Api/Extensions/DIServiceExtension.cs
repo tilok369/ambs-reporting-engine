@@ -18,7 +18,8 @@ public static class DIServiceExtension
             .AddScoped<IGenericRepository, GenericRepository>()
             .AddScoped<IReportExportRepository, ReportExportRepository>()
             .AddScoped<IReportRepository,ReportRepository>()
-            .AddScoped<IFilterRepository,FilterRepository>();
+            .AddScoped<IFilterRepository,FilterRepository>()
+            .AddScoped<IMetaDataRepository,MetaDataRepository>();
     }
     public static IServiceCollection AddServices(this IServiceCollection services)
     {

@@ -1,5 +1,5 @@
 import { FilterType } from "src/app/enums/filter-enum"
-import { ReportType } from "src/app/enums/report-enum"
+import { ExportType, ReportType } from "src/app/enums/report-enum"
 import { IDropdownFilter } from "../report/dropdown-filter.model"
 
 export class DashboardWidgetReportVM {
@@ -37,6 +37,7 @@ export class ReportVM {
     widgetId: number
     type: ReportType
     data?: any
+    exportType:ExportType
     filters: Array<FilterVM>
     constructor() {
         this.id = 0
@@ -45,6 +46,7 @@ export class ReportVM {
         this.status = true
         this.type = ReportType.Tabular
         this.filters = []
+        this.exportType=ExportType.Excel
     }
 }
 export class FilterVM {

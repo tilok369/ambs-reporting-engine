@@ -9,7 +9,7 @@ public class ReportingEngine : IReportingEngine
         var exportData = new ExportData { Rows = data.Rows, Columns = data.Columns };
         var maxLayer = GetMaxLayers(exportData.Columns);
         exportData.Layers = GetLayers(exportData.Columns, maxLayer);
-        exportData.SheetName = "Sheet";
+        exportData.SheetName = data.ReportName;
         return exportData;
     }
 
@@ -18,10 +18,10 @@ public class ReportingEngine : IReportingEngine
         var exportDataList = new List<ExportData>();
         foreach (var data in datas)
             exportDataList.Add(await GetExportData(data));
-        exportDataList.ForEach(data =>
-        {
-            data.SheetName += (exportDataList.IndexOf(data) + 1);
-        });
+        //exportDataList.ForEach(data =>
+        //{
+        //    data.SheetName += (exportDataList.IndexOf(data) + 1);
+        //});
         return exportDataList;
     }
     //private static int GetMaxLayer(List<string> columns)

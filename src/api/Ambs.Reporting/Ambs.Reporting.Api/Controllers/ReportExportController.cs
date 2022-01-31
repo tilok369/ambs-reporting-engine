@@ -17,33 +17,42 @@ public class ReportExportController : ControllerBase
         _hostingEnvironment=hostingEnvironment;
     }
     [HttpGet("excel")]
-    public async Task<IActionResult> ExportExcel()
-    {
-        var data = await _reportLogic.GetReportDataForExport(ExportType.Excel, _hostingEnvironment.ContentRootPath);
+    //public async Task<IActionResult> ExportExcel()
+    //{
+    //    var data = await _reportLogic.GetReportDataForExport(ExportType.Excel, _hostingEnvironment.ContentRootPath);
        
-        var stream = new MemoryStream(data)
-        {
-            Position = 0
-        };
-        return File(stream, "application/ms-excel", "Test.xlsx");
+    //    var stream = new MemoryStream(data)
+    //    {
+    //        Position = 0
+    //    };
+    //    return File(stream, "application/ms-excel", "Test.xlsx");
 
-    }
-    [HttpGet("pdf")]
-    public async Task<IActionResult> ExportPdf()
-    {
-        var data = await _reportLogic.GetReportDataForExport(ExportType.Pdf, _hostingEnvironment.ContentRootPath);
+    //}
+    //[HttpGet("pdf")]
+    //public async Task<IActionResult> ExportPdf()
+    //{
+    //    var data = await _reportLogic.GetReportDataForExport(ExportType.Pdf, _hostingEnvironment.ContentRootPath);
         
+    //    var stream = new MemoryStream(data)
+    //    {
+    //        Position = 0
+    //    };
+    //    return File(stream, "application/pdf", "Test.pdf");
+
+    //}
+    [HttpGet("export/{reportId}/{paramVals}/{exportType}/{reportName}")]
+    public async Task<IActionResult> ExportReport(long reportId,string paramVals,ExportType exportType,string reportName)
+    {
+        var data = await _reportLogic.GetReportDataForExport(reportId, paramVals, exportType, _hostingEnvironment.ContentRootPath);
         var stream = new MemoryStream(data)
         {
             Position = 0
         };
-        return File(stream, "application/pdf", "Test.pdf");
-
+        return exportType==ExportType.Excel? File(stream, "application/ms-excel", reportName+ ".xlsx") : File(stream, "application/pdf", reportName+".pdf");
     }
     [HttpGet("data/{reportId}/{paraVals}")]
     public async Task<IActionResult> GetData(long reportId,string paraVals)
     {
-        //var data = await _reportLogic.GetReportData();
         return Ok(await _reportLogic.GetReportData(reportId,paraVals));
     }
 
