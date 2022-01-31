@@ -16,15 +16,15 @@ namespace Ambs.Reporting.Api.Controllers
         }
 
         [HttpGet()]
-        public IGraph Get(long reportId, string parameterVals)
+        public IGraph Get(long dashboardId, long reportId, string parameterVals)
         {
-            return _graphicalFeatureLogic.GetByReport(reportId, parameterVals);
+            return _graphicalFeatureLogic.GetByReport(dashboardId,reportId, parameterVals);
         }
 
-        [HttpGet("reportExport")]
-        public async Task<IActionResult> ReportExport(string fileName, long reportId, string parameterVals)
+        [HttpGet("reportExport/{dashboardId}/{fileName}/{reportId}/{parameterVals}")]
+        public async Task<IActionResult> ReportExport(long dashboardId,string fileName, long reportId, string parameterVals)
         {
-            var data = await _graphicalFeatureLogic.GetReportExport(fileName, reportId,parameterVals);
+            var data = await _graphicalFeatureLogic.GetReportExport(dashboardId,fileName, reportId,parameterVals);
             var stream = new MemoryStream(data)
             {
                 Position = 0

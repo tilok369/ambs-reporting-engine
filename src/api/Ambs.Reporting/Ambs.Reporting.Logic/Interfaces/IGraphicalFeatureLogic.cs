@@ -6,6 +6,6 @@ namespace Ambs.Reporting.Logic.Interfaces;
 
 public interface IGraphicalFeatureLogic
 {
-    IGraph GetByReport(long reportId, string parameterVals);
-    Task<byte[]> GetReportExport(string fileName, long reportId, string parameterVals);
+    IGraph GetByReport(long dashboardId,long reportId, string parameterVals);
+    Task<byte[]> GetReportExport(long dashboardId, string fileName, long reportId, string parameterVals);
 }
