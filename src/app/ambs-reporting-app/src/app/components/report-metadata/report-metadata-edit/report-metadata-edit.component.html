@@ -19,9 +19,12 @@
                 </div>
                 <div class="form-floating mb-3">
                     <input type="file" class="form-control" id="brandImage" placeholder="metadata brandImage" required [(ngModel)]="metadata.brandImage" (change)="fileProgress($event)">   
-                    <label>{{metadata.brandImage}}</label>
+                  
                   <label for="brandImage">Brand Image</label>
                  
+                </div>
+                <div class="image-preview mb-3" >
+                    <img [src]="constructImage(metadata.brandImage)" height="120" width="120" class="right" />
                 </div>
                 <div class="alert alert-danger" role="alert" *ngIf="message">
                     {{message}}

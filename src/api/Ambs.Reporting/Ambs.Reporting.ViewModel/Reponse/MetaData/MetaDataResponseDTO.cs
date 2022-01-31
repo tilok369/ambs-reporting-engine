@@ -10,5 +10,6 @@ public record MetaDataResponseDTO: BaseGetResponseDTO
     public string DataSource { get; set; } = null!;
 
     public string? BrandImage { get; set; }
+    public string ImageData { get; set; }
 }
 

@@ -13,6 +13,7 @@ export class ReportMetadataAddComponent implements OnInit {
   public dashboards: any[] = [];
   public message: string = '';
   fileData: any;
+  previewUrl: any = null;
 
   constructor(private metadataService: MetaDataService, private dashboardService: DashboardService) { }
 
@@ -29,7 +30,19 @@ export class ReportMetadataAddComponent implements OnInit {
 
   fileProgress(fileInput: any) {
     this.fileData = <File>fileInput.target.files[0];
-    
+    this.preview();
+  }
+
+  preview() {
+    var mimeType = this.fileData.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+    var reader = new FileReader();
+    reader.readAsDataURL(this.fileData);
+    reader.onload = (_event) => {
+      this.previewUrl = reader.result;
+    }
   }
 
   getDasgboards(page, size){
