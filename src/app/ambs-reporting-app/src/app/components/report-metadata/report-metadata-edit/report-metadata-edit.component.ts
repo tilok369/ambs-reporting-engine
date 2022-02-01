@@ -77,7 +77,7 @@ export class ReportMetadataEditComponent implements OnInit {
   constructImage(photo) {
     if (!photo)
       photo = 'default-image.png';
-    return 'D:/Office ASAI/ambs-reporting-engine/src/api/Ambs.Reporting/Ambs.Reporting.Api/Resources/Dashboard/' + photo;
+    return environment.apiEndPointRoot + 'Resources/Dashboard/' + photo;
   }
 
   saveMetadata(){
