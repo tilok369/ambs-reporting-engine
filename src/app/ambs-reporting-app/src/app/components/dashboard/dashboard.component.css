@@ -9,3 +9,12 @@
     border-radius: 5px;
     margin-left: 1px;
 }
+
+.btn-ambs{
+    margin-bottom: 10px;
+}
+
+.btn-export{
+    margin-right: 15px;
+    border-radius: 5px !important;
+}

@@ -33,32 +33,33 @@
 
             </div>
             <div class="row" >
-                <div class="col-auto">
-                    <button type="button" class="btn btn-outline-primary"
+                <div class="col-auto" *ngIf="report.type==reportType.Graphical">
+                    <button type="button" class="btn btn-outline-primary btn-export btn-ambs"
                         (click)="getReportData(report);">Submit</button>
-                </div>
-                <div class="col-auto">
-                    <button type="button" class="btn btn-outline-primary" (click)="exportReport(report);"
-                            >Export</button>
+                    <button type="button" class="btn btn-outline-primary btn-ambs" (click)="exportReport(report);"
+                        >Export</button>
                 </div>
                 <div class="col-auto" *ngIf="report.type==reportType.Tabular">
-
+                    
                     <div class="input-group">
-                        <select class="form-select" id="export-ddl" aria-label="select export type" [(ngModel)]="report.exportType">
+                        <button type="button" class="btn btn-outline-primary btn-export btn-ambs"
+                        (click)="getReportData(report);">Submit</button>
+                        <select class="form-select btn-ambs" id="export-ddl" aria-label="select export type" [(ngModel)]="report.exportType">
                             <option selected>Choose...</option>
                             <option *ngFor="let et of exportTypes" [ngValue]="et.value">
                                 {{et.name}}</option>
-                        </select>
-                        
+                        </select> 
+                        <button type="button" class="btn btn-outline-primary btn-ambs" (click)="exportReport(report);"
+                            >Export</button>                       
                     </div>                    
-                    <app-report-data [tableDatas]="report?.data"></app-report-data>
                 </div>
-                
+            </div>
+            <div class="row">
+                <div class="col-auto" *ngIf="report.type==reportType.Tabular"  style="min-height: 250px;">                   
+                    <app-report-data [tableDatas]="report?.data"></app-report-data>
+                </div>                
                 <div *ngIf="report.type==reportType.Graphical">
-                        
-   
-                        <div id="{{report?.id}}" style="height: 450px;" >
-
+                        <div id="{{report?.id}}" style="height: 450px;">
                         </div>
                 </div>
             </div>

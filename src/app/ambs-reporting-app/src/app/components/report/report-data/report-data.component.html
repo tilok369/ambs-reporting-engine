@@ -9,10 +9,10 @@
         <div >
             <div *ngFor="let tableData of tableDatas" class="tab-pane" [ngClass]="{'active' : tableData.isActive}"
                 id="{{tableData.sheetName}}">
-                <table class="table table-bordered">
+                <table class="table table-light table-striped table-hover table-bordered border-secondary">
                     <ng-container>
                         <thead>
-                            <tr *ngFor="let layer of tableData?.layers">
+                            <tr class="table-secondary" *ngFor="let layer of tableData?.layers">
                                 <th *ngFor="let column of layer?.columns" [attr.colspan]="column.columnSpan"
                                     [attr.rowspan]="column.rowSpan" style="text-align: center;">
                                     {{column.columnName}}</th>
