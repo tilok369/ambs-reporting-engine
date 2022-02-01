@@ -1,0 +1,11 @@
+.widget-header{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.report-layout{
+    border: 1px solid gray !important;
+    margin-bottom: 2px;
+    border-radius: 5px;
+    margin-left: 1px;
+}
