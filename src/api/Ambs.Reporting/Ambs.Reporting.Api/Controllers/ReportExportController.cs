@@ -40,20 +40,20 @@ public class ReportExportController : ControllerBase
     //    return File(stream, "application/pdf", "Test.pdf");
 
     //}
-    [HttpGet("export/{reportId}/{paramVals}/{exportType}/{reportName}")]
-    public async Task<IActionResult> ExportReport(long reportId,string paramVals,ExportType exportType,string reportName)
+    [HttpGet("export/{dasboardId}/{reportId}/{paramVals}/{exportType}/{reportName}")]
+    public async Task<IActionResult> ExportReport(long dasboardId,long reportId,string paramVals,ExportType exportType,string reportName)
     {
-        var data = await _reportLogic.GetReportDataForExport(reportId, paramVals, exportType, _hostingEnvironment.ContentRootPath);
+        var data = await _reportLogic.GetReportDataForExport(dasboardId,reportId, paramVals, exportType, _hostingEnvironment.ContentRootPath);
         var stream = new MemoryStream(data)
         {
             Position = 0
         };
         return exportType==ExportType.Excel? File(stream, "application/ms-excel", reportName+ ".xlsx") : File(stream, "application/pdf", reportName+".pdf");
     }
-    [HttpGet("data/{reportId}/{paraVals}")]
-    public async Task<IActionResult> GetData(long reportId,string paraVals)
+    [HttpGet("data/{dasboardId}/{reportId}/{paraVals}")]
+    public async Task<IActionResult> GetData(long dasboardId, long reportId,string paraVals)
     {
-        return Ok(await _reportLogic.GetReportData(reportId,paraVals));
+        return Ok(await _reportLogic.GetReportData(dasboardId,reportId, paraVals));
     }
 
     //[HttpGet("reportExport")]

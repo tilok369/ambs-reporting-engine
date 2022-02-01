@@ -9,7 +9,7 @@ export class GraphService {
 
   constructor(private http: HttpClient) { }
 
-  getGraph(reportId, parameterVals){
-    return this.http.get(environment.apiEndPoint + 'graph/?reportId=' + reportId + '&parameterVals=' + parameterVals);
+  getGraph(dashboardId,reportId, parameterVals){
+    return this.http.get(environment.apiEndPoint + 'graph/?dashboardId='+dashboardId+'&reportId=' + reportId + '&parameterVals=' + parameterVals);
   }
 }

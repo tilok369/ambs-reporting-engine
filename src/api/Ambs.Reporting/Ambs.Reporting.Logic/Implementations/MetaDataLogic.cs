@@ -70,9 +70,9 @@ public class MetaDataLogic : IMetaDataLogic
         return metaDatas;
     }
 
-    public MetaDataResponseDTO GetMetadataByReportId(long reportId)
+    public MetaDataResponseDTO GetMetadataByDashboard(long dashboardId)
     {
-        return _mapper.Map<MetaDatum, MetaDataResponseDTO>(_metaDataService.GetMetaDatumByReport(reportId));
+        return _mapper.Map<MetaDatum, MetaDataResponseDTO>(_metaDataService.GetMetadataByDashboard(dashboardId));
     }
 
     public MetaDataPostResponseDTO Save(MetaDataPostRequestDTO metaData)

@@ -25,35 +25,41 @@ public class GraphicalFeatureLogic : IGraphicalFeatureLogic
         _metaDataLogic = metaDataLogic;
     }
 
-    public IGraph GetByReport(long reportId, string parameterVals)
+    public IGraph GetByReport(long dashboardId, long reportId, string parameterVals)
     {
         var gf = _graphicalFeatureService.GetByReportId(reportId);
         if (gf == null) return null;
-        var (columns, rows) = _reportExportService.GetReportData(Helper.ConstructCommand(gf.Script, parameterVals.ToDictionary()), System.Data.CommandType.Text, _metaDataLogic.GetMetadataByReportId(reportId)?.DataSource, new SqlParameter[] { }).GetAwaiter().GetResult();
+        var metaData = _metaDataLogic.GetMetadataByDashboard(dashboardId);
+
+        if (metaData != null)
+        {
+            var (columns, rows) = _reportExportService.GetReportData(Helper.ConstructCommand(gf.Script, parameterVals.ToDictionary()), System.Data.CommandType.Text, "Data Source=192.168.97.22,1440;Initial Catalog=AMBSTZ;User ID=sa;Password=oLdViCtOrY2008;TrustServerCertificate=True;", new SqlParameter[] { }).GetAwaiter().GetResult();
 
 
-        var graph = new GraphFactory().GetGraph(gf.GraphType);      
-        graph.SetDataPoints(columns, rows);
+            var graph = new GraphFactory().GetGraph(gf.GraphType);
+            graph.SetDataPoints(columns, rows);
 
-        graph.Title = gf.Title??"";
-        graph.SubTitle = gf.SubTitle ?? "";
-        graph.ShowLegend = gf.ShowLegend ?? false;
-        graph.XaxisSuffix = gf.XaxisSuffix ?? "";
-        graph.YaxisSuffix = gf.YaxisSuffix ?? "";
-        graph.XaxisPrefix = gf.XaxisPrefix ?? "";
-        graph.YaxisPrefix = gf.YaxisPrefix ?? "";
-        graph.XaxisTitle = gf.XaxisTitle ?? "";
-        graph.YaxisTitle = gf.YaxisTitle ?? "";
+            graph.Title = gf.Title ?? "";
+            graph.SubTitle = gf.SubTitle ?? "";
+            graph.ShowLegend = gf.ShowLegend ?? false;
+            graph.XaxisSuffix = gf.XaxisSuffix ?? "";
+            graph.YaxisSuffix = gf.YaxisSuffix ?? "";
+            graph.XaxisPrefix = gf.XaxisPrefix ?? "";
+            graph.YaxisPrefix = gf.YaxisPrefix ?? "";
+            graph.XaxisTitle = gf.XaxisTitle ?? "";
+            graph.YaxisTitle = gf.YaxisTitle ?? "";
 
-        return graph;
+            return graph;
+    }
+        return null;
     }
 
-    public async Task<byte[]> GetReportExport(string fileName, long reportId, string parameterVals)
+    public async Task<byte[]> GetReportExport(long dashboardId, string fileName, long reportId, string parameterVals)
     {
         var gf = _graphicalFeatureService.GetByReportId(reportId);
         if (gf == null) return null;
 
-        var (columns, rows) = _reportExportService.GetReportData(Helper.ConstructCommand(gf.Script, parameterVals.ToDictionary()), System.Data.CommandType.Text,_metaDataLogic.GetMetadataByReportId(reportId)?.DataSource, new SqlParameter[] { }).GetAwaiter().GetResult();
+        var (columns, rows) = _reportExportService.GetReportData(Helper.ConstructCommand(gf.Script, parameterVals.ToDictionary()), System.Data.CommandType.Text,_metaDataLogic.GetMetadataByDashboard(dashboardId)?.DataSource, new SqlParameter[] { }).GetAwaiter().GetResult();
 
         var graph = new GraphFactory().GetGraph(gf.GraphType);
         graph.SetDataPoints(columns, rows);

@@ -23,8 +23,8 @@ export class ReportService {
   edit(report: Report) {
     return this.http.put(environment.apiEndPoint + 'report', report, environment.getHttpHeader());
   }
-  getExportReportData(reportId:number,paramVals:string){
-    return this.http.get(environment.apiEndPoint + 'report-export/data/'+reportId+'/'+paramVals);
+  getExportReportData(dashboardId:number,reportId:number,paramVals:string){
+    return this.http.get(environment.apiEndPoint + 'report-export/data/'+dashboardId+'/'+reportId+'/'+paramVals);
   }
   exportReport(reportId:number,paramVals:string,exportType:ExportType,reportName:string){
     return this.http.get(environment.apiEndPoint + 'report-export/export/'+reportId+'/'+paramVals+'/'+exportType+'/'+reportName,{responseType: "arraybuffer"});

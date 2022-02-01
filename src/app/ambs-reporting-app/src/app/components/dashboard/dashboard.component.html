@@ -39,13 +39,17 @@
                             <option *ngFor="let et of exportTypes" [ngValue]="et.value">
                                 {{et.name}}</option>
                         </select>
-                        <button type="button" class="btn btn-primary" (click)="exportReport(report);" *ngIf="report.exportType">Export</button>
+                        <button type="button" class="btn btn-primary" (click)="exportReport(report);" *ngIf="report.exportType"><span class="glyphicon glyphicon-export"></span>Export</button>
                     </div>
                     <app-report-data [tableDatas]="report?.data"></app-report-data>
                 </div>
-                <div id="{{report?.id}}" style="height: 450px;" *ngIf="report.type==reportType.Graphical">
-
+                <div>
+                    <button type="button" class="btn btn-primary" (click)="exportReport(report);"><span class="glyphicon glyphicon-export"></span>Export</button>
+                    <div id="{{report?.id}}" style="height: 450px;" *ngIf="report.type==reportType.Graphical">
+                    
+                    </div>
                 </div>
+                
             </div>
         </div>
     </div>

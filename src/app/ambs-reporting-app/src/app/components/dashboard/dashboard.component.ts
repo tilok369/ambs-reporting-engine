@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
     })
   }
   renderGraph(chartContainerId, reportId, parameterVals) {
-    this._graphService.getGraph(reportId, parameterVals).subscribe((res: any) => {
+    this._graphService.getGraph(this.dashboardId,reportId, parameterVals).subscribe((res: any) => {
       console.log(res);
       this.drawGraph(chartContainerId, res);
     });
@@ -84,7 +84,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getExportReportData(reportId: number, paramVals: string) {
-    this._reportService.getExportReportData(reportId, paramVals).subscribe((res: any) => {
+    this._reportService.getExportReportData(this.dashboardId,reportId, paramVals).subscribe((res: any) => {
       console.log(res);
       this.transactionSummaryReceiveAndPayment = res;
       this.transactionSummaryReceiveAndPayment.forEach(td => {
@@ -94,7 +94,7 @@ export class DashboardComponent implements OnInit {
     })
   }
   getExportReportDataLoanDisburseAndFullPayment(reportId: number, paramVals: string) {
-    this._reportService.getExportReportData(reportId, paramVals).subscribe((res: any) => {
+    this._reportService.getExportReportData(this.dashboardId,reportId, paramVals).subscribe((res: any) => {
       console.log(res);
       this.loanDisburseAndFullPayment = res;
       this.loanDisburseAndFullPayment.forEach(td => {
@@ -121,7 +121,7 @@ export class DashboardComponent implements OnInit {
   }
   getReportData(report: ReportVM) {
     if (report.type === ReportType.Tabular) {
-      this._reportService.getExportReportData(report.id, this.getParamVals(report)).subscribe((res: any) => {
+      this._reportService.getExportReportData(this.dashboardId,report.id, this.getParamVals(report)).subscribe((res: any) => {
         report.data = res;
         if (report.data) {
           report.data.forEach(td => {
@@ -131,14 +131,17 @@ export class DashboardComponent implements OnInit {
         }
       })
     } else {
-      this._graphService.getGraph(report.id, this.getParamVals(report)).subscribe((res: any) => {
+      this._graphService.getGraph(this.dashboardId,report.id, this.getParamVals(report)).subscribe((res: any) => {
         report.data = res;
         this.drawGraph(report.id.toString(), report.data);
       })
     }
   }
   exportReport(report:ReportVM){
-    window.open(environment.apiEndPoint + 'report-export/export/'+report.id+'/'+this.getParamVals(report)+'/'+report.exportType+'/'+report.name);
+    if(report.type==ReportType.Tabular)
+      window.open(environment.apiEndPoint + 'report-export/export/'+this.dashboardId+'/'+report.id+'/'+this.getParamVals(report)+'/'+report.exportType+'/'+report.name);
+      else
+        window.open(environment.apiEndPoint + 'graph/reportExport/'+this.dashboardId+'/Test/'+report.id+'/'+this.getParamVals(report));
   }
   ddfChange(report: ReportVM, filter: FilterVM) {
     if (!filter.dependentParameters) return;

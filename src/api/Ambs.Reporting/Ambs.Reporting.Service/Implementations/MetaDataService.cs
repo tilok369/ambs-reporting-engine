@@ -23,9 +23,9 @@ public class MetaDataService : IMetaDataService
         return _genericRepository.GetAll<MetaDatum>();
     }
 
-    public MetaDatum GetMetaDatumByReport(long reportId)
+    public MetaDatum GetMetadataByDashboard(long dashboardId)
     {
-        return _metaDataRepository.GetMetaDatumByReport(reportId);
+        return _genericRepository.First<MetaDatum>(md => md.DashboardId == dashboardId);
     }
 
     public MetaDatum Save(MetaDatum dashboard)

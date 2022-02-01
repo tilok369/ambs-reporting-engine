@@ -41,12 +41,12 @@ public class ReportExportLogic : IReportExportLogic
         }
         return script;
     }
-    public async Task<List<ExportData>> GetReportData(long reportId,string paramVals)
+    public async Task<List<ExportData>> GetReportData(long dasboardId, long reportId,string paramVals)
     {
         var report=_reportService.Get(reportId);
         var script=(ReportType)report.Type==ReportType.Tabular ? _tabularFeatureService.GetByReportId(reportId).Script : _graphicalFeatureService.GetByReportId(reportId).Script;
         var dbScript = ConstructCommand(script, paramVals.ToDictionary());
-        var metaData = _metaDataLogic.GetMetadataByReportId(reportId);
+        var metaData = _metaDataLogic.GetMetadataByDashboard(dasboardId);
         if(metaData != null)
         {
             var (columns, rows) = await _exportReportService.GetReportData(dbScript, CommandType.Text, metaData.DataSource);
@@ -57,9 +57,9 @@ public class ReportExportLogic : IReportExportLogic
         
     }
 
-    public async Task<byte[]> GetReportDataForExport(long reportId, string paramVals,ExportType exportType,string contentRootPath)
+    public async Task<byte[]> GetReportDataForExport(long dasboardId, long reportId, string paramVals,ExportType exportType,string contentRootPath)
     {
-        var exportData = await GetReportData(reportId,paramVals);
+        var exportData = await GetReportData(dasboardId,reportId, paramVals);
         return await(exportType == ExportType.Excel ? _exporter.GetExcelData(exportData, "Test", contentRootPath) : _exporter.GetPdfData(exportData, "Test", contentRootPath));
     }
 }
