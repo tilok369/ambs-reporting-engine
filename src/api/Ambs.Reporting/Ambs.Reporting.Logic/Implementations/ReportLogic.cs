@@ -146,4 +146,9 @@ public class ReportLogic : IReportLogic
     {
         throw new NotImplementedException();
     }
+
+    public IEnumerable<ReportListResponseDTO> GetByWidget(long widgetId, int page, int size)
+    {
+        return _mapper.Map<IEnumerable<ReportList>, IEnumerable<ReportListResponseDTO>>(_reportService.GetByWidget(widgetId,page, size));
+    }
 }

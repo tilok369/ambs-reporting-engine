@@ -43,7 +43,7 @@ public class WidgetLogic : IWidgetLogic
         var widgets = new List<WidgetResponseDTO>();
         foreach (var widget in widgetList.Where(w => w.DashboardId == dashboardId).Take((page - 1)..size))
         {
-            var dashboard = _dashboardService.Get(widget.Id);
+            var dashboard = _dashboardService.Get(widget.DashboardId);
             if (dashboard == null) continue;
 
             widgets.Add(new WidgetResponseDTO(widget.Id)

@@ -15,5 +15,6 @@ public interface IReportLogic
     ReportPostResponseDTO Add(ReportPostRequestDTO report);
     ReportPostResponseDTO Edit(ReportPostRequestDTO report);
     ReportPostResponseDTO Delete(long id);
+    IEnumerable<ReportListResponseDTO> GetByWidget(long widgetId, int page, int size);
 }
 

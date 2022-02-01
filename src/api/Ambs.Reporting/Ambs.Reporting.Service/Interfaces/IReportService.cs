@@ -8,5 +8,6 @@ public interface IReportService
     Report Edit(Report report);
     Report Delete(long id);
     IEnumerable<Report> GetByWidgetId(long widgetId);
+    IEnumerable<ReportList> GetByWidget(long widgetId, int page, int size);
 }
 

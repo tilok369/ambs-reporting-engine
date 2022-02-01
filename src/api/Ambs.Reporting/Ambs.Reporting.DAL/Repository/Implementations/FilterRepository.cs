@@ -22,12 +22,10 @@ public class FilterRepository:IFilterRepository
                 select filter).ToList();
     }
 
-    public IEnumerable<DropdownFilterCM> GetDrowpdownFilterValues(string script)
+    public IEnumerable<DropdownFilterCM> GetDrowpdownFilterValues(string script, string connectionString)
     {
         var data=new List<DropdownFilterCM>();
-        using var context = new ReportEngineContext(_dbContextOptionBuilder.Options);
-        var metaData = context.MetaData.FirstOrDefault(d => d.Id == 1);
-        using var sqlConnection = new SqlConnection(metaData.DataSource);
+        using var sqlConnection = new SqlConnection(connectionString);
         using var sqlCommand = new SqlCommand(script, sqlConnection);
         sqlConnection.Open();
         sqlCommand.CommandType = CommandType.Text;

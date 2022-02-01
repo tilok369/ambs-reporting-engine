@@ -17,6 +17,9 @@ export class ReportService {
   getAll(page: number, size: number): Observable<any> {
     return this.http.get(environment.apiEndPoint + 'report?page=' + page + '&size=' + size);
   }
+  getByWidget(widgetId:number,page: number, size: number): Observable<any>{
+    return this.http.get(environment.apiEndPoint + 'report/getbywidget/'+widgetId+'/' + page + '/' + size);
+  }
   add(report: any) {
     return this.http.post(environment.apiEndPoint + 'report', report, environment.getHttpHeader());
   }

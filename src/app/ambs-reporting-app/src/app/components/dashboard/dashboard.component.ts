@@ -156,7 +156,7 @@ export class DashboardComponent implements OnInit {
   }
   ddfChange(report: ReportVM, filter: FilterVM) {
     if (!filter.dependentParameters) return;
-    this._filterService.getDropdownFilter(report.id, filter.id, filter.filterValue?.value).subscribe((res: Array<IDropdownFilter>) => {
+    this._filterService.getDropdownFilter(this.dashboardId,report.id, filter.id, filter.filterValue?.value).subscribe((res: Array<IDropdownFilter>) => {
       report.filters.forEach(rf => {
         if (rf.parameter.toLowerCase() == filter.dependentParameters.toLowerCase()) {
           rf.dropdownFilters = res;

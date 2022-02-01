@@ -38,10 +38,10 @@ namespace Ambs.Reporting.Api.Controllers
         {
             return Ok(_filterLogic.GetGraphType());
         }
-        [HttpGet("dropdownvalues/{reportId}/{filterId}/{filterValue}")]
-        public IActionResult GetDropdownValues(long reportId,long filterId,string filterValue)
+        [HttpGet("dropdownvalues/{dashboardId}/{reportId}/{filterId}/{filterValue}")]
+        public IActionResult GetDropdownValues(long dashboardId, long reportId,long filterId,string filterValue)
         {
-            return Ok(_filterLogic.GetDropdownValues(reportId, filterId, filterValue));
+            return Ok(_filterLogic.GetDropdownValues(dashboardId,reportId, filterId, filterValue));
         }
     }
 }

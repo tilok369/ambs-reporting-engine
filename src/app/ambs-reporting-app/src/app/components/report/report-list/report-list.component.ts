@@ -23,7 +23,8 @@ widgetName:string='';
     this.getReports();
   }
   getReports() {
-    this._reportService.getAll(1, 10).subscribe((res: Array<IReportList>) => {
+    if(!this.widgetId)return;
+    this._reportService.getByWidget(this.widgetId,0, 100).subscribe((res: Array<IReportList>) => {
       this.reportList = res;
     })
   }

@@ -41,4 +41,9 @@ public class ReportService : IReportService
     {
         return _genericRepository.Find<Report>(rp => rp.WidgetId == widgetId);
     }
+
+    public IEnumerable<ReportList> GetByWidget(long widgetId, int page, int size)
+    {
+        return _reportRepository.GetByWidget(widgetId,page, size);
+    }
 }

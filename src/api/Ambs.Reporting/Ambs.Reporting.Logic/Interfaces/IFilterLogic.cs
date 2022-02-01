@@ -13,6 +13,6 @@ namespace Ambs.Reporting.Logic.Interfaces
         IList<FilterResponseDTO> GetAll(int page, int size);
         FilterPostResponseDTO Save(FilterPostRequestDTO filter);
         IEnumerable<DropdownFilter> GetGraphType();
-        IEnumerable<DropdownFilter> GetDropdownValues(long reportId, long filterId, string filterValue);
+        IEnumerable<DropdownFilter> GetDropdownValues(long dashboardId,long reportId, long filterId, string filterValue);
     }
 }

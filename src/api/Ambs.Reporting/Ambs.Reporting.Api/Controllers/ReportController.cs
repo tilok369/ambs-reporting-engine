@@ -28,6 +28,14 @@ namespace Ambs.Reporting.Api.Controllers
                 return Ok(data);
             return NotFound();
         }
+        [HttpGet("getbywidget/{widgetId}/{page}/{size}")]
+        public IActionResult GetByWidget(long widgetId,int page, int size)
+        {
+            var data = _reportLogic.GetByWidget(widgetId,page, size);
+            if (data != null)
+                return Ok(data);
+            return NotFound();
+        }
         [HttpPost]
         public IActionResult Add(ReportPostRequestDTO report)
         {

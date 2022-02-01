@@ -20,6 +20,7 @@ public class DashboardLogic : IDashboardLogic
     private readonly ITablularFeatureService _tablularFeatureService;
     private readonly IGraphicalFeatureService _graphicalFeatureService;
     private readonly IMapper _mapper;
+    private readonly IMetaDataLogic _metaDataLogic;
 
     public DashboardLogic(IDashboardService dashboardService
         , IWidgetService widgetService
@@ -28,7 +29,8 @@ public class DashboardLogic : IDashboardLogic
         ,IFilterService filterService
         ,ITablularFeatureService tablularFeatureService
         , IGraphicalFeatureService graphicalFeatureService
-        , IMapper mapper)
+        , IMapper mapper
+        ,IMetaDataLogic metaDataLogic)
     {
         _dashboardService = dashboardService;
         _widgetService = widgetService;
@@ -38,6 +40,7 @@ public class DashboardLogic : IDashboardLogic
         _graphicalFeatureService= graphicalFeatureService;
         _tablularFeatureService= tablularFeatureService;
         _mapper= mapper;
+        _metaDataLogic= metaDataLogic;
     }
 
     public DashboardResponseDTO Get(long id)
@@ -117,6 +120,7 @@ public class DashboardLogic : IDashboardLogic
         var dbDashboard = _dashboardService.Get(dashboardId);
         var dashboard = new DashboardWidgetReportResponseDTO(dashboardId) { Name=dbDashboard.Name,IframeUrl=dbDashboard.IframeUrl,Status=dbDashboard.Status};
         var widgets = _widgetService.GetByDashboardId(dashboardId);
+        var metaData=_metaDataLogic.GetMetadataByDashboard(dashboardId);
         dashboard.Widgets=new List<WidgetDTO>();
         foreach (var widget in widgets)
         {
@@ -148,7 +152,7 @@ public class DashboardLogic : IDashboardLogic
                         ReportId = report.Id,
                         Type=filter.Type,
                         DropdownFilters = filter.Type == (int)FilterType.Dropdown && reportFilter.SortOrder==1 
-                            ? _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(Helper.ConstructScriptForDropdown(filter.Script))) 
+                            ? _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(Helper.ConstructScriptForDropdown(filter.Script), metaData?.DataSource)) 
                             : null
                     };
                     reportDto.Filters.Add(filterDto);

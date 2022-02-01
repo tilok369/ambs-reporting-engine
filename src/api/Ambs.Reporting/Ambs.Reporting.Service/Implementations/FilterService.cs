@@ -46,9 +46,9 @@ namespace Ambs.Reporting.Service.Implementations
             return _genericRepository.Edit(filter);
         }
 
-        IEnumerable<DropdownFilterCM> IFilterService.GetDrowpdownFilterValues(string script)
+        IEnumerable<DropdownFilterCM> IFilterService.GetDrowpdownFilterValues(string script,string connectionString)
         {
-            return _filterRepository.GetDrowpdownFilterValues(script);
+            return _filterRepository.GetDrowpdownFilterValues(script, connectionString);
         }
     }
 }

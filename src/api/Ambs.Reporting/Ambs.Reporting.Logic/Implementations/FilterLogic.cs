@@ -9,12 +9,15 @@ namespace Ambs.Reporting.Logic.Implementations
     {
         private readonly IFilterService _filterService;
         private readonly IMapper _mapper;
+        private readonly IMetaDataLogic _metaDataLogic;
 
         public FilterLogic(IFilterService filterService
-            , IMapper mapper)
+            , IMapper mapper
+            , IMetaDataLogic metaDataLogic)
         {
             _filterService = filterService;
             _mapper = mapper;
+            _metaDataLogic = metaDataLogic;
         }
 
         public FilterResponseDTO Get(long id)
@@ -72,16 +75,20 @@ namespace Ambs.Reporting.Logic.Implementations
             return filters;
         }
 
-        public IEnumerable<DropdownFilter> GetDropdownValues(long reportId, long filterId,string filterValue)
+        public IEnumerable<DropdownFilter> GetDropdownValues(long dashboardId,long reportId, long filterId,string filterValue)
         {
             var filter=_filterService.Get(filterId);
             var filtersOfThisReport = _filterService.GetByReportId(reportId);
             var filterToChange=filtersOfThisReport.FirstOrDefault(f=>f.Parameter.ToLower()==filter.DependentParameters.ToLower());
             if (filterToChange != null)
             {
-                filterToChange.Script= filterToChange.Script.ToLower().Replace(filter.Name.ToLower(), filterValue.ToString()).Replace('@',' ');
-                var data = _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(filterToChange.Script));
-                return data;
+                filterToChange.Script= filterToChange.Script.ToLower().Replace(filter.Parameter.ToLower(), filterValue.ToString()).Replace('@',' ');
+                var metaData = _metaDataLogic.GetMetadataByDashboard(dashboardId);
+                if (metaData != null)
+                {
+                    var data = _mapper.Map<IEnumerable<DropdownFilterCM>, IEnumerable<DropdownFilter>>(_filterService.GetDrowpdownFilterValues(filterToChange.Script, metaData.DataSource));
+                    return data;
+                }
             }            
             return new List<DropdownFilter>();
         }
