@@ -19,9 +19,9 @@
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="filter.type==filterType.Dropdown">
                         <label for="a-filter">{{filter.label}}</label>
-                        <select id="a-filter" class="form-control form-select" [(ngModel)]="filter.value"
+                        <select id="a-filter" class="form-control form-select" [(ngModel)]="filter.filterValue"
                             (change)="ddfChange(report,filter);">
-                            <option *ngFor="let ddf of filter.dropdownFilters" [value]="ddf.value">
+                            <option *ngFor="let ddf of filter.dropdownFilters" [ngValue]="ddf">
                                 {{ddf.name}}</option>
                         </select>
                     </div>
@@ -43,9 +43,9 @@
                     </div>
                     <app-report-data [tableDatas]="report?.data"></app-report-data>
                 </div>
-                <div>
+                <div *ngIf="report.type==reportType.Graphical">
                     <button type="button" class="btn btn-primary" (click)="exportReport(report);"><span class="glyphicon glyphicon-export"></span>Export</button>
-                    <div id="{{report?.id}}" style="height: 450px;" *ngIf="report.type==reportType.Graphical">
+                    <div id="{{report?.id}}" style="height: 450px;" >
                     
                     </div>
                 </div>

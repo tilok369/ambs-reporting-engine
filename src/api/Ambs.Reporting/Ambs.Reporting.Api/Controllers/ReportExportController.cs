@@ -16,34 +16,10 @@ public class ReportExportController : ControllerBase
         _reportLogic = reportLogic;
         _hostingEnvironment=hostingEnvironment;
     }
-    [HttpGet("excel")]
-    //public async Task<IActionResult> ExportExcel()
-    //{
-    //    var data = await _reportLogic.GetReportDataForExport(ExportType.Excel, _hostingEnvironment.ContentRootPath);
-       
-    //    var stream = new MemoryStream(data)
-    //    {
-    //        Position = 0
-    //    };
-    //    return File(stream, "application/ms-excel", "Test.xlsx");
-
-    //}
-    //[HttpGet("pdf")]
-    //public async Task<IActionResult> ExportPdf()
-    //{
-    //    var data = await _reportLogic.GetReportDataForExport(ExportType.Pdf, _hostingEnvironment.ContentRootPath);
-        
-    //    var stream = new MemoryStream(data)
-    //    {
-    //        Position = 0
-    //    };
-    //    return File(stream, "application/pdf", "Test.pdf");
-
-    //}
-    [HttpGet("export/{dasboardId}/{reportId}/{paramVals}/{exportType}/{reportName}")]
-    public async Task<IActionResult> ExportReport(long dasboardId,long reportId,string paramVals,ExportType exportType,string reportName)
+    [HttpGet("export/{dasboardId}/{reportId}/{paramVals}/{exportType}/{reportName}/{filterValues?}")]
+    public async Task<IActionResult> ExportReport(long dasboardId,long reportId,string paramVals,ExportType exportType,string reportName,string filterValues="")
     {
-        var data = await _reportLogic.GetReportDataForExport(dasboardId,reportId, paramVals, exportType, _hostingEnvironment.ContentRootPath);
+        var data = await _reportLogic.GetReportDataForExport(dasboardId,reportId, paramVals, exportType, filterValues, _hostingEnvironment.ContentRootPath);
         var stream = new MemoryStream(data)
         {
             Position = 0
@@ -55,16 +31,4 @@ public class ReportExportController : ControllerBase
     {
         return Ok(await _reportLogic.GetReportData(dasboardId,reportId, paraVals));
     }
-
-    //[HttpGet("reportExport")]
-    //public async Task<IActionResult> ReportExport(string fileName)
-    //{
-    //    var data = await _reportLogic.GetReportExport(fileName);
-    //    var stream = new MemoryStream(data)
-    //    {
-    //        Position = 0
-    //    };
-    //    return File(stream, "application/ms-excel", fileName+ ".xlsx");
-
-    //}
 }

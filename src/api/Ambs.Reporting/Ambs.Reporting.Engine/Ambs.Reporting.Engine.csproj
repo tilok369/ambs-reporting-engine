@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ambs.Reporting.Utility\Ambs.Reporting.Utility.csproj" />
+    <ProjectReference Include="..\Ambs.Reporting.ViewModel\Ambs.Reporting.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>
