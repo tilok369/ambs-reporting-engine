@@ -1,6 +1,7 @@
 ﻿using Ambs.Reporting.Engine.GraphModels;
 using Ambs.Reporting.Engine.Model;
 using Ambs.Reporting.Utility.Report;
+using Ambs.Reporting.ViewModel.Reponse;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
 using SautinSoft;
@@ -9,7 +10,7 @@ namespace Ambs.Reporting.Engine.Manager;
 
 public class Exporter : IExporter
 {
-    public async Task<byte[]> GetExcelData(List<ExportData> datas, string fileName, string contentRootPath)
+    public async Task<byte[]> GetExcelData(List<ExportData> datas, string fileName, string contentRootPath, List<ReportExportFilter> reportExportFilters, string image)
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         using var package = new ExcelPackage(new FileInfo(fileName));
@@ -21,30 +22,46 @@ public class Exporter : IExporter
         {
             package.Workbook.Worksheets.Add(sheetData.SheetName);
             var worksheet = package.Workbook.Worksheets[index++];
-            if (File.Exists(contentRootPath + @"\Resources\Images\ASAI Logo.png"))
+            if (File.Exists(contentRootPath + @"\Resources\Dashboard\"+image))
             {
-                var asaiLogo = worksheet.Drawings.AddPicture("Test", System.Drawing.Image.FromFile(contentRootPath + @"\Resources\Images\ASAI Logo.png"));
+                var asaiLogo = worksheet.Drawings.AddPicture(image, System.Drawing.Image.FromFile(contentRootPath + @"\Resources\Dashboard\" + image));
                 asaiLogo.SetPosition(0, 1, 0, 1);
-                asaiLogo.SetSize(50, 50);
+                asaiLogo.SetSize(90, 90);
             }
-            worksheet.Cells[1, 1].Value = sheetData.SheetName;
+            var rowIndex = 1;
+            worksheet.Cells[rowIndex,1].Value = sheetData.SheetName;
             worksheet.Cells[1, 1, 1, sheetData.Columns.Count].Merge = true;
             worksheet.Cells[1, 1].Style.Font.Bold = true;
             worksheet.Cells[1, 1].Style.Font.Size = 20;
             worksheet.Cells[1, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            worksheet.Cells[2, 1].Value = "Branch Name: Branch";
-            worksheet.Cells[2, 1, 2, 6].Merge = true;
-            worksheet.Cells[2, 1, 2, 6].Style.Font.Bold = true;
-            worksheet.Cells[2, 1, 2, 6].Style.Font.Size = 14;
-            worksheet.Cells[2, 1, 2, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            worksheet.Cells[2, 7].Value = "Date: Date";
-            worksheet.Cells[2, 7, 2, 12].Merge = true;
-            worksheet.Cells[2, 7, 2, 12].Style.Font.Bold = true;
-            worksheet.Cells[2, 7, 2, 12].Style.Font.Size = 14;
-            worksheet.Cells[2, 7, 2, 12].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            rowIndex+=4;
+            var filterColIndex = 0;
+            foreach(var reportExportFilter in reportExportFilters)
+            {
+                filterColIndex++;
+                worksheet.Cells[rowIndex, filterColIndex].Value = reportExportFilter.Name;
+                worksheet.Cells[rowIndex, filterColIndex].Style.Font.Bold = true;
+                worksheet.Cells[rowIndex, filterColIndex].Style.Font.Size = 20;
+                worksheet.Cells[rowIndex, filterColIndex].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                filterColIndex++;
+                worksheet.Cells[rowIndex, filterColIndex].Value = reportExportFilter.Value;
+                worksheet.Cells[rowIndex, filterColIndex].Style.Font.Bold = true;
+                worksheet.Cells[rowIndex, filterColIndex].Style.Font.Size = 20;
+                worksheet.Cells[rowIndex, filterColIndex].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            }
+            //worksheet.Cells[2, 1].Value = "Branch Name: Branch";
+            //worksheet.Cells[2, 1, 2, 6].Merge = true;
+            //worksheet.Cells[2, 1, 2, 6].Style.Font.Bold = true;
+            //worksheet.Cells[2, 1, 2, 6].Style.Font.Size = 14;
+            //worksheet.Cells[2, 1, 2, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            //worksheet.Cells[2, 7].Value = "Date: Date";
+            //worksheet.Cells[2, 7, 2, 12].Merge = true;
+            //worksheet.Cells[2, 7, 2, 12].Style.Font.Bold = true;
+            //worksheet.Cells[2, 7, 2, 12].Style.Font.Size = 14;
+            //worksheet.Cells[2, 7, 2, 12].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             
             var layers = sheetData.Layers;
-            var rowIndex = 4;
+            rowIndex += 2;
             rowIndex -= 1;
             foreach (var layer in layers)
             {
@@ -85,9 +102,9 @@ public class Exporter : IExporter
         return await package.GetAsByteArrayAsync();
     }
 
-    public async Task<byte[]> GetPdfData(List<ExportData> datas, string fileName, string contentRootPath)
+    public async Task<byte[]> GetPdfData(List<ExportData> datas, string fileName, string contentRootPath, List<ReportExportFilter> reportExportFilters,string image)
     {
-        var excelByteArray = await GetExcelData(datas, fileName, contentRootPath);
+        var excelByteArray = await GetExcelData(datas, fileName, contentRootPath, reportExportFilters, image);
         var excelToPdf = new ExcelToPdf
         {
             OutputFormat = ExcelToPdf.eOutputFormat.Pdf

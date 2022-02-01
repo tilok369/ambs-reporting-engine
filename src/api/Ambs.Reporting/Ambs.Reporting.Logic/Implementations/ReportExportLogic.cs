@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Ambs.Reporting.Engine.Manager;
 using static Ambs.Reporting.Utility.Enum.ReportEnum;
 using Ambs.Reporting.Utility.Extensions;
+using Ambs.Reporting.ViewModel.Reponse;
 
 namespace Ambs.Reporting.Logic.Implementations;
 public class ReportExportLogic : IReportExportLogic
@@ -57,10 +58,19 @@ public class ReportExportLogic : IReportExportLogic
         
     }
 
-    public async Task<byte[]> GetReportDataForExport(long dasboardId, long reportId, string paramVals,ExportType exportType,string contentRootPath)
+    public async Task<byte[]> GetReportDataForExport(long dasboardId, long reportId, string paramVals,ExportType exportType,string filterValues,string contentRootPath)
     {
         var exportData = await GetReportData(dasboardId,reportId, paramVals);
-        return await(exportType == ExportType.Excel ? _exporter.GetExcelData(exportData, "Test", contentRootPath) : _exporter.GetPdfData(exportData, "Test", contentRootPath));
+        var reportExportFilters = new List<ReportExportFilter>();
+        var sortOrder = 0;
+        var metaData = _metaDataLogic.GetMetadataByDashboard(dasboardId);
+        foreach (var filterValue in filterValues.ToDictionary())
+        {
+            sortOrder++;
+
+            reportExportFilters.Add(new ReportExportFilter( filterValue.Key.Replace("@",string.Empty),Uri.UnescapeDataString(filterValue.Value), sortOrder ));
+        }
+        return await(exportType == ExportType.Excel ? _exporter.GetExcelData(exportData, "Test", contentRootPath, reportExportFilters, metaData?.BrandImage) : _exporter.GetPdfData(exportData, "Test", contentRootPath, reportExportFilters,metaData?.BrandImage));
     }
 }
 

@@ -59,6 +59,7 @@ export class FilterVM {
     status: boolean
     type: FilterType
     value?: any
+    filterValue?:IDropdownFilter
     dropdownFilters?: Array<IDropdownFilter>
     constructor() {
         this.id = 0

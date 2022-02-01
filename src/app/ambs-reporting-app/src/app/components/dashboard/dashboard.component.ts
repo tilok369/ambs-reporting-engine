@@ -20,8 +20,8 @@ export class DashboardComponent implements OnInit {
   transactionSummaryReceiveAndPayment: any;
   loanDisburseAndFullPayment: any;
   dashboard: DashboardWidgetReportVM = new DashboardWidgetReportVM();
-  dashboardId: number =0;
-  exportTypes:Array<IDropdownFilter>=[];
+  dashboardId: number = 0;
+  exportTypes: Array<IDropdownFilter> = [];
   constructor(private _graphService: GraphService
     , private _reportService: ReportService
     , private _dashboardService: DashboardService
@@ -33,12 +33,13 @@ export class DashboardComponent implements OnInit {
     // //this.renderGraph("chart-container-2", 5, '@EndDate#2021-01-31|@StateId#-1|@ZoneId#4|@DistrictId#4|@RegionId#27|@BranchId#33');
     // this.getExportReportData(11, "%40BranchId%232%7C%40Date%232021-09-02");
     // this.getExportReportDataLoanDisburseAndFullPayment(12, "%40BranchId%232%7C%40Date%232021-09-02");
-    this.exportTypes.push({name:'Excel',value:ExportType.Excel,sortOrder:1})
-    this.exportTypes.push({name:'PDF',value:ExportType.PDF,sortOrder:2})
+    this.exportTypes.push({ name: 'Excel', value: ExportType.Excel, sortOrder: 1 })
+    this.exportTypes.push({ name: 'PDF', value: ExportType.PDF, sortOrder: 2 })
 
     this.dashboardId = window.history.state.dashboardId;
     console.log(this.dashboardId);
-    this.getDashboardWidgetReport(this.dashboardId);
+    if(this.dashboardId)
+      this.getDashboardWidgetReport(this.dashboardId);
   }
 
   getDashboardWidgetReport(dashboardId: number) {
@@ -48,7 +49,7 @@ export class DashboardComponent implements OnInit {
     })
   }
   renderGraph(chartContainerId, reportId, parameterVals) {
-    this._graphService.getGraph(this.dashboardId,reportId, parameterVals).subscribe((res: any) => {
+    this._graphService.getGraph(this.dashboardId, reportId, parameterVals).subscribe((res: any) => {
       console.log(res);
       this.drawGraph(chartContainerId, res);
     });
@@ -84,7 +85,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getExportReportData(reportId: number, paramVals: string) {
-    this._reportService.getExportReportData(this.dashboardId,reportId, paramVals).subscribe((res: any) => {
+    this._reportService.getExportReportData(this.dashboardId, reportId, paramVals).subscribe((res: any) => {
       console.log(res);
       this.transactionSummaryReceiveAndPayment = res;
       this.transactionSummaryReceiveAndPayment.forEach(td => {
@@ -94,7 +95,7 @@ export class DashboardComponent implements OnInit {
     })
   }
   getExportReportDataLoanDisburseAndFullPayment(reportId: number, paramVals: string) {
-    this._reportService.getExportReportData(this.dashboardId,reportId, paramVals).subscribe((res: any) => {
+    this._reportService.getExportReportData(this.dashboardId, reportId, paramVals).subscribe((res: any) => {
       console.log(res);
       this.loanDisburseAndFullPayment = res;
       this.loanDisburseAndFullPayment.forEach(td => {
@@ -112,16 +113,26 @@ export class DashboardComponent implements OnInit {
   getParamVals(report: ReportVM): string {
     let paramVals: string = ''
     report.filters.forEach(function (flt, index) {
-      if (flt.value)
+      if (flt.type == FilterType.Dropdown && flt.filterValue)
+        paramVals = paramVals + '%40' + flt.parameter + '%23' + (index == report.filters.length - 1 ? flt.filterValue?.value : flt.filterValue?.value + '%7C');
+      else if (flt.value)
         paramVals = paramVals + '%40' + flt.parameter + '%23' + (index == report.filters.length - 1 ? flt.value : flt.value + '%7C');
     })
     return paramVals;
-    //return '%40EndDate%232021-01-31%7C%40StateId%23-1%7C%40ZoneId%234%7C%40DistrictId%234%7C%40RegionId%2327%7C%40BranchId%2333';
-    //return "%40BranchId%232%7C%40Date%232021-09-02";
+  }
+  getParamWithNameValueForExport(report: ReportVM): string {
+    let paramVals: string = ''
+    report.filters.forEach(function (flt, index) {
+      if (flt.type == FilterType.Dropdown && flt.filterValue)
+        paramVals = paramVals + '%40' + flt.label + '%23' + (index == report.filters.length - 1 ? encodeURIComponent(flt.filterValue?.name) : encodeURIComponent(flt.filterValue?.name) + '%7C');
+      else if (flt.value)
+        paramVals = paramVals + '%40' + flt.label + '%23' + (index == report.filters.length - 1 ? flt.value : flt.value + '%7C');
+    })
+    return paramVals;
   }
   getReportData(report: ReportVM) {
     if (report.type === ReportType.Tabular) {
-      this._reportService.getExportReportData(this.dashboardId,report.id, this.getParamVals(report)).subscribe((res: any) => {
+      this._reportService.getExportReportData(this.dashboardId, report.id, this.getParamVals(report)).subscribe((res: any) => {
         report.data = res;
         if (report.data) {
           report.data.forEach(td => {
@@ -131,26 +142,26 @@ export class DashboardComponent implements OnInit {
         }
       })
     } else {
-      this._graphService.getGraph(this.dashboardId,report.id, this.getParamVals(report)).subscribe((res: any) => {
+      this._graphService.getGraph(this.dashboardId, report.id, this.getParamVals(report)).subscribe((res: any) => {
         report.data = res;
         this.drawGraph(report.id.toString(), report.data);
       })
     }
   }
-  exportReport(report:ReportVM){
-    if(report.type==ReportType.Tabular)
-      window.open(environment.apiEndPoint + 'report-export/export/'+this.dashboardId+'/'+report.id+'/'+this.getParamVals(report)+'/'+report.exportType+'/'+report.name);
-      else
-        window.open(environment.apiEndPoint + 'graph/reportExport/'+this.dashboardId+'/Test/'+report.id+'/'+this.getParamVals(report));
+  exportReport(report: ReportVM) {
+    if (report.type == ReportType.Tabular)
+      window.open(environment.apiEndPoint + 'report-export/export/' + this.dashboardId + '/' + report.id + '/' + this.getParamVals(report) + '/' + report.exportType + '/' + report.name + '/' + this.getParamWithNameValueForExport(report));
+    else
+      window.open(environment.apiEndPoint + 'graph/reportExport/' + this.dashboardId + '/Test/' + report.id + '/' + this.getParamVals(report));
   }
   ddfChange(report: ReportVM, filter: FilterVM) {
     if (!filter.dependentParameters) return;
-    this._filterService.getDropdownFilter(report.id, filter.id, filter.value).subscribe((res: Array<IDropdownFilter>) => {
+    this._filterService.getDropdownFilter(report.id, filter.id, filter.filterValue?.value).subscribe((res: Array<IDropdownFilter>) => {
       report.filters.forEach(rf => {
         if (rf.parameter.toLowerCase() == filter.dependentParameters.toLowerCase()) {
           rf.dropdownFilters = res;
-          rf.value=res.length>0?res[0].value:-1;
-          this.ddfChange(report,rf);
+          rf.filterValue = res.length > 0 ? res[0] : { name: '', value: -1 };
+          this.ddfChange(report, rf);
           return;
         }
       })
