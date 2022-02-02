@@ -23,6 +23,9 @@
                   <label for="brandImage">Brand Image</label>
                  
                 </div>
+                <div class="image-preview mb-3" *ngIf="previewUrl">
+                    <img src="{{previewUrl}}" height="120" width="120" class="right" />
+                </div>
                 <div class="alert alert-danger" role="alert" *ngIf="message">
                     {{message}}
                 </div>

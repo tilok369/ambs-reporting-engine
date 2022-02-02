@@ -1,6 +1,7 @@
 ﻿
 using Ambs.Reporting.ViewModel.Reponse.MetaData;
 using Ambs.Reporting.ViewModel.Request.MetaData;
+using System.Net.Http.Headers;
 using AutoMapper;
 
 namespace Ambs.Reporting.Logic.Implementations;
@@ -22,18 +23,29 @@ public class MetaDataLogic : IMetaDataLogic
 
     public MetaDataResponseDTO Get(long id)
     {
+        
+
+
         var metaData = _metaDataService.Get(id);
-        if(metaData == null) return null;
+        if (metaData == null) return null;
 
         var dashboard = _dashboardService.Get(metaData.DashboardId);
-        if(dashboard == null) return null;
+        if (dashboard == null) return null;
+
+        var folderName = Path.Combine("Resources", "Dashboard");
+        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+        var fileName = metaData.BrandImage;
+        var fullPath = Path.Combine(pathToSave, fileName);
+        
 
         return new MetaDataResponseDTO(metaData.Id)
         {
             DataSource = metaData.DataSource,
             DashboardId = metaData.DashboardId,
             DashboardName = dashboard.Name,
-            BrandImage = metaData?.BrandImage ?? ""
+            BrandImage = metaData?.BrandImage ?? "",
+            ImageData = fullPath
         };
     }
 
@@ -48,9 +60,9 @@ public class MetaDataLogic : IMetaDataLogic
 
             metaDatas.Add(new MetaDataResponseDTO(metaData.Id)
             {
-                DataSource=metaData.DataSource,
-                DashboardId=metaData.DashboardId,
-                DashboardName=dashboard.Name,
+                DataSource = metaData.DataSource,
+                DashboardId = metaData.DashboardId,
+                DashboardName = dashboard.Name,
                 BrandImage = metaData?.BrandImage ?? ""
             });
         }
@@ -71,8 +83,8 @@ public class MetaDataLogic : IMetaDataLogic
             {
                 Id = metaData.Id,
                 DataSource = metaData.DataSource,
-                DashboardId=metaData.DashboardId,
-                BrandImage = "Dashboard-" + metaData.DashboardId.ToString() +"-"+ metaData.BrandImage
+                DashboardId = metaData.DashboardId,
+                BrandImage = "Dashboard-" + metaData.DashboardId.ToString() + "-" + metaData.BrandImage
             };
             var result = _metaDataService.Save(md);
 

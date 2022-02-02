@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { MetaDataService } from 'src/app/services/meta-data.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-report-metadata-edit',
@@ -16,6 +17,7 @@ export class ReportMetadataEditComponent implements OnInit {
   constructor(private metadataService: MetaDataService, private dashboardService: DashboardService) { }
 
   fileData: any;
+  previewUrl: any = null;
 
   ngOnInit(): void {
     this.metadata = {
@@ -32,7 +34,21 @@ export class ReportMetadataEditComponent implements OnInit {
 
   fileProgress(fileInput: any) {
     this.fileData = <File>fileInput.target.files[0];
+    //this.fileData = this.previewUrl;
+    this.preview();
     
+  }
+
+  preview() {
+    var mimeType = this.fileData.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+    var reader = new FileReader();
+    reader.readAsDataURL(this.fileData);
+    reader.onload = (_event) => {
+      this.previewUrl = reader.result;
+    }
   }
 
   getDasgboards(page, size){
@@ -46,6 +62,7 @@ export class ReportMetadataEditComponent implements OnInit {
     this,this.metadataService.getMetadata(id).subscribe((res: any) => {
       this.metadata = res;
       this.metadata.prevBrandImage = res.brandImage;
+      this.previewUrl = res.imageData;
     });
   }
 
@@ -55,6 +72,12 @@ export class ReportMetadataEditComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  constructImage(photo) {
+    if (!photo)
+      photo = 'Dashboard-6logo.jpg';
+    return environment.apiEndPointRoot + 'Resources/Dashboard/' + photo;
   }
 
   saveMetadata(){
