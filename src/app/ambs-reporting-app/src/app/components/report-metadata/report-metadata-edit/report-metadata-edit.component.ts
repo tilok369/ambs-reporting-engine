@@ -76,7 +76,7 @@ export class ReportMetadataEditComponent implements OnInit {
 
   constructImage(photo) {
     if (!photo)
-      photo = 'default-image.png';
+      photo = 'Dashboard-6logo.jpg';
     return environment.apiEndPointRoot + 'Resources/Dashboard/' + photo;
   }
 

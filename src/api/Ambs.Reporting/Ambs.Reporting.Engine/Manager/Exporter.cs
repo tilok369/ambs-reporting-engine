@@ -1,5 +1,6 @@
 ﻿using Ambs.Reporting.Engine.GraphModels;
 using Ambs.Reporting.Engine.Model;
+using Ambs.Reporting.Utility.Globals;
 using Ambs.Reporting.Utility.Report;
 using Ambs.Reporting.ViewModel.Reponse;
 using OfficeOpenXml;
@@ -140,6 +141,7 @@ public class Exporter : IExporter
             //myWorksheet.Cells[1, 3].Value = "Implementation";
             //myWorksheet.Cells[2, 3].Value = 5;
 
+            i = i - 1;
 
             var myChart = myWorksheet.Drawings.AddChart("pieChart", eChartType.Pie3D) as ExcelPieChart;
 
@@ -147,12 +149,16 @@ public class Exporter : IExporter
             //var series = myChart.Series.Add("C2: C4", "B2: B4");
             myChart.Border.Fill.Color = System.Drawing.Color.Green;
             myChart.Title.Text = graph.Title;
+            
 
             myChart.SetSize(600, 600);
             myChart.SetPosition(i+1, 0, i+1, 0);
 
-            //FileInfo fi = new FileInfo(@"D:\ambs-reporting-engine\src\api\Ambs.Reporting\Ambs.Reporting.Api\ExportData\" + fileName + ".xlsx");
+
+
             
+            //FileInfo fi = new FileInfo(@"D:\ambs-reporting-engine\src\api\Ambs.Reporting\Ambs.Reporting.Api\ExportData\" + fileName + ".xlsx");
+
             return package.GetAsByteArray();
         }
 
