@@ -26,6 +26,13 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="cacheAliveTime" placeholder="report cacheAliveTime" required maxlength="50"
+                        [(ngModel)]="report.cacheAliveTime">
+                    <label for="cacheAliveTime"> CacheAliveTime</label>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="form-floating mb-3">
                     <select id="type" class="form-select" [(ngModel)]="report.type">
                         <option [ngValue]="1">Tabular</option>
                         <option [ngValue]="2">Graphical</option>
@@ -33,6 +40,15 @@
                     <label for="type">Type</label>
                 </div>
             </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <input class="form-check-input" type="checkbox" id="t-isCacheEnable" required
+                [(ngModel)]="report.isCacheEnable">
+            <label class="form-check-label" for="t-isCacheEnable">
+                  Is Cache Enable
+            </label>
+            
+        </div>
 
             <div class="row gx-2">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

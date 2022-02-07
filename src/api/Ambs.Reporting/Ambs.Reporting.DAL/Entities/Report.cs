@@ -21,6 +21,8 @@ namespace Ambs.Reporting.DAL.Entities
         public string CreatedBy { get; set; } = null!;
         public DateTime? UpdatedOn { get; set; }
         public string? UpdatedBy { get; set; }
+        public int? CacheAliveTime { get; set; }
+        public bool IsCacheEnable { get; set; }
 
         public virtual Widget Widget { get; set; } = null!;
         public virtual ICollection<GraphicalFeature> GraphicalFeatures { get; set; }

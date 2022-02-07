@@ -18,6 +18,8 @@ public record ReportResponseDTO: BaseGetResponseDTO
     public string CreatedBy { get; set; } = null!;
     public DateTime? UpdatedOn { get; set; }
     public string? UpdatedBy { get; set; }
+    public int? CacheAliveTime { get; set; }
+    public bool IsCacheEnable { get; set; }
 
     public IEnumerable<ReportFilterResponseDTO> ReportFilterList { get; set; }
     public TabularFeatureResponseDTO? TabularFeature { get; set; }

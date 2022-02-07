@@ -13,6 +13,8 @@ export class Report {
     createdBy: string
     updatedOn: Date
     updatedBy: string
+    cacheAliveTime: number
+    isCacheEnable : boolean
     reportFilterList: Array<IReportFilter>
     tabularFeature: TabularFeature
     graphicalFeature: GraphicalFeature
@@ -27,6 +29,8 @@ export class Report {
         this.createdBy= 'admin'
         this.updatedOn= new Date()
         this.updatedBy= 'admin'
+        this.cacheAliveTime = 0
+        this.isCacheEnable = false
         this.reportFilterList= []
         this.tabularFeature=new TabularFeature()
         this.graphicalFeature=new GraphicalFeature()
