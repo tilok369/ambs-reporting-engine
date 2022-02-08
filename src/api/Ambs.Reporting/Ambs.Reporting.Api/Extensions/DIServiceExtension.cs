@@ -1,4 +1,6 @@
-﻿namespace Ambs.Reporting.Api.Extensions;
+﻿using Ambs.Reporting.Engine.Model;
+
+namespace Ambs.Reporting.Api.Extensions;
 
 public static class DIServiceExtension
 {
@@ -11,7 +13,7 @@ public static class DIServiceExtension
         );
         return services;
     }
-    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
     {
         return services
             .AddScoped<IApplicationConfigurationManager, ApplicationConfigurationManager>()
@@ -19,7 +21,9 @@ public static class DIServiceExtension
             .AddScoped<IReportExportRepository, ReportExportRepository>()
             .AddScoped<IReportRepository,ReportRepository>()
             .AddScoped<IFilterRepository,FilterRepository>()
-            .AddScoped<IMetaDataRepository,MetaDataRepository>();
+            .AddScoped<IMetaDataRepository,MetaDataRepository>()
+            .AddScoped<IInvalidateCacheRepository>(s=>new InvalidateCacheRepository(string.Empty))
+            .AddScoped<IGenericCacheRepository<ReportData>>(s=>new GenericCacheRepository<ReportData>(string.Empty));
     }
     public static IServiceCollection AddServices(this IServiceCollection services)
     {

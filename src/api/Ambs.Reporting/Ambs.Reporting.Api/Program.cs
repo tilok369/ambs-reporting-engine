@@ -14,9 +14,10 @@ builder.Services.AddCors(c =>
 });
 
 builder.Services.AddDatabase(builder.Configuration)
-    .AddRepositories()
+    .AddRepositories(builder.Configuration)
     .AddServices()
     .AddLogics();
+
 
 builder.Services.AddApiVersioning(config =>
 {
