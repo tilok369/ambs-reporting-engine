@@ -8,6 +8,7 @@ public class GraphFactory
     public IGraph GetGraph(int type) => type switch
     {
         1 => new PieGraph(),
-        _ => new ColumnGraph(),
+        2 => new ColumnGraph(),
+        _ => new BarGraph()
     };
 }
